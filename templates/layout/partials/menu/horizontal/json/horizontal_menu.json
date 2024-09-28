@@ -381,12 +381,7 @@
     {
       "name": "Pages",
       "icon": "menu-icon tf-icons ti ti-file",
-      "slug": [
-        "pages",
-        "auth",
-        "wizard-ex",
-        "modal"
-      ],
+      "slug": ["pages", "auth", "wizard-ex", "modal"],
       "submenu": [
         {
           "name": "Front Pages",
@@ -688,12 +683,7 @@
     {
       "name": "Components",
       "icon": "menu-icon tf-icons ti ti-toggle-left",
-      "slug": [
-        "cards",
-        "ui",
-        "extended",
-        "icons"
-      ],
+      "slug": ["cards", "ui", "extended", "icons"],
       "submenu": [
         {
           "name": "Cards",
@@ -929,12 +919,7 @@
     {
       "name": "Forms",
       "icon": "menu-icon tf-icons ti ti-forms",
-      "slug": [
-        "forms",
-        "form-layouts",
-        "form-wizard",
-        "form"
-      ],
+      "slug": ["forms", "form-layouts", "form-wizard", "form"],
       "submenu": [
         {
           "name": "Form Elements",
@@ -1043,10 +1028,7 @@
     {
       "name": "Tables",
       "icon": "menu-icon tf-icons ti ti-layout-grid",
-      "slug": [
-        "tables",
-        "tables-datatables"
-      ],
+      "slug": ["tables", "tables-datatables"],
       "submenu": [
         {
           "url": "tables-basic",
@@ -1081,10 +1063,7 @@
     {
       "name": "Charts & Maps",
       "icon": "menu-icon tf-icons ti ti-chart-bar",
-      "slug": [
-        "charts",
-        "maps"
-      ],
+      "slug": ["charts", "maps"],
       "submenu": [
         {
           "name": "Charts",

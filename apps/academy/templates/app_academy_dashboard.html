@@ -1,31 +1,16 @@
-{% extends layout_path %}
-
-{% load static %}
-{% load i18n %}
-
-{% block title %}Academy - Dashboard - App{% endblock %}
-
-{% block vendor_css %}
-{{ block.super }}
+{% extends layout_path %} {% load static %} {% load i18n %} {% block title %}Academy - Dashboard - App{% endblock %} {%
+block vendor_css %} {{ block.super }}
 <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/apex-charts/apex-charts.css' %}" />
-{% endblock vendor_css %}
-
-{% block vendor_js %}
-{{ block.super }}
+{% endblock vendor_css %} {% block vendor_js %} {{ block.super }}
 <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
 <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
 <script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
-{% endblock vendor_js %}
-
-{% block page_js %}
-{{ block.super }}
+{% endblock vendor_js %} {% block page_js %} {{ block.super }}
 <script src="{% static 'js/app-academy-dashboard.js' %}"></script>
-{% endblock page_js %}
-
-{% block content %}
+{% endblock page_js %} {% block content %}
 
 <!-- Hour chart  -->
 <div class="card bg-transparent shadow-none my-6 border-0">
@@ -40,7 +25,7 @@
           <div class="avatar avatar-lg">
             <div class="avatar-initial bg-label-primary rounded">
               <div>
-                <img src="{% static 'svg/icons/laptop.svg' %}" alt="paypal" class="img-fluid">
+                <img src="{% static 'svg/icons/laptop.svg' %}" alt="paypal" class="img-fluid" />
               </div>
             </div>
           </div>
@@ -53,7 +38,7 @@
           <div class="avatar avatar-lg">
             <div class="avatar-initial bg-label-info rounded">
               <div>
-                <img src="{% static 'svg/icons/lightbulb.svg' %}" alt="Lightbulb" class="img-fluid">
+                <img src="{% static 'svg/icons/lightbulb.svg' %}" alt="Lightbulb" class="img-fluid" />
               </div>
             </div>
           </div>
@@ -66,12 +51,12 @@
           <div class="avatar avatar-lg">
             <div class="avatar-initial bg-label-warning rounded">
               <div>
-                <img src="{% static 'svg/icons/check.svg' %}" alt="Check" class="img-fluid">
+                <img src="{% static 'svg/icons/check.svg' %}" alt="Check" class="img-fluid" />
               </div>
             </div>
           </div>
           <div class="content-right">
-            <p class="mb-0 fw-medium">Course Completed </p>
+            <p class="mb-0 fw-medium">Course Completed</p>
             <h4 class="text-warning mb-0">14</h4>
           </div>
         </div>
@@ -104,7 +89,14 @@
       <div class="card-header d-flex align-items-center justify-content-between">
         <h5 class="card-title m-0 me-2">Topic you are interested in</h5>
         <div class="dropdown">
-          <button class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1" type="button" id="topic" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1"
+            type="button"
+            id="topic"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <i class="ti ti-dots-vertical ti-md text-muted"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topic">
@@ -121,21 +113,21 @@
         <div class="col-md-4 d-flex justify-content-around align-items-center">
           <div>
             <div class="d-flex align-items-baseline">
-              <span class="text-primary me-2"><i class='ti ti-circle-filled ti-12px'></i></span>
+              <span class="text-primary me-2"><i class="ti ti-circle-filled ti-12px"></i></span>
               <div>
                 <p class="mb-0">UI Design</p>
                 <h5>35%</h5>
               </div>
             </div>
             <div class="d-flex align-items-baseline my-12">
-              <span class="text-success me-2"><i class='ti ti-circle-filled ti-12px'></i></span>
+              <span class="text-success me-2"><i class="ti ti-circle-filled ti-12px"></i></span>
               <div>
                 <p class="mb-0">Music</p>
                 <h5>14%</h5>
               </div>
             </div>
             <div class="d-flex align-items-baseline">
-              <span class="text-danger me-2"><i class='ti ti-circle-filled ti-12px'></i></span>
+              <span class="text-danger me-2"><i class="ti ti-circle-filled ti-12px"></i></span>
               <div>
                 <p class="mb-0">React</p>
                 <h5>10%</h5>
@@ -145,21 +137,21 @@
 
           <div>
             <div class="d-flex align-items-baseline">
-              <span class="text-info me-2"><i class='ti ti-circle-filled ti-12px'></i></span>
+              <span class="text-info me-2"><i class="ti ti-circle-filled ti-12px"></i></span>
               <div>
                 <p class="mb-0">UX Design</p>
                 <h5>20%</h5>
               </div>
             </div>
             <div class="d-flex align-items-baseline my-12">
-              <span class="text-secondary me-2"><i class='ti ti-circle-filled ti-12px'></i></span>
+              <span class="text-secondary me-2"><i class="ti ti-circle-filled ti-12px"></i></span>
               <div>
                 <p class="mb-0">Animation</p>
                 <h5>12%</h5>
               </div>
             </div>
             <div class="d-flex align-items-baseline">
-              <span class="text-warning me-2"><i class='ti ti-circle-filled ti-12px'></i></span>
+              <span class="text-warning me-2"><i class="ti ti-circle-filled ti-12px"></i></span>
               <div>
                 <p class="mb-0">SEO</p>
                 <h5>9%</h5>
@@ -180,7 +172,14 @@
           <h5 class="m-0 me-2">Popular Instructors</h5>
         </div>
         <div class="dropdown">
-          <button class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1" type="button" id="popularInstructors" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1"
+            type="button"
+            id="popularInstructors"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <i class="ti ti-dots-vertical ti-md text-muted"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="popularInstructors">
@@ -204,7 +203,7 @@
             </div>
             <div>
               <div>
-                <h6 class="mb-0 text-truncate">Maven Analytics</h6>
+                <h6 class="mb-0 text-truncate">Maven</h6>
                 <small class="text-truncate text-body">Business Intelligence</small>
               </div>
             </div>
@@ -272,7 +271,14 @@
       <div class="card-header d-flex align-items-center justify-content-between">
         <h5 class="card-title m-0 me-2">Top Courses</h5>
         <div class="dropdown">
-          <button class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1" type="button" id="topCourses" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1"
+            type="button"
+            id="topCourses"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <i class="ti ti-dots-vertical ti-md text-muted"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topCourses">
@@ -360,7 +366,12 @@
     <div class="card h-100">
       <div class="card-body">
         <div class="bg-label-primary rounded text-center mb-4 pt-4">
-          <img class="img-fluid" src="{% static 'img/illustrations/girl-with-laptop.png' %}" alt="Card girl image" width="140" />
+          <img
+            class="img-fluid"
+            src="{% static 'img/illustrations/girl-with-laptop.png' %}"
+            alt="Card girl image"
+            width="140"
+          />
         </div>
         <h5 class="mb-2">Upcoming Webinar</h5>
         <p class="small">Next Generation Frontend Architecture Using Layout Engine And React Native Web.</p>
@@ -368,7 +379,9 @@
           <div class="col-6">
             <div class="d-flex">
               <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-calendar-event ti-28px"></i></span>
+                <span class="avatar-initial rounded bg-label-primary"
+                  ><i class="ti ti-calendar-event ti-28px"></i
+                ></span>
               </div>
               <div>
                 <h6 class="mb-0 text-nowrap">17 Nov 23</h6>
@@ -400,7 +413,14 @@
       <div class="card-header d-flex align-items-center justify-content-between">
         <h5 class="card-title m-0 me-2">Assignment Progress</h5>
         <div class="dropdown">
-          <button class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1" type="button" id="assignmentProgress" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            class="btn btn-text-secondary rounded-pill text-muted border-0 p-2 me-n1"
+            type="button"
+            id="assignmentProgress"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <i class="ti ti-dots-vertical ti-md text-muted"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="assignmentProgress">
@@ -481,7 +501,6 @@
     </div>
   </div>
   <!--/ Assignment Progress -->
-
 </div>
 <!--  Topic and Instructors  End-->
 
