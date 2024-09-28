@@ -50,36 +50,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.dashboards",
-    "apps.layouts",
-    "apps.front_pages",
-    "apps.mail",
-    "apps.chat",
-    "apps.my_calendar",
-    "apps.kanban",
-    "apps.ecommerce",
-    "apps.academy",
-    "apps.logistics",
-    "apps.invoice",
-    "apps.users",
-    "apps.access",
+    "apps.sample",
     "apps.pages",
-    "apps.authentication",
-    "apps.wizard_examples",
-    "apps.modal_examples",
-    "apps.cards",
-    "apps.ui",
-    "apps.extended_ui",
-    "apps.icons",
-    "apps.forms",
-    "apps.form_layouts",
-    "apps.form_wizard",
-    "apps.form_validation",
-    "apps.tables",
-    "apps.charts",
-    "apps.maps",
-    "apps.transactions",
-    "auth.apps.AuthConfig"
 ]
 
 MIDDLEWARE = [
@@ -87,8 +59,6 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    
-    "web_project.language_middleware.DefaultLanguageMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -209,37 +179,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 THEME_LAYOUT_DIR = THEME_LAYOUT_DIR
 TEMPLATE_CONFIG = TEMPLATE_CONFIG
 THEME_VARIABLES = THEME_VARIABLES
-
-# Email Settings
-# ------------------------------------------------------------------------------
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-
-# Loginyour mail
-# ------------------------------------------------------------------------------
-LOGIN_URL = "/login/"
-LOGOUT_REDIRECT_URL = "/login/"
-
-
-# Session
-# ------------------------------------------------------------------------------
-
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Lax"
-
-SESSION_COOKIE_AGE = 3600
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5050",
-]
-
 
 # Your stuff...
 # ------------------------------------------------------------------------------
