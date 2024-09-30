@@ -10,7 +10,7 @@ urlpatterns = [
     ),
     path(
         "page_2/",
-        SampleView.as_view(template_name="page_2.html"),
+        SampleView.as_view(template_name="page_2.html",),
         name="page-2",
     ),
 ]
