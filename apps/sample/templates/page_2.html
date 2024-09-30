@@ -2,11 +2,89 @@
 
 {% load i18n %}
 
-{% block title %}Page 2 - Starter Kit{% endblock title %}
+{% block title %}Basketball Registration{% endblock title %}
 
 {% block content %}
 
-<h4 class="py-4 mb-6">Page 2</h4>
-<p>Sample page.<br />For more layout options, refer <a href="{% get_theme_variables 'documentation' %}" target="_blank" class="fw-medium">Layout docs</a>.</p>
+<h4 class="py-4 mb-6 text-center">Basketball Registration</h4>
+
+<div class="container">
+    <div class="row justify-content-center align-items-start" style="height: 100%;"> <!-- Center the row and align items to the start -->
+        <div class="col-md-5">
+            <div class="mb-3">
+                <label for="teamInputA" class="form-label">TEAM</label>
+                <input type="text" class="form-control" id="teamInputA" placeholder="Enter team name" required>
+            </div>
+            <div class="mb-3">
+                <label for="coachInputA" class="form-label">COACH</label>
+                <input type="text" class="form-control" id="coachInputA" placeholder="Enter coach name" required>
+            </div>
+            <div class="mb-3 row"> <!-- Row for horizontal layout -->
+                <div class="col">
+                    <label for="nameInputA" class="form-label">NAME</label>
+                    <input type="text" class="form-control" id="nameInputA" placeholder="Enter name" required>
+                </div>
+                <div class="col">
+                    <label for="emailInputA" class="form-label">EMAIL</label>
+                    <input type="email" class="form-control" id="emailInputA" placeholder="Enter email" required>
+                </div>
+                <div class="col">
+                    <label for="phoneInputA" class="form-label">PHONE</label>
+                    <input type="tel" class="form-control" id="phoneInputA" placeholder="Enter phone number" required>
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <button type="button" class="btn btn-secondary">Add</button> <!-- Add button for Team A -->
+            </div>
+        </div>
+
+        <div class="col-md-1 d-flex justify-content-center align-items-start"> <!-- Center the vertical line -->
+            <div class="vertical-line"></div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="mb-3">
+                <label for="teamInputB" class="form-label">TEAM</label>
+                <input type="text" class="form-control" id="teamInputB" placeholder="Enter team name" required>
+            </div>
+            <div class="mb-3">
+                <label for="coachInputB" class="form-label">COACH</label>
+                <input type="text" class="form-control" id="coachInputB" placeholder="Enter coach name" required>
+            </div>
+            <div class="mb-3 row"> <!-- Row for horizontal layout -->
+                <div class="col">
+                    <label for="nameInputB" class="form-label">NAME</label>
+                    <input type="text" class="form-control" id="nameInputB" placeholder="Enter name" required>
+                </div>
+                <div class="col">
+                    <label for="emailInputB" class="form-label">EMAIL</label>
+                    <input type="email" class="form-control" id="emailInputB" placeholder="Enter email" required>
+                </div>
+                <div class="col">
+                    <label for="phoneInputB" class="form-label">PHONE</label>
+                    <input type="tel" class="form-control" id="phoneInputB" placeholder="Enter phone number" required>
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <button type="button" class="btn btn-secondary">Add</button> <!-- Add button for Team B -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <button type="submit" class="btn btn-primary">Submit Registration</button>
+</div>
+
+<style>
+    .container {
+        padding: 20px;
+    }
+    .vertical-line {
+        width: 2px; /* Width of the vertical line */
+        background-color: #000; /* Color of the vertical line */
+        height: 100%; /* Full height */
+    }
+</style>
 
 {% endblock %}
