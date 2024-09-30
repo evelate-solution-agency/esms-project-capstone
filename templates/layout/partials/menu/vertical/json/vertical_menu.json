@@ -3,13 +3,13 @@
     {
       "url": "index",
       "icon": "menu-icon tf-icons ti ti-smart-home",
-      "name": "Page 1",
+      "name": "Dashboard",
       "slug": "index"
     },
     {
       "url": "page-2",
       "icon": "menu-icon tf-icons ti ti-app-window",
-      "name": "Page 2",
+      "name": "Events",
       "slug": "page-2"
     }
   ]
