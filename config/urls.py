@@ -22,7 +22,7 @@ from web_project.views import SystemView
 urlpatterns = [
     path("admin/", admin.site.urls),
     # starter urls
-    path("", include("apps.sample.urls")),
+    path("", include("apps.core.urls")),
     # auth urls
     path("auth/", include("apps.authentication.urls")),
 ]

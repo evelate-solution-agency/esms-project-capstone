@@ -1,16 +1,22 @@
 {
   "menu": [
     {
-      "url": "index",
+      "url": "dashboard",
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "name": "Dashboard",
-      "slug": "index"
+      "slug": "dashboard"
     },
     {
-      "url": "page-2",
+      "url": "event_list",
       "icon": "menu-icon tf-icons ti ti-app-window",
       "name": "Events",
-      "slug": "page-2"
+      "slug": "events"
+    },
+    {
+      "url": "calendar",
+      "icon": "menu-icon tf-icons ti ti-calendar",
+      "name": "Calendar",
+      "slug": "calendaar"
     }
   ]
 }

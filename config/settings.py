@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.sample",
+    "apps.core",
     "apps.authentication",
 ]
 
@@ -71,8 +71,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates",
-                 BASE_DIR / "authentication/tempalates"],
+        "DIRS": [
+                BASE_DIR / "templates",
+                ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

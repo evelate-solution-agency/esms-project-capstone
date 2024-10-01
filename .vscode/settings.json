@@ -44,7 +44,7 @@
     "editor.defaultFormatter": "HookyQR.beautify"
   },
   "[django-html]": {
-    "editor.defaultFormatter": "HookyQR.beautify"
+    "editor.defaultFormatter": "junstyle.vscode-django-support"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
