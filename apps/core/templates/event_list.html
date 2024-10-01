@@ -6,7 +6,98 @@
 
 {% block content %}
 
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Upcoming Events</h2>
+    <div class="row">
+        <!-- Event Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Basketball Tournament</h5>
+                    <p class="card-text"><strong>Date:</strong> October 15, 2024</p>
+                    <p class="card-text"><strong>Location:</strong> Main Stadium</p>
+                    <p class="card-text">Join us for an exciting basketball tournament. Teams from different regions will compete!</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
 
+        <!-- Event Card 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Charity 5K Run</h5>
+                    <p class="card-text"><strong>Date:</strong> November 5, 2024</p>
+                    <p class="card-text"><strong>Location:</strong> Central Park</p>
+                    <p class="card-text">Participate in our 5K charity run to raise funds for a local cause. All ages welcome!</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
 
+        <!-- Event Card 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Annual Music Festival</h5>
+                    <p class="card-text"><strong>Date:</strong> December 20, 2024</p>
+                    <p class="card-text"><strong>Location:</strong> City Amphitheater</p>
+                    <p class="card-text">Enjoy live performances from top artists at the annual music festival. Food and drinks will be available.</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Card 4 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Food & Wine Festival</h5>
+                    <p class="card-text"><strong>Date:</strong> January 10, 2025</p>
+                    <p class="card-text"><strong>Location:</strong> Riverside Plaza</p>
+                    <p class="card-text">Savor delicious food and wine from top vendors. Don’t miss out on gourmet food and entertainment.</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Card 5 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tech Expo 2025</h5>
+                    <p class="card-text"><strong>Date:</strong> February 5, 2025</p>
+                    <p class="card-text"><strong>Location:</strong> Convention Center</p>
+                    <p class="card-text">Explore the latest in technology innovations at the annual Tech Expo. Workshops, keynotes, and more.</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Card 6 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Yoga & Wellness Retreat</h5>
+                    <p class="card-text"><strong>Date:</strong> March 12, 2025</p>
+                    <p class="card-text"><strong>Location:</strong> Beachside Resort</p>
+                    <p class="card-text">Relax, rejuvenate, and renew at our yoga and wellness retreat. Open for all levels of experience.</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .card {
+        position: relative; /* Ensure shadow is visible */
+        transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+    }
+    .card:hover {
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* Match this color to your button color */
+    }
+</style>
 
 {% endblock %}

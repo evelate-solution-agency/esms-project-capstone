@@ -34,9 +34,9 @@
                             Select an Option
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#" onclick="selectOption('Basketball')">Basketball</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="selectOption('Volleyball')">Volleyball</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="selectOption('Badminton')">Badminton</a></li>
+                            <li><a class="dropdown-item" href="{% url 'basketball' %}">Basketball</a></li>
+                            <li><a class="dropdown-item" href="{% url 'volleyball' %}">Volleyball</a></li>
+                            <li><a class="dropdown-item" href="{% url 'badminton' %}">Badminton</a></li>
                         </ul>
                     </div>
                     <button type="button" class="btn btn-primary" style="padding: 10px; font-size: 10px;">Create Schedule</button> <!-- Create Schedule Button -->
