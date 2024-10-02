@@ -109,7 +109,7 @@
     </div>
 
     <div class="text-center mt-4">
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="redirectToDateTime()">Submit</button>
     </div>
 </div>
 
@@ -186,6 +186,11 @@ function addEntry(side) {
     document.getElementById(`name${side}`).value = '';
     document.getElementById(`email${side}`).value = '';
     document.getElementById(`phone${side}`).value = '';
+}
+
+function redirectToDateTime() {
+    // Redirect to date_time.html
+    window.location.href = "{% url 'date-time' %}";
 }
 </script>
 
