@@ -48,4 +48,10 @@ urlpatterns = [
         CalendarView.as_view(template_name="badminton.html",),
         name="badminton",
     ),
+    path(
+        "date_time",
+        CalendarView.as_view(template_name="date_time.html",),
+        name="date-time",
+    ),
+
 ]
