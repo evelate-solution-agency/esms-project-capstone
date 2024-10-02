@@ -1,140 +1,170 @@
 {% extends layout_path %}
 
+{% load static %}
 {% load i18n %}
 
-{% block title %}Calendar{% endblock title %}
+{% block title %}Fullcalendar - Apps{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/fullcalendar/fullcalendar.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/quill/editor.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/fullcalendar/fullcalendar.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-calendar.css' %}" />
+{% endblock page_css %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/app-calendar-events.js' %}"></script>
+<script src="{% static 'js/app-calendar.js' %}"></script>
+{% endblock page_js %}
 
 {% block content %}
-<h4 class="py-4 text-center">Calendar {{ current_month_year }}</h4>
-
-<div class="container">
-    <div class="calendar">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <button class="btn btn-light" id="prevMonth">&lt;</button>
-            <h5 id="monthYear"></h5>
-            <button class="btn btn-light" id="nextMonth">&gt;</button>
+<div class="card app-calendar-wrapper">
+  <div class="row g-0">
+    <!-- Calendar Sidebar -->
+    <div class="col app-calendar-sidebar border-end" id="app-calendar-sidebar">
+      <div class="border-bottom p-6 my-sm-0 mb-4">
+      </div>
+      <div class="px-3 pt-2">
+        <!-- inline calendar (flatpicker) -->
+        <div class="inline-calendar"></div>
+      </div>
+      <hr class="mb-6 mx-n4 mt-3">
+      <div class="px-6 pb-2">
+        <!-- Filter -->
+        <div>
+          <h5>Event Filters</h5>
         </div>
-        <table class="table table-bordered text-center">
-            <thead class="table-light">
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendarBody">
-                <!-- Calendar dates will be dynamically generated -->
-            </tbody>
-        </table>
+
+        <div class="form-check form-check-secondary mb-5 ms-2">
+          <input class="form-check-input select-all" type="checkbox" id="selectAll" data-value="all" checked>
+          <label class="form-check-label" for="selectAll">View All</label>
+        </div>
+
+        <div class="app-calendar-events-filter text-heading">
+          <div class="form-check form-check-danger mb-5 ms-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked>
+            <label class="form-check-label" for="select-personal">Personal</label>
+          </div>
+          <div class="form-check mb-5 ms-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-business" data-value="business" checked>
+            <label class="form-check-label" for="select-business">Business</label>
+          </div>
+          <div class="form-check form-check-warning mb-5 ms-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-family" data-value="family" checked>
+            <label class="form-check-label" for="select-family">Family</label>
+          </div>
+          <div class="form-check form-check-success mb-5 ms-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-holiday" data-value="holiday" checked>
+            <label class="form-check-label" for="select-holiday">Holiday</label>
+          </div>
+          <div class="form-check form-check-info ms-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-etc" data-value="etc" checked>
+            <label class="form-check-label" for="select-etc">ETC</label>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /Calendar Sidebar -->
+
+    <!-- Calendar & Modal -->
+    <div class="col app-calendar-content">
+      <div class="card shadow-none border-0">
+        <div class="card-body pb-0">
+          <!-- FullCalendar -->
+          <div id="calendar"></div>
+        </div>
+      </div>
+      <div class="app-overlay"></div>
+      <!-- FullCalendar Offcanvas -->
+      <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" aria-labelledby="addEventSidebarLabel">
+        <div class="offcanvas-header border-bottom">
+          <h5 class="offcanvas-title" id="addEventSidebarLabel">Add Event</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+            <div class="mb-5">
+              <label class="form-label" for="eventTitle">Title</label>
+              <input type="text" class="form-control" id="eventTitle" name="eventTitle" placeholder="Event Title" />
+            </div>
+            <div class="mb-5">
+              <label class="form-label" for="eventLabel">Label</label>
+              <select class="select2 select-event-label form-select" id="eventLabel" name="eventLabel">
+                <option data-label="primary" value="Business" selected>Business</option>
+                <option data-label="danger" value="Personal">Personal</option>
+                <option data-label="warning" value="Family">Family</option>
+                <option data-label="success" value="Holiday">Holiday</option>
+                <option data-label="info" value="ETC">ETC</option>
+              </select>
+            </div>
+            <div class="mb-5">
+              <label class="form-label" for="eventStartDate">Start Date</label>
+              <input type="text" class="form-control" id="eventStartDate" name="eventStartDate" placeholder="Start Date" />
+            </div>
+            <div class="mb-5">
+              <label class="form-label" for="eventEndDate">End Date</label>
+              <input type="text" class="form-control" id="eventEndDate" name="eventEndDate" placeholder="End Date" />
+            </div>
+            <div class="mb-5">
+              <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input allDay-switch" id="allDaySwitch" />
+                <label class="form-check-label" for="allDaySwitch">All Day</label>
+              </div>
+            </div>
+            <div class="mb-5">
+              <label class="form-label" for="eventURL">Event URL</label>
+              <input type="url" class="form-control" id="eventURL" name="eventURL" placeholder="https://www.google.com" />
+            </div>
+            <div class="mb-4 select2-primary">
+              <label class="form-label" for="eventGuests">Add Guests</label>
+              <select class="select2 select-event-guests form-select" id="eventGuests" name="eventGuests" multiple>
+                <option data-avatar="1.png" value="Jane Foster">Jane Foster</option>
+                <option data-avatar="3.png" value="Donna Frank">Donna Frank</option>
+                <option data-avatar="5.png" value="Gabrielle Robertson">Gabrielle Robertson</option>
+                <option data-avatar="7.png" value="Lori Spears">Lori Spears</option>
+                <option data-avatar="9.png" value="Sandy Vega">Sandy Vega</option>
+                <option data-avatar="11.png" value="Cheryl May">Cheryl May</option>
+              </select>
+            </div>
+            <div class="mb-5">
+              <label class="form-label" for="eventLocation">Location</label>
+              <input type="text" class="form-control" id="eventLocation" name="eventLocation" placeholder="Enter Location" />
+            </div>
+            <div class="mb-5">
+              <label class="form-label" for="eventDescription">Description</label>
+              <textarea class="form-control" name="eventDescription" id="eventDescription"></textarea>
+            </div>
+            <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
+              <div class="d-flex">
+                <button type="submit" id="addEventBtn" class="btn btn-primary btn-add-event me-4">Add</button>
+                <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
+              </div>
+              <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /Calendar & Modal -->
+  </div>
 </div>
-
-<!-- Styling for the larger calendar -->
-<style>
-    .calendar {
-        max-width: 800px;
-        margin: auto;
-    }
-    .table th, .table td {
-        padding: 25px;
-        font-size: 18px;
-        border: 2px solid #dee2e6; /* Fixed border size */
-        border-radius: 10px; /* Keep rounded corners */
-        position: relative; /* Needed for absolute positioning of event title */
-        transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
-    }
-    .table td:hover {
-        box-shadow: 0 0 10px 2px rgba(0, 123, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.5); /* Shadow effect around the border on hover */
-    }
-    .current-day {
-        background-color: #cce5ff;
-        border-radius: 50%;
-        color: #000; /* Keep text color black for the current day */
-    }
-    .event-title {
-        font-size: 14px; /* Adjust font size for the event title */
-        color: #ff0000; /* Set the text color for the event title */
-        margin-top: 10px; /* Add margin for better spacing */
-        overflow: hidden; /* Hide overflow */
-        white-space: nowrap; /* Prevent line break */
-        text-overflow: ellipsis; /* Show ellipsis if overflow occurs */
-        border: 1px solid #ff0000; /* Border for the event title */
-        border-radius: 5px; /* Rounded corners for the event title */
-        padding: 2px; /* Padding for the event title */
-        position: absolute; /* Position absolute to place it correctly */
-        bottom: 5px; /* Position it at the bottom of the cell */
-        left: 5px; /* Position it slightly from the left */
-        right: 5px; /* Position it slightly from the right */
-        text-decoration: none; /* Remove underline */
-    }
-    .event-title:hover {
-        text-decoration: underline; /* Add underline on hover */
-    }
-</style>
-
-<!-- Script to generate the calendar dynamically -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const calendarBody = document.getElementById('calendarBody');
-        const monthYear = document.getElementById('monthYear');
-        const prevMonth = document.getElementById('prevMonth');
-        const nextMonth = document.getElementById('nextMonth');
-        let currentDate = new Date();
-
-        function generateCalendar(date) {
-            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-            const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-            calendarBody.innerHTML = '';
-            monthYear.innerHTML = date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear();
-
-            let dateCell = 1;
-            for (let i = 0; i < 6; i++) {
-                let row = document.createElement('tr');
-                for (let j = 0; j < 7; j++) {
-                    let cell = document.createElement('td');
-                    if (i === 0 && j < firstDay) {
-                        cell.innerHTML = '';
-                    } else if (dateCell > daysInMonth) {
-                        cell.innerHTML = '';
-                    } else {
-                        cell.innerHTML = dateCell;
-
-                        // Check for October 4, 2024
-                        if (dateCell === 4 && date.getFullYear() === 2024 && date.getMonth() === 9) { // Month is 0-indexed
-                            const eventTitle = document.createElement('a');
-                            eventTitle.className = 'event-title';
-                            eventTitle.href = "{% url 'event_info' %}"; // Link to the event_info.html
-                            eventTitle.innerHTML = 'Basketball League'; // Add the event title
-                            cell.appendChild(eventTitle); // Add event title to the cell
-                        }
-
-                        if (dateCell === currentDate.getDate() && date.getMonth() === currentDate.getMonth()) {
-                            cell.classList.add('current-day');
-                        }
-                        dateCell++;
-                    }
-                    row.appendChild(cell);
-                }
-                calendarBody.appendChild(row);
-            }
-        }
-
-        generateCalendar(currentDate);
-
-        prevMonth.addEventListener('click', function() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            generateCalendar(currentDate);
-        });
-
-        nextMonth.addEventListener('click', function() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            generateCalendar(currentDate);
-        });
-    });
-</script>
-
 {% endblock %}
