@@ -17,6 +17,12 @@
       "icon": "menu-icon tf-icons ti ti-calendar",
       "name": "Calendar",
       "slug": "calendaar"
+    },
+    {
+      "url": "about_us",
+      "icon": "menu-icon tf-icons ti ti-about-us",
+      "name": "About Us",
+      "slug": "aboutus"
     }
   ]
 }
