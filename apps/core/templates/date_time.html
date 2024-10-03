@@ -98,6 +98,12 @@ document.getElementById('timeOut').addEventListener('change', function() {
         displayTimeOut.textContent = '';
     }
 });
+
+// Add click event to the Send button
+document.getElementById('sendButton').addEventListener('click', function() {
+    // Here you can add any validation or processing logic before redirection
+    window.location.href = "{% url 'dashboard' %}"; // Redirect to dashboard.html
+});
 </script>
 
 {% endblock content %}
