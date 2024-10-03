@@ -7,10 +7,18 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Upcoming Events</h2>
-    <div class="row">
+    <h4 class="text-center mb-4">Upcoming Events</h4>
+
+    <!-- Search Bar -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <input type="text" id="eventSearch" class="form-control" placeholder="Search events...">
+        </div>
+    </div>
+
+    <div class="row" id="eventContainer">
         <!-- Event Card 1 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 event-card" data-name="Basketball Tournament">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Basketball Tournament</h5>
@@ -23,7 +31,7 @@
         </div>
 
         <!-- Event Card 2 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 event-card" data-name="Charity 5K Run">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Charity 5K Run</h5>
@@ -36,7 +44,7 @@
         </div>
 
         <!-- Event Card 3 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 event-card" data-name="Annual Music Festival">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Annual Music Festival</h5>
@@ -49,7 +57,7 @@
         </div>
 
         <!-- Event Card 4 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 event-card" data-name="Food & Wine Festival">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Food & Wine Festival</h5>
@@ -62,7 +70,7 @@
         </div>
 
         <!-- Event Card 5 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 event-card" data-name="Tech Expo 2025">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Tech Expo 2025</h5>
@@ -75,7 +83,7 @@
         </div>
 
         <!-- Event Card 6 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 event-card" data-name="Yoga & Wellness Retreat">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Yoga & Wellness Retreat</h5>
@@ -87,17 +95,91 @@
             </div>
         </div>
 
+        <!-- Event Card 7 -->
+        <div class="col-md-4 mb-4 event-card" data-name="Photography Workshop">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Photography Workshop</h5>
+                    <p class="card-text"><strong>Date:</strong> March 25, 2025</p>
+                    <p class="card-text"><strong>Location:</strong> Downtown Studio</p>
+                    <p class="card-text">Learn from professional photographers in this hands-on workshop. Bring your camera and get ready to capture amazing shots!</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Card 8 -->
+        <div class="col-md-4 mb-4 event-card" data-name="Local Art Exhibition">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Local Art Exhibition</h5>
+                    <p class="card-text"><strong>Date:</strong> April 10, 2025</p>
+                    <p class="card-text"><strong>Location:</strong> Community Gallery</p>
+                    <p class="card-text">Discover the talent of local artists at our annual exhibition. Art pieces available for purchase.</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Card 9 -->
+        <div class="col-md-4 mb-4 event-card" data-name="Summer Music Camp">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Summer Music Camp</h5>
+                    <p class="card-text"><strong>Date:</strong> July 15, 2025</p>
+                    <p class="card-text"><strong>Location:</strong> Music Academy</p>
+                    <p class="card-text">Join us for a fun-filled week of music and creativity. Open to all ages and skill levels!</p>
+                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <div id="notFoundMessage" class="text-center mt-4" style="display: none;">
+        <p>No events found matching your search.</p>
+    </div>
+
 </div>
 
 <style>
     .card {
-        position: relative; /* Ensure shadow is visible */
-        transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+        position: relative;
+        transition: box-shadow 0.3s ease;
     }
     .card:hover {
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* Match this color to your button color */
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5);
+    }
+    input[type="text"] {
+        border-radius: 0.25rem;
+        box-shadow: 0 1px 4px rgba(0, 123, 255, 0.3);
     }
 </style>
 
-{% endblock %}
+<script>
+    document.getElementById('eventSearch').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let events = document.querySelectorAll('.event-card');
+        let notFoundMessage = document.getElementById('notFoundMessage');
+        let eventFound = false;
+
+        events.forEach(function(eventCard) {
+            let eventName = eventCard.getAttribute('data-name').toLowerCase();
+            if (eventName.includes(filter)) {
+                eventCard.style.display = 'block';  // Show event if it matches the search query
+                eventFound = true;
+            } else {
+                eventCard.style.display = 'none';  // Hide event if it doesn't match
+            }
+        });
+
+        // Show or hide "not found" message based on the events found
+        if (!eventFound) {
+            notFoundMessage.style.display = 'block';  // Show message if no events match
+        } else {
+            notFoundMessage.style.display = 'none';  // Hide message if at least one event matches
+        }
+    });
+</script>
+
+{% endblock content %}
