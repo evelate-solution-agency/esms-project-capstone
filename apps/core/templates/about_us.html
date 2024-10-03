@@ -1,0 +1,93 @@
+{% extends layout_path %}
+
+{% load i18n %}
+
+{% block title %}Teams{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h4 class="text-center mb-4">About Us</h4>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h6>Our Mission</h6>
+            <p>To provide an efficient and reliable platform for scheduling and managing events seamlessly.</p>
+        </div>
+        <div class="col-md-6 text-center">
+            <h6>Our Vision</h6>
+            <p>To revolutionize event management by simplifying the process and enhancing user experience.</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <!-- Team Card 1 -->
+        <div class="col-md-2 mb-4">
+            <div class="card text-center">
+                <img src="path_to_image_1.jpg" class="card-img-top" alt="Team Member 1" style="height: 180px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Team Member 1</h5>
+                    <p class="card-text">Position: Forward</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Card 2 -->
+        <div class="col-md-2 mb-4">
+            <div class="card text-center">
+                <img src="path_to_image_2.jpg" class="card-img-top" alt="Team Member 2" style="height: 180px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Team Member 2</h5>
+                    <p class="card-text">Position: Guard</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Card 3 -->
+        <div class="col-md-2 mb-4">
+            <div class="card text-center">
+                <img src="path_to_image_3.jpg" class="card-img-top" alt="Team Member 3" style="height: 180px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Team Member 3</h5>
+                    <p class="card-text">Position: Center</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Card 4 -->
+        <div class="col-md-2 mb-4">
+            <div class="card text-center">
+                <img src="path_to_image_4.jpg" class="card-img-top" alt="Team Member 4" style="height: 180px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Team Member 4</h5>
+                    <p class="card-text">Position: Forward</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Card 5 -->
+        <div class="col-md-2 mb-4">
+            <div class="card text-center">
+                <img src="path_to_image_5.jpg" class="card-img-top" alt="Team Member 5" style="height: 180px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Team Member 5</h5>
+                    <p class="card-text">Position: Guard</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .card {
+        position: relative;
+        transition: box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+    }
+
+    .card-img-top {
+        border-radius: 0.5rem;
+    }
+</style>
+
+{% endblock %}
