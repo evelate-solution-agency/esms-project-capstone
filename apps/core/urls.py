@@ -4,7 +4,7 @@ from .views import SampleView, EventListView, CalendarView
 
 urlpatterns = [
     path(
-        "",
+        "dashboard",
         SampleView.as_view(template_name="dashboard.html"),
         name="dashboard",
     ),
@@ -53,5 +53,11 @@ urlpatterns = [
         CalendarView.as_view(template_name="date_time.html",),
         name="date-time",
     ),
+    path(
+        "about_us",
+        CalendarView.as_view(template_name="about_us.html",),
+        name="about_us",
+    ),
+
 
 ]
