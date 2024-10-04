@@ -1,0 +1,145 @@
+{% extends layout_path %}
+
+{% load i18n %}
+
+{% block title %}Contest{% endblock title %}
+
+{% block content %}
+<h4 class="text-center mb-4">Create Contest Event</h4>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Contest Event Form -->
+        <div class="col-md-6">
+            <form>
+                <!-- Name Input -->
+                <div class="form-group row mb-3">
+                    <label for="contestName" class="col-sm-3 col-form-label">Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="contestName" placeholder="Enter contest name">
+                    </div>
+                </div>
+
+                <!-- Date Start and Date End (each label beside their respective input) -->
+                <div class="form-group row mb-3">
+                    <label for="dateStart" class="col-sm-3 col-form-label">Date Start:</label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="dateStart">
+                    </div>
+                    <label for="dateEnd" class="col-sm-2 col-form-label text-right">Date End:</label>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" id="dateEnd">
+                    </div>
+                </div>
+
+                <!-- Time Start and Time End (each label beside their respective input) -->
+                <div class="form-group row mb-3">
+                    <label for="timeStart" class="col-sm-3 col-form-label">Time Start:</label>
+                    <div class="col-sm-4">
+                        <input type="time" class="form-control" id="timeStart">
+                    </div>
+                    <label for="timeEnd" class="col-sm-2 col-form-label text-right">Time End:</label>
+                    <div class="col-sm-3">
+                        <input type="time" class="form-control" id="timeEnd">
+                    </div>
+                </div>
+
+                <!-- Location Input -->
+                <div class="form-group row mb-3">
+                    <label for="location" class="col-sm-3 col-form-label">Location:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="location" placeholder="Enter location">
+                    </div>
+                </div>
+
+                <!-- Hosted by Input -->
+                <div class="form-group row mb-3">
+                    <label for="hostedBy" class="col-sm-3 col-form-label">Hosted by:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="hostedBy" placeholder="Enter host's name">
+                    </div>
+                </div>
+
+                <!-- Description Input -->
+                <div class="form-group row mb-4">
+                    <label for="description" class="col-sm-3 col-form-label">Description:</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" id="description" rows="4" placeholder="Enter description"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Participant Input Fields -->
+        <div class="col-md-6">
+            <h5>Participants</h5>
+            <div class="input-group mb-3">
+                <input type="text" id="lastName" class="form-control me-2" placeholder="Last Name" style="border-radius: 5px;">
+                <input type="text" id="firstName" class="form-control me-2" placeholder="First Name" style="border-radius: 5px;">
+                <input type="text" id="middleInitial" class="form-control me-2" placeholder="M.I." style="border-radius: 5px;">
+                <button class="btn btn-success" id="addParticipant">Add</button>
+            </div>
+
+            <!-- Participants Table -->
+            <h5>Name</h5>
+            <table class="table table-bordered" id="participantsTable">
+                <thead>
+                    <tr>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>M.I.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- New participants will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-end">
+            <button class="btn btn-primary" id="nextButton">Next</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// JavaScript to handle adding participants to the table
+document.getElementById('addParticipant').addEventListener('click', function() {
+    var lastName = document.getElementById('lastName').value;
+    var firstName = document.getElementById('firstName').value;
+    var middleInitial = document.getElementById('middleInitial').value;
+
+    // Ensure last name and first name are filled before adding
+    if (lastName && firstName) {
+        // Create a new row in the participants table
+        var table = document.getElementById('participantsTable').getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow();
+
+        // Insert cells for Last Name, First Name, and M.I.
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+
+        // Add input values to the new cells
+        cell1.innerHTML = lastName;
+        cell2.innerHTML = firstName;
+        cell3.innerHTML = middleInitial || ''; // If M.I. is not filled, keep it blank
+
+        // Clear input fields after adding the participant
+        document.getElementById('lastName').value = '';
+        document.getElementById('firstName').value = '';
+        document.getElementById('middleInitial').value = '';
+    } else {
+        alert("Please fill in both Last Name and First Name.");
+    }
+});
+
+// Redirect to choose_rubrics when clicking the Next button
+document.getElementById('nextButton').addEventListener('click', function() {
+    window.location.href = "{% url 'choose_rubrics' %}"; // Use the URL for your choose_rubrics view
+});
+</script>
+
+{% endblock %}
