@@ -1,0 +1,123 @@
+{% extends layout_path %}
+
+{% load i18n %}
+
+{% block title %}Create Rubric{% endblock title %}
+
+{% block content %}
+<h4 class="text-center">Create Rubric</h4>
+
+<div class="container mt-4">
+    <form id="rubricForm">
+        <div class="form-group row mb-3 justify-content-center align-items-center">
+            <!-- Rubric Input -->
+            <div class="col-auto">
+                <input type="text" class="form-control" id="rubric" placeholder="Rubric" required style="width: 120px; display: inline-block; margin-right: 5px;">
+            </div>
+
+            <!-- Percentage Input -->
+            <div class="col-auto">
+                <input type="text" class="form-control" id="percentage" placeholder="0%" required style="width: 60px; display: inline-block; margin-right: 5px;"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            </div>
+
+            <!-- Add Button -->
+            <div class="col-auto">
+                <button type="button" class="btn btn-success" id="addRubric" style="width: 100%;">Add</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Rubric Layout Table -->
+    <div class="mt-4" id="rubricTableContainer" style="display: none;">
+        <h5 class="text-center">Rubric Layout</h5>
+        <table class="table table-bordered" id="rubricTable">
+            <thead>
+                <tr>
+                    <th style="width: 120px;">Rubric</th>
+                    <th style="width: 60px; text-align: center;">Percentage (%)</th>
+                    <th style="width: 30px; text-align: center;">Action</th> <!-- Reduced width for action column -->
+                </tr>
+            </thead>
+            <tbody id="rubricTableBody">
+                <!-- Entries will be added here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-right"><strong>Total:</strong></td>
+                    <td id="totalPercentage" style="text-align: center;">0%</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary" id="submitRubric">Submit</button>
+    </div>
+</div>
+
+<script>
+let cumulativeTotal = 0; // Initialize cumulative total variable
+
+document.getElementById('addRubric').addEventListener('click', function() {
+    // Get input values
+    const rubric = document.getElementById('rubric').value.trim();
+    const percentage = document.getElementById('percentage').value.trim();
+
+    // Validate inputs
+    if (percentage && rubric && Number(percentage) <= 100) {
+        // Check if adding this percentage would exceed 100%
+        if (cumulativeTotal + parseFloat(percentage) > 100) {
+            alert('Total percentage cannot exceed 100%.');
+            return; // Exit the function if adding exceeds 100%
+        }
+
+        // Update the cumulative total percentage
+        cumulativeTotal += parseFloat(percentage);
+
+        // Show the rubric table if it is hidden
+        document.getElementById('rubricTableContainer').style.display = 'block';
+
+        // Create a new row for the Rubric table
+        const rubricTableBody = document.getElementById('rubricTableBody');
+        const newRow = rubricTableBody.insertRow();
+        newRow.innerHTML = `<td>${rubric}</td>
+                            <td style="width: 60px; text-align: center;">${percentage}%</td>
+                            <td style="text-align: center; width: 30px;"><button type="button" class="btn btn-danger removeRubric">X</button></td>`; // Set width for action column
+
+        // Update the total percentage at the bottom
+        document.getElementById('totalPercentage').textContent = cumulativeTotal + '%';
+
+        // Clear input fields
+        document.getElementById('rubric').value = '';
+        document.getElementById('percentage').value = '';
+
+        // Add event listener to the newly created 'X' button
+        newRow.querySelector('.removeRubric').addEventListener('click', function() {
+            // Remove the corresponding row from the table
+            cumulativeTotal -= parseFloat(percentage); // Update the cumulative total
+            newRow.remove(); // Remove the row
+            document.getElementById('totalPercentage').textContent = cumulativeTotal + '%'; // Update total display
+
+            // If the table is empty, hide the rubric table container
+            if (rubricTableBody.rows.length === 0) {
+                document.getElementById('rubricTableContainer').style.display = 'none';
+            }
+        });
+    } else {
+        alert('Please enter valid rubric and percentage (0-100)');
+    }
+});
+
+// Prevent the submit button from redirecting if total is not equal to 100
+document.getElementById('submitRubric').addEventListener('click', function() {
+    if (cumulativeTotal !== 100) {
+        alert('Total percentage must equal 100% to submit.');
+    } else {
+        window.location.href = '{% url "dashboard" %}'; // Redirect to the dashboard
+    }
+});
+</script>
+
+{% endblock %}
