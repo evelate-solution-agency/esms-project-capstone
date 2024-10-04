@@ -1,0 +1,18 @@
+{% extends layout_path %}
+
+{% load i18n %}
+{% load static %}  <!-- Load static files if needed -->
+
+{% block title %}Choose Rubrics{% endblock title %}
+
+{% block content %}
+<h4 class="text-center">Choose Rubrics</h4>
+
+<!-- Create Rubrics Button -->
+<div class="text-center mt-4">
+    <a href="{% url 'create_rubric' %}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Create Rubrics
+    </a>
+</div>
+
+{% endblock %}
