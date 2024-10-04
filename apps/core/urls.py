@@ -58,6 +58,20 @@ urlpatterns = [
         CalendarView.as_view(template_name="about_us.html",),
         name="about_us",
     ),
-
+    path(
+        "contest",
+        CalendarView.as_view(template_name="contest.html",),
+        name="contest",
+    ),
+    path(
+        "choose_rubrics",
+        CalendarView.as_view(template_name="choose_rubrics.html",),
+        name="choose_rubrics",
+    ),
+    path(
+        "create_rubric",
+        CalendarView.as_view(template_name="create_rubric.html",),
+        name="create_rubric",
+    ),
 
 ]
