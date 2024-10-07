@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import LoginView, RegisterView, AuthView
+from django.contrib.auth.views import LogoutView
 
+from .views import LoginView, RegisterView, AuthView
 
 urlpatterns = [
     path(
@@ -14,9 +15,9 @@ urlpatterns = [
         name="register",
     ),
     path(
-        "auth/register/cover/",
-        AuthView.as_view(template_name="auth_register_cover.html"),
-        name="auth-register-cover",
+        "logout/",
+        LogoutView.as_view(),
+        name="logout",
     ),
     path(
         "auth/register/multisteps/",

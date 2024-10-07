@@ -1,4 +1,6 @@
 from django.views.generic import TemplateView
+from django.shortcuts import redirect
+
 from web_project import TemplateLayout
 
 
@@ -9,7 +11,7 @@ Refer to sample/urls.py file for more pages.
 """
 
 
-class SampleView(TemplateView):
+class CoreView(TemplateView):
     # Predefined function
     def get_context_data(self, **kwargs):
         # A function to init the global layout. It is defined in web_project/__init__.py file
@@ -18,99 +20,21 @@ class SampleView(TemplateView):
         return context
 
 
-class EventListView(TemplateView):
-    # Predefined function
+class NewSportsEventView(CoreView):
+    def get(self, request):
+        sport = request.GET.get("sport")
+
+        # Render the login page for users who are not logged in.
+        return super().get(request)
+    
     def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        # Get the base context data from CoreView
+        context = super().get_context_data(**kwargs)
 
-        return context
+        # Get the 'sport' query parameter
+        sport = self.request.GET.get("sport")
 
-
-class CalendarView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class EventDetailsView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class EventInfoView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class BasketballView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class VolleyballView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class BadmintonView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class DateTimeView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class AboutUsView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class ContestView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class ChooseRubricsView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        return context
-
-class CreateRubricView(TemplateView):
-    # Predefined function
-    def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        # Add the 'sport' parameter to the context
+        context['sport'] = sport
 
         return context

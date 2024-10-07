@@ -33,27 +33,43 @@
             <div class="modal-body text-center"> <!-- Center the content in the modal -->
                 <div class="d-flex justify-content-center align-items-center"> <!-- Flex container -->
                     <div class="dropdown me-2"> <!-- Add margin end for spacing -->
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Select an Option
+                        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Select a sport
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="{% url 'basketball' %}">Basketball</a></li>
-                            <li><a class="dropdown-item" href="{% url 'volleyball' %}">Volleyball</a></li>
-                            <li><a class="dropdown-item" href="{% url 'badminton' %}">Badminton</a></li>
+                            <li><a class="dropdown-item sport-option" href="#" data-sport="Basketball">Basketball</a></li>
+                            <li><a class="dropdown-item sport-option" href="#" data-sport="Volleyball">Volleyball</a></li>
+                            <li><a class="dropdown-item sport-option" href="#" data-sport="Badminton">Badminton</a></li>
                         </ul>
                     </div>
-                    <button type="button" class="btn btn-primary" style="padding: 10px; font-size: 10px;">Create Schedule</button> <!-- Create Schedule Button -->
+                    <button type="button" class="btn btn-primary" id="createScheduleButton" style="padding: 10px; font-size: 14px;">Create schedule</button> <!-- Create Schedule Button -->
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- JavaScript to handle button click and navigate -->
 <script>
-// JavaScript function to handle dropdown selection and update button text
-function selectOption(option) {
-    document.getElementById('dropdownMenuButton').textContent = option;
-}
-</script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedSport = null;
 
+        // Set the selected sport when a dropdown item is clicked
+        document.querySelectorAll('.sport-option').forEach(item => {
+            item.addEventListener('click', function () {
+                selectedSport = this.getAttribute('data-sport');
+                document.getElementById('dropdownMenuButton').innerText = selectedSport;
+            });
+        });
+
+        // Navigate to the new sports event page with the selected sport as a query parameter
+        document.getElementById('createScheduleButton').addEventListener('click', function () {
+            if (selectedSport) {
+                window.location.href = `{% url 'new_sports_event' %}?sport=` + encodeURIComponent(selectedSport);
+            } else {
+                alert("Please select a sport first.");
+            }
+        });
+    });
+</script>
 {% endblock %}

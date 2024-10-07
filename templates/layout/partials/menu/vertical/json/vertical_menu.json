@@ -2,25 +2,25 @@
   "menu": [
     {
       "url": "dashboard",
-      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "icon": "menu-icon fa-solid fa-house fs-5",
       "name": "Dashboard",
       "slug": "dashboard"
     },
     {
       "url": "event_list",
-      "icon": "menu-icon tf-icons ti ti-app-window",
+      "icon": "menu-icon fa-solid fa-bullhorn fs-5",
       "name": "Events",
       "slug": "events"
     },
     {
       "url": "calendar",
-      "icon": "menu-icon tf-icons ti ti-calendar",
+      "icon": "menu-icon fa-solid fa-calendar-days fs-5",
       "name": "Calendar",
       "slug": "calendaar"
     },
     {
       "url": "about_us",
-      "icon": "menu-icon tf-icons ti ti-about-us",
+      "icon": "menu-icon fa-solid fa-people-group fs-5",
       "name": "About Us",
       "slug": "aboutus"
     }
