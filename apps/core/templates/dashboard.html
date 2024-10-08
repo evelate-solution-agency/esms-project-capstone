@@ -19,11 +19,12 @@
     <a href="{% url 'contest' %}" class="btn btn-secondary w-50 mb-2"
             style="padding: 15px; font-size: 16px;">CONTEST</a>
 
-    <button type="button" class="btn btn-success w-50"
-            style="padding: 15px; font-size: 16px;">MEETINGS</button>
+    <!-- Link to meetings page -->
+    <a href="{% url 'meetings' %}" class="btn btn-success w-50"
+            style="padding: 15px; font-size: 16px;">MEETINGS</a> <!-- Routed to 'meetings' URL -->
 </div>
 
-<!-- Modal for Sports button-->
+<!-- Modal for Sports button -->
 <div class="modal fade" id="sportsModal" tabindex="-1" aria-labelledby="sportsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered"> <!-- Center the modal vertically -->
         <div class="modal-content">
@@ -72,4 +73,5 @@
         });
     });
 </script>
+
 {% endblock %}
