@@ -321,7 +321,7 @@
                 <div class="dropdown-divider my-1 mx-n2"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{% url "pages-profile-user" %}">
                   <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
                 </a>
               </li>
@@ -331,47 +331,16 @@
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
-                  <span class="d-flex align-items-center align-middle">
-                    <i class="flex-shrink-0 ti ti-file-dollar me-3 ti-md"></i><span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge bg-danger d-flex align-items-center justify-content-center">4</span>
-                  </span>
-                </a>
               </li>
               <li>
                 <div class="dropdown-divider my-1 mx-n2"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
-                  <i class="ti ti-currency-dollar me-3 ti-md"></i><span class="align-middle">Pricing</span>
-                </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
-                  <i class="ti ti-question-mark me-3 ti-md"></i><span class="align-middle">FAQ</span>
-                </a>
               </li>
               <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                {% if request.user.is_authenticated and request.user.profile.is_verified %}
-                <span class="dropdown-item d-flex justify-content-between align-content-center">
-                  <span>
-                    <i class='ti ti-user-circle me-2 ti-md'></i>
-                    <span class="align-middle">Verified</span>
-                  </span>
-                  <span class="text-success"><i class='ti ti-circle-check ti-md'></i></span>
-                </span>
-                {% else %}
-                <a class="dropdown-item d-flex justify-content-between align-content-center" href="#">
-                  <span>
-                    <i class='ti ti-user-circle me-2 ti-md'></i>
-                    <span class="align-middle">Not Verified</span>
-                  </span>
-                  <span class="text-danger"><i class='ti ti-circle-x ti-md'></i></span>
-                </a>
-                {% endif %}
+
               </li>
               <li class="mt-1">
                 <form action="{% url 'logout' %}" method="post">
