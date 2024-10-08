@@ -7,10 +7,22 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h4 class="text-center mb-4">Upcoming Events</h4>
+    <h4 class="text-center mb-4">Events List</h4>
 
-    <!-- Search Bar -->
-    <div class="row justify-content-center mb-4">
+    <!-- Filters Dropdown and Search Bar -->
+    <div class="row justify-content-start mb-4">
+        <div class="col-md-3">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    All Events
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <li><a class="dropdown-item" href="#" onclick="filterEvents('all', 'All Events')">All Events</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="filterEvents('upcoming', 'Upcoming Events')">Upcoming Events</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="filterEvents('past', 'Past Events')">Past Events</a></li>
+                </ul>
+            </div>
+        </div>
         <div class="col-md-6">
             <input type="text" id="eventSearch" class="form-control" placeholder="Search events...">
         </div>
@@ -18,7 +30,7 @@
 
     <div class="row" id="eventContainer">
         <!-- Event Card 1 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Basketball Tournament">
+        <div class="col-md-4 mb-4 event-card" data-name="Basketball Tournament" data-date="2024-10-15">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Basketball Tournament</h5>
@@ -31,11 +43,11 @@
         </div>
 
         <!-- Event Card 2 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Charity 5K Run">
+        <div class="col-md-4 mb-4 event-card" data-name="Charity 5K Run" data-date="2023-09-30">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Charity 5K Run</h5>
-                    <p class="card-text"><strong>Date:</strong> November 5, 2024</p>
+                    <p class="card-text"><strong>Date:</strong> September 30, 2023</p>
                     <p class="card-text"><strong>Location:</strong> Central Park</p>
                     <p class="card-text">Participate in our 5K charity run to raise funds for a local cause. All ages welcome!</p>
                     <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
@@ -44,7 +56,7 @@
         </div>
 
         <!-- Event Card 3 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Annual Music Festival">
+        <div class="col-md-4 mb-4 event-card" data-name="Annual Music Festival" data-date="2024-12-20">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Annual Music Festival</h5>
@@ -57,7 +69,7 @@
         </div>
 
         <!-- Event Card 4 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Food & Wine Festival">
+        <div class="col-md-4 mb-4 event-card" data-name="Food & Wine Festival" data-date="2025-01-10">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Food & Wine Festival</h5>
@@ -70,11 +82,11 @@
         </div>
 
         <!-- Event Card 5 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Tech Expo 2025">
+        <div class="col-md-4 mb-4 event-card" data-name="Tech Expo 2025" data-date="2023-06-14">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Tech Expo 2025</h5>
-                    <p class="card-text"><strong>Date:</strong> February 5, 2025</p>
+                    <p class="card-text"><strong>Date:</strong> June 14, 2023</p>
                     <p class="card-text"><strong>Location:</strong> Convention Center</p>
                     <p class="card-text">Explore the latest in technology innovations at the annual Tech Expo. Workshops, keynotes, and more.</p>
                     <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
@@ -83,7 +95,7 @@
         </div>
 
         <!-- Event Card 6 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Yoga & Wellness Retreat">
+        <div class="col-md-4 mb-4 event-card" data-name="Yoga & Wellness Retreat" data-date="2025-03-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Yoga & Wellness Retreat</h5>
@@ -96,11 +108,11 @@
         </div>
 
         <!-- Event Card 7 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Photography Workshop">
+        <div class="col-md-4 mb-4 event-card" data-name="Photography Workshop" data-date="2024-02-18">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Photography Workshop</h5>
-                    <p class="card-text"><strong>Date:</strong> March 25, 2025</p>
+                    <p class="card-text"><strong>Date:</strong> February 18, 2024</p>
                     <p class="card-text"><strong>Location:</strong> Downtown Studio</p>
                     <p class="card-text">Learn from professional photographers in this hands-on workshop. Bring your camera and get ready to capture amazing shots!</p>
                     <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
@@ -109,7 +121,7 @@
         </div>
 
         <!-- Event Card 8 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Local Art Exhibition">
+        <div class="col-md-4 mb-4 event-card" data-name="Local Art Exhibition" data-date="2025-04-10">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Local Art Exhibition</h5>
@@ -122,11 +134,11 @@
         </div>
 
         <!-- Event Card 9 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Summer Music Camp">
+        <div class="col-md-4 mb-4 event-card" data-name="Summer Music Camp" data-date="2023-08-05">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Summer Music Camp</h5>
-                    <p class="card-text"><strong>Date:</strong> July 15, 2025</p>
+                    <p class="card-text"><strong>Date:</strong> August 5, 2023</p>
                     <p class="card-text"><strong>Location:</strong> Music Academy</p>
                     <p class="card-text">Join us for a fun-filled week of music and creativity. Open to all ages and skill levels!</p>
                     <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
@@ -146,39 +158,51 @@
     .card {
         position: relative;
         transition: box-shadow 0.3s ease;
+
     }
     .card:hover {
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5);
-    }
-    input[type="text"] {
-        border-radius: 0.25rem;
-        box-shadow: 0 1px 4px rgba(0, 123, 255, 0.3);
+        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.4);
     }
 </style>
 
 <script>
-    document.getElementById('eventSearch').addEventListener('input', function() {
-        let filter = this.value.toLowerCase();
-        let events = document.querySelectorAll('.event-card');
-        let notFoundMessage = document.getElementById('notFoundMessage');
-        let eventFound = false;
+    // Function to filter events based on the dropdown selection
+    function filterEvents(filterType, buttonText) {
+        document.getElementById('filterDropdown').innerHTML = buttonText;
 
-        events.forEach(function(eventCard) {
-            let eventName = eventCard.getAttribute('data-name').toLowerCase();
-            if (eventName.includes(filter)) {
-                eventCard.style.display = 'block';  // Show event if it matches the search query
-                eventFound = true;
+        const eventCards = document.querySelectorAll('.event-card');
+        eventCards.forEach(card => {
+            const eventDate = new Date(card.getAttribute('data-date'));
+            const now = new Date();
+
+            if (filterType === 'upcoming' && eventDate < now) {
+                card.style.display = 'none';
+            } else if (filterType === 'past' && eventDate >= now) {
+                card.style.display = 'none';
             } else {
-                eventCard.style.display = 'none';  // Hide event if it doesn't match
+                card.style.display = 'block';
+            }
+        });
+        document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
+    }
+
+    // Function to search for events based on user input
+    document.getElementById('eventSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const eventCards = document.querySelectorAll('.event-card');
+        let found = false;
+
+        eventCards.forEach(card => {
+            const eventName = card.getAttribute('data-name').toLowerCase();
+            if (eventName.includes(searchTerm)) {
+                card.style.display = 'block';
+                found = true;
+            } else {
+                card.style.display = 'none';
             }
         });
 
-        // Show or hide "not found" message based on the events found
-        if (!eventFound) {
-            notFoundMessage.style.display = 'block';  // Show message if no events match
-        } else {
-            notFoundMessage.style.display = 'none';  // Hide message if at least one event matches
-        }
+        document.getElementById('notFoundMessage').style.display = found ? 'none' : 'block'; // Show or hide not found message
     });
 </script>
 
