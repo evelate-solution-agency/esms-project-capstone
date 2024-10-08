@@ -6,13 +6,249 @@
 {% block title %}Choose Rubrics{% endblock title %}
 
 {% block content %}
-<h4 class="text-center">Choose Rubrics</h4>
-
-<!-- Create Rubrics Button -->
-<div class="text-center mt-4">
-    <a href="{% url 'create_rubric' %}" class="btn btn-success">
-        <i class="fas fa-plus"></i> Create Rubrics
-    </a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="mx-auto text-center">
+            <h4>Choose Rubrics</h4>
+        </div>
+        <!-- Create Rubrics Button -->
+        <a href="{% url 'create_rubric' %}" class="btn btn-success" style="width: 120px;">
+            <i class="fas fa-plus"></i> Create Rubrics
+        </a>
+    </div>
 </div>
 
+<!-- Hidden input to track selected rubric type -->
+<form id="rubricsForm" method="POST" action="{% url 'dashboard' %}">
+    {% csrf_token %}
+    <input type="hidden" name="selected_rubric" id="selected_rubric" value="">
+
+    <!-- Dance Rubrics (Clickable) -->
+    <div class="container mt-5 rubric-container" onclick="selectRubric('Dance')">
+        <h5 class="text-center">Dance Rubrics</h5>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Weight (%)</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Technique</td>
+                    <td>30%</td>
+                    <td>Demonstrates proper technique and execution of movements.</td>
+                </tr>
+                <tr>
+                    <td>Expression</td>
+                    <td>25%</td>
+                    <td>Conveys emotions and character through performance.</td>
+                </tr>
+                <tr>
+                    <td>Choreography</td>
+                    <td>20%</td>
+                    <td>Originality and creativity in choreography.</td>
+                </tr>
+                <tr>
+                    <td>Timing</td>
+                    <td>15%</td>
+                    <td>Maintains rhythm and synchronization with music.</td>
+                </tr>
+                <tr>
+                    <td>Costume and Presentation</td>
+                    <td>10%</td>
+                    <td>Appropriateness of costume and overall stage presence.</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>100%</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Singing Rubrics (Clickable) -->
+    <div class="container mt-5 rubric-container" onclick="selectRubric('Singing')">
+        <h5 class="text-center">Singing Rubrics</h5>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Weight (%)</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Vocal Technique</td>
+                    <td>30%</td>
+                    <td>Control of pitch, tone, and breathing.</td>
+                </tr>
+                <tr>
+                    <td>Expression</td>
+                    <td>25%</td>
+                    <td>Ability to convey emotion and connect with the audience.</td>
+                </tr>
+                <tr>
+                    <td>Musicality</td>
+                    <td>20%</td>
+                    <td>Understanding of rhythm and melody.</td>
+                </tr>
+                <tr>
+                    <td>Stage Presence</td>
+                    <td>15%</td>
+                    <td>Confidence and charisma while performing.</td>
+                </tr>
+                <tr>
+                    <td>Originality</td>
+                    <td>10%</td>
+                    <td>Creativity in interpretation of the song.</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>100%</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Arts Rubrics (Clickable) -->
+    <div class="container mt-5 rubric-container" onclick="selectRubric('Arts')">
+        <h5 class="text-center">Arts Rubrics</h5>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Weight (%)</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Creativity</td>
+                    <td>40%</td>
+                    <td>Originality and innovation in artistic expression.</td>
+                </tr>
+                <tr>
+                    <td>Technical Skill</td>
+                    <td>30%</td>
+                    <td>Level of craftsmanship and execution of the artwork.</td>
+                </tr>
+                <tr>
+                    <td>Composition</td>
+                    <td>20%</td>
+                    <td>Balance, contrast, and the effective use of space in the artwork.</td>
+                </tr>
+                <tr>
+                    <td>Overall Impact</td>
+                    <td>10%</td>
+                    <td>The emotional and visual impact of the artwork on the viewer.</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>100%</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Battle of the Band Rubrics (Clickable) -->
+    <div class="container mt-5 rubric-container" onclick="selectRubric('Battle of the Band')">
+        <h5 class="text-center">Battle of the Band Rubrics</h5>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Weight (%)</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Musicality</td>
+                    <td>30%</td>
+                    <td>Harmony, rhythm, and overall musical arrangement.</td>
+                </tr>
+                <tr>
+                    <td>Stage Presence</td>
+                    <td>25%</td>
+                    <td>Confidence, charisma, and interaction with the audience.</td>
+                </tr>
+                <tr>
+                    <td>Originality</td>
+                    <td>20%</td>
+                    <td>Uniqueness and creativity in performance style.</td>
+                </tr>
+                <tr>
+                    <td>Technical Skill</td>
+                    <td>15%</td>
+                    <td>Precision and execution of musical instruments.</td>
+                </tr>
+                <tr>
+                    <td>Group Dynamics</td>
+                    <td>10%</td>
+                    <td>Coordination and synchronization among band members.</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>100%</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="container text-center mt-5">
+        <button type="submit" id="submitButton" class="btn btn-primary" disabled>Submit</button>
+    </div>
+</form>
+
+{% endblock %}
+
+<!-- Add custom JavaScript for form validation and rubric selection -->
+{% block scripts %}
+<script>
+    // Function to select a rubric template
+    function selectRubric(rubricType) {
+        document.getElementById("selected_rubric").value = rubricType;
+
+        // Enable the Submit button
+        document.getElementById("submitButton").disabled = false;
+
+        // Highlight the selected rubric table
+        const containers = document.querySelectorAll('.rubric-container');
+        containers.forEach(container => container.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+    }
+
+    // Disable form submission if no rubric is selected
+    document.getElementById("rubricsForm").onsubmit = function(event) {
+        if (document.getElementById("selected_rubric").value === "") {
+            alert("Please select a rubric template before submitting.");
+            event.preventDefault();
+        }
+    };
+
+    // Optional: Add CSS to visually indicate the selected rubric
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .rubric-container.selected {
+            border: 2px solid green;  /* Highlight selected rubric */
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 {% endblock %}

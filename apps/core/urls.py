@@ -11,11 +11,6 @@ urlpatterns = [
         name="dashboard",
     ),
     path(
-        "page_2/",
-        CoreView.as_view(template_name="page_2.html",),
-        name="page-2",
-    ),
-    path(
         "events",
        login_required(CoreView.as_view(template_name="event_list.html",)),
         name="event_list",
@@ -64,6 +59,11 @@ urlpatterns = [
         "create_rubric",
         login_required(CoreView.as_view(template_name="create_rubric.html",)),
         name="create_rubric",
+    ),
+    path(
+        "meetings",
+        login_required(CoreView.as_view(template_name="meetings.html",)),
+        name="meetings",
     ),
 
 ]

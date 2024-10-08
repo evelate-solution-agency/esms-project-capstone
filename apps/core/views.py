@@ -26,7 +26,7 @@ class NewSportsEventView(CoreView):
 
         # Render the login page for users who are not logged in.
         return super().get(request)
-    
+
     def get_context_data(self, **kwargs):
         # Get the base context data from CoreView
         context = super().get_context_data(**kwargs)
