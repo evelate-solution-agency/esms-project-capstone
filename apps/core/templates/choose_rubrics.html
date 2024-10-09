@@ -19,13 +19,12 @@
 </div>
 
 <!-- Hidden input to track selected rubric type -->
-<form id="rubricsForm" method="POST" action="{% url 'dashboard' %}" onsubmit="return validateForm()">
-    {% csrf_token %}
+<form id="rubricsForm" onsubmit="handleSubmit(event)">
     <input type="hidden" name="selected_rubric" id="selected_rubric" value="">
 
     <!-- Dance Rubrics Card -->
     <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Dance')">
+        <div class="card-body text-center" onclick="selectRubric('Dance', this)">
             <h5 class="card-title">Dance Rubrics</h5>
             <table class="table table-bordered">
                 <thead>
@@ -67,13 +66,13 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3" onclick="selectRubric('Dance', this)">Select</button>
+            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
         </div>
     </div>
 
     <!-- Singing Rubrics Card -->
     <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Singing')">
+        <div class="card-body text-center" onclick="selectRubric('Singing', this)">
             <h5 class="card-title">Singing Rubrics</h5>
             <table class="table table-bordered">
                 <thead>
@@ -115,13 +114,13 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3" onclick="selectRubric('Singing', this)">Select</button>
+            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
         </div>
     </div>
 
     <!-- Arts Rubrics Card -->
     <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Arts')">
+        <div class="card-body text-center" onclick="selectRubric('Arts', this)">
             <h5 class="card-title">Arts Rubrics</h5>
             <table class="table table-bordered">
                 <thead>
@@ -158,13 +157,13 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3" onclick="selectRubric('Arts', this)">Select</button>
+            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
         </div>
     </div>
 
     <!-- Battle of the Band Rubrics Card -->
     <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Battle of the Band')">
+        <div class="card-body text-center" onclick="selectRubric('Battle of the Band', this)">
             <h5 class="card-title">Battle of the Band Rubrics</h5>
             <table class="table table-bordered">
                 <thead>
@@ -206,49 +205,49 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3" onclick="selectRubric('Battle of the Band', this)">Select</button>
+            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
         </div>
     </div>
 
     <!-- Submit Button -->
     <div class="container text-center mt-5">
-        <button type="submit" id="submitButton" class="btn btn-primary" disabled>Submit</button>
+        <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
     </div>
 </form>
 
-{% endblock %}
-
-<!-- Add custom JavaScript for form validation and rubric selection -->
-{% block scripts %}
 <script>
-    // Function to select a rubric template
-    function selectRubric(rubricType, button) {
-        // Set the selected rubric type in the hidden input
-        document.getElementById("selected_rubric").value = rubricType;
+  // Function to select a rubric template
+  function selectRubric(rubricType, card) {
+      // Set the selected rubric type in the hidden input
+      document.getElementById("selected_rubric").value = rubricType;
 
-        // Enable the Submit button
-        document.getElementById("submitButton").disabled = false;
+      // Reset all buttons to their original state
+      const buttons = document.querySelectorAll('.select-btn');
+      buttons.forEach(btn => {
+          btn.innerText = 'Select';  // Reset button text
+          btn.classList.remove('btn-success'); // Reset button styling
+          btn.classList.add('btn-outline-primary'); // Ensure outline style is applied
+      });
 
-        // Change button text to "Selected"
-        const buttons = document.querySelectorAll('.select-btn');
-        buttons.forEach(btn => {
-            btn.innerText = 'Select';  // Reset all other buttons to "Select"
-            btn.classList.remove('btn-success'); // Reset button styling
-        });
-        button.innerText = 'Selected';  // Set the clicked button to "Selected"
-        button.classList.add('btn-success'); // Change button styling to indicate selection
-    }
+      // Change the clicked button's text and color
+      const button = card.querySelector('.select-btn');
+      button.innerText = 'Selected';  // Set the clicked button to "Selected"
+      button.classList.remove('btn-outline-primary'); // Remove outline class
+      button.classList.add('btn-success'); // Change button styling to indicate selection
+  }
 
-    // Function to validate form before submission
-    function validateForm() {
-        const selectedRubric = document.getElementById("selected_rubric").value;
+  // Function to handle form submission
+  function handleSubmit(event) {
+      event.preventDefault();  // Prevent default form submission
+      const selectedRubric = document.getElementById("selected_rubric").value;
 
-        if (!selectedRubric) {
-            alert("Please select a rubric before submitting.");
-            return false;  // Prevent form submission
-        }
-
-        return true;  // Allow form submission
-    }
+      if (selectedRubric) {
+          // Redirect to the dashboard with the selected rubric
+          window.location.href = "{% url 'dashboard' %}?rubric=" + selectedRubric;
+      } else {
+          alert("Please select a rubric before submitting."); // Alert user if no rubric selected
+      }
+  }
 </script>
-{% endblock scripts %}
+
+{% endblock content %}
