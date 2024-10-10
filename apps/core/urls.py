@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 
-from .views import CoreView, NewSportsEventView
+from .views import CoreView, NewSportsEventView, NewEventDateTimeView
 
 
 urlpatterns = [
@@ -15,11 +15,21 @@ urlpatterns = [
        login_required(CoreView.as_view(template_name="event_list.html",)),
         name="event_list",
     ),
-        path(
+    path(
+        "new-event/datetime",
+       login_required(NewEventDateTimeView.as_view(template_name="new-event-datetime.html",)),
+        name="new_event_datetime",
+    ),
+    
+    
+    # sports
+    path(
         "new-event/sports",
         login_required(NewSportsEventView.as_view(template_name="new-sports-event.html",)),
         name="new_sports_event",
     ),
+
+    # calendar
     path(
         "calendar",
         login_required(CoreView.as_view(template_name="calendar.html",)),
@@ -34,11 +44,6 @@ urlpatterns = [
         "event-info",
         login_required(CoreView.as_view(template_name="event_info.html",)),
         name="event_info",
-    ),
-    path(
-        "date_time",
-       login_required(CoreView.as_view(template_name="date_time.html",)),
-        name="date-time",
     ),
     path(
         "about_us",

@@ -2,196 +2,235 @@
 
 {% load i18n %}
 
-{% block title %}Basketball Registration{% endblock title %}
+{% block title %}
+  Basketball Registration
+{% endblock %}
 
 {% block content %}
-<h4 class="text-center my-4">{{ sport|title }} Registration</h4>
+  <h4 class="text-center my-4">New {{ sport|title }} Event</h4>
 
-<div class="container">
-    <div class="row">
+  <div class="container">
+    <form method="GET" onsubmit="updateTeamsDataInput()">
+      <div class="row">
         <!-- Left Side: Team, Coach, Name, Email, Phone Inputs -->
         <div class="col-md-6">
-            <div class="mb-3">
-                <label for="teamLeft" class="form-label">Team A</label>
-                <input type="text" class="form-control" id="teamLeft" placeholder="Enter team name">
+          <div class="mb-3">
+            <label for="teamLeft" class="form-label">Team A</label>
+            <input type="text" class="form-control" id="teamLeft" name="team_a" placeholder="Enter team name" required />
+          </div>
+          <div class="mb-3">
+            <label for="coachLeft" class="form-label">Coach Name</label>
+            <input type="text" class="form-control" id="coachLeft" name="coach_a" placeholder="Enter coach name" required />
+          </div>
+          <!-- Horizontal Inputs for Name, Email, and Phone -->
+          <div class="d-flex justify-content-between">
+            <div class="me-2">
+              <label for="nameLeft" class="form-label">Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="nameLeft" name="player_name_a" placeholder="Name" />
             </div>
-            <div class="mb-3">
-                <label for="coachLeft" class="form-label">Coach Name</label>
-                <input type="text" class="form-control" id="coachLeft" placeholder="Enter coach name">
+            <div class="me-2">
+              <label for="emailLeft" class="form-label">Email</label>
+              <input type="email" class="form-control" id="emailLeft" name="email_a" placeholder="Email" />
             </div>
-            <!-- Horizontal Inputs for Name, Email, and Phone -->
-            <div class="d-flex justify-content-between">
-                <div class="me-2">
-                    <label for="nameLeft" class="form-label">Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="nameLeft" placeholder="Name" required>
-                </div>
-                <div class="me-2">
-                    <label for="emailLeft" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="emailLeft" placeholder="Email">
-                </div>
-                <div>
-                    <label for="phoneLeft" class="form-label">Phone <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="phoneLeft" placeholder="Phone" required oninput="validatePhone(this)">
-                </div>
+            <div>
+              <label for="phoneLeft" class="form-label">Phone <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="phoneLeft" name="phone_a" placeholder="Phone" />
             </div>
-            <!-- Add button moved below the phone entry with green color -->
-            <div class="mt-2 text-center">
-                <button type="button" class="btn btn-success" onclick="addEntry('Left')">Add</button>
-            </div>
+          </div>
+          <!-- Add button moved below the phone entry with green color -->
+          <div class="mt-2 text-center">
+            <button type="button" class="btn btn-success" onclick="addEntry('Left')">Add</button>
+          </div>
 
-            <!-- Table for Team A Entries -->
-            <div class="mt-4">
-                <h5 class="text-center">Team A Players</h5>
-                <table class="table" style="width: 100%; table-layout: fixed;">
-                    <thead>
-                        <tr>
-                            <th style="width: 20%; border-right: 1px solid #dee2e6;">Action</th>
-                            <th style="width: 30%; border-right: 1px solid #dee2e6;">Name</th>
-                            <th style="width: 30%; border-right: 1px solid #dee2e6;">Email</th>
-                            <th style="width: 20%;">Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody id="entriesTableBodyLeft">
-                        <!-- Entries will be added here -->
-                    </tbody>
-                </table>
-            </div>
+          <!-- Table for Team A Entries -->
+          <div class="mt-4">
+            <h5 class="text-center">Team A Players</h5>
+            <table class="table" style="width: 100%; table-layout: fixed;">
+              <thead>
+                <tr>
+                  <th style="width: 20%; border-right: 1px solid #dee2e6;">Action</th>
+                  <th style="width: 30%; border-right: 1px solid #dee2e6;">Name</th>
+                  <th style="width: 30%; border-right: 1px solid #dee2e6;">Email</th>
+                  <th style="width: 20%;">Phone</th>
+                </tr>
+              </thead>
+              <tbody id="entriesTableBodyLeft">
+                <!-- Entries will be added here -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Right Side: Team, Coach, Name, Email, Phone Inputs -->
         <div class="col-md-6">
-            <div class="mb-3">
-                <label for="teamRight" class="form-label">Team B</label>
-                <input type="text" class="form-control" id="teamRight" placeholder="Enter team name">
+          <div class="mb-3">
+            <label for="teamRight" class="form-label">Team B</label>
+            <input type="text" class="form-control" id="teamRight" name="team_b" placeholder="Enter team name" required />
+          </div>
+          <div class="mb-3">
+            <label for="coachRight" class="form-label">Coach Name</label>
+            <input type="text" class="form-control" id="coachRight" name="coach_b" placeholder="Enter coach name" required />
+          </div>
+          <!-- Horizontal Inputs for Name, Email, and Phone -->
+          <div class="d-flex justify-content-between">
+            <div class="me-2">
+              <label for="nameRight" class="form-label">Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="nameRight" name="player_name_b" placeholder="Name" />
             </div>
-            <div class="mb-3">
-                <label for="coachRight" class="form-label">Coach Name</label>
-                <input type="text" class="form-control" id="coachRight" placeholder="Enter coach name">
+            <div class="me-2">
+              <label for="emailRight" class="form-label">Email</label>
+              <input type="email" class="form-control" id="emailRight" name="email_b" placeholder="Email" />
             </div>
-            <!-- Horizontal Inputs for Name, Email, and Phone -->
-            <div class="d-flex justify-content-between">
-                <div class="me-2">
-                    <label for="nameRight" class="form-label">Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="nameRight" placeholder="Name" required>
-                </div>
-                <div class="me-2">
-                    <label for="emailRight" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="emailRight" placeholder="Email">
-                </div>
-                <div>
-                    <label for="phoneRight" class="form-label">Phone <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="phoneRight" placeholder="Phone" required oninput="validatePhone(this)">
-                </div>
+            <div>
+              <label for="phoneRight" class="form-label">Phone <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="phoneRight" name="phone_b" placeholder="Phone" />
             </div>
-            <!-- Add button moved below the phone entry with green color -->
-            <div class="mt-2 text-center">
-                <button type="button" class="btn btn-success" onclick="addEntry('Right')">Add</button>
-            </div>
+          </div>
+          <!-- Add button moved below the phone entry with green color -->
+          <div class="mt-2 text-center">
+            <button type="button" class="btn btn-success" onclick="addEntry('Right')">Add</button>
+          </div>
 
-            <!-- Table for Team B Entries -->
-            <div class="mt-4">
-                <h5 class="text-center">Team B Players</h5>
-                <table class="table" style="width: 100%; table-layout: fixed;">
-                    <thead>
-                        <tr>
-                            <th style="width: 20%; border-right: 1px solid #dee2e6;">Action</th>
-                            <th style="width: 30%; border-right: 1px solid #dee2e6;">Name</th>
-                            <th style="width: 30%; border-right: 1px solid #dee2e6;">Email</th>
-                            <th style="width: 20%;">Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody id="entriesTableBodyRight">
-                        <!-- Entries will be added here -->
-                    </tbody>
-                </table>
-            </div>
+          <!-- Table for Team B Entries -->
+          <div class="mt-4">
+            <h5 class="text-center">Team B Players</h5>
+            <table class="table" style="width: 100%; table-layout: fixed;">
+              <thead>
+                <tr>
+                  <th style="width: 20%; border-right: 1px solid #dee2e6;">Action</th>
+                  <th style="width: 30%; border-right: 1px solid #dee2e6;">Name</th>
+                  <th style="width: 30%; border-right: 1px solid #dee2e6;">Email</th>
+                  <th style="width: 20%;">Phone</th>
+                </tr>
+              </thead>
+              <tbody id="entriesTableBodyRight">
+                <!-- Entries will be added here -->
+              </tbody>
+            </table>
+          </div>
         </div>
-    </div>
+      </div>
+      <input type="hidden" id="sport" name="sport" />
+      <input type="hidden" id="event_type" name="event_type" />
+      <input type="hidden" id="teamsDataInput" name="teams_data" />
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
 
-    <div class="text-center mt-4">
-        <button type="button" class="btn btn-primary" onclick="redirectToDateTime()">Submit</button>
-    </div>
-</div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-<style>
+  <style>
     .table td {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        border-right: 1px solid #dee2e6; /* Column separator */
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border-right: 1px solid #dee2e6; /* Column separator */
     }
     .text-danger {
-        font-weight: bold;
+      font-weight: bold;
     }
     .delete-icon {
-        cursor: pointer;
-        color: red;
-        margin: 0 auto; /* Center horizontally */
-        display: block; /* Allow margin to work */
+      cursor: pointer;
+      color: red;
+      margin: 0 auto; /* Center horizontally */
+      display: block; /* Allow margin to work */
     }
-</style>
+  </style>
 
-<script>
-function validatePhone(input) {
-    // Allow only numbers in the phone input
-    input.value = input.value.replace(/[^0-9]/g, '');
-}
-
-function addEntry(side) {
-    // Get values from the input fields
-    const name = document.getElementById(`name${side}`).value.trim();
-    const phone = document.getElementById(`phone${side}`).value.trim();
-
-    // Check if name and phone are empty
-    if (!name || !phone) {
-        alert('Please fill in both the Name and Phone fields.');
+  <script>
+    let teamsData = {
+      team_left: {
+        name: '',
+        coach: '',
+        players: []
+      },
+      team_right: {
+        name: '',
+        coach: '',
+        players: []
+      },
+    };
+    
+    function addEntry(side) {
+      // Ensure the 'side' is valid and matches expected IDs
+      const teamId = `team${side}`;
+      const coachId = `coach${side}`;
+      const nameId = `name${side}`;
+      const phoneId = `phone${side}`;
+      const emailId = `email${side}`;
+    
+      // Get values from the input fields
+      const teamName = document.getElementById(teamId) ? document.getElementById(teamId).value.trim() : '';
+      const coachName = document.getElementById(coachId) ? document.getElementById(coachId).value.trim() : '';
+      const name = document.getElementById(nameId) ? document.getElementById(nameId).value.trim() : '';
+      const phone = document.getElementById(phoneId) ? document.getElementById(phoneId).value.trim() : '';
+      const email = document.getElementById(emailId) ? document.getElementById(emailId).value : ''; // Email is optional
+    
+      // Check if name and phone are empty
+      if (!name || !phone || !email) {
+        alert('Please fill in the Name , Email and Phone fields.');
         return; // Exit the function if fields are empty
+      }
+    
+      // Create a player object
+      const player = {
+        name: name,
+        email: email,
+        phone: phone
+      };
+    
+      // Add player to the corresponding team
+      console.log(player);
+      console.log(side);
+      teamsData[`team_${side.toLowerCase()}`].players.push(player);
+      teamsData[`team_${side.toLowerCase()}`].name = teamName;
+      teamsData[`team_${side.toLowerCase()}`].coach = coachName;
+    
+      // Create a new row in the corresponding table
+      const tableBody = document.getElementById(`entriesTableBody${side}`);
+      const newRow = tableBody.insertRow();
+      const actionCell = newRow.insertCell(0);
+      const nameCell = newRow.insertCell(1);
+      const emailCell = newRow.insertCell(2);
+      const phoneCell = newRow.insertCell(3);
+    
+      // Create delete icon
+      const deleteIcon = document.createElement('span');
+      deleteIcon.innerHTML = '<i class="fas fa-trash"></i>'; // Trash icon
+      deleteIcon.classList.add('delete-icon');
+      deleteIcon.onclick = function () {
+        tableBody.deleteRow(newRow.rowIndex - 1); // Remove entry on click
+        teamsData[`team_${side.toLowerCase()}`].players.splice(newRow.rowIndex - 1, 1); // Remove player from the array
+      };
+    
+      // Center the icon within the action cell
+      actionCell.style.textAlign = 'center'; // Center align text in the action cell
+      actionCell.style.verticalAlign = 'middle'; // Center vertically in the cell
+    
+      // Assign values to the new row
+      actionCell.appendChild(deleteIcon); // Add delete icon to the action cell
+      nameCell.textContent = name;
+      emailCell.textContent = email;
+      phoneCell.textContent = phone;
+    
+      // Clear the input fields after adding
+      document.getElementById(nameId).value = '';
+      document.getElementById(emailId).value = '';
+      document.getElementById(phoneId).value = '';
     }
-
-    // Check if phone number is exactly 11 digits
-    if (phone.length !== 11) {
-        alert('Phone number must be exactly 11 digits.');
-        return; // Exit the function if phone number is not 11 digits
+    
+    function updateTeamsDataInput() {
+      const teamsDataInput = document.getElementById('teamsDataInput');
+      const sport = document.getElementById('sport');
+      const event_type = document.getElementById('event_type');
+      teamsDataInput.value = JSON.stringify(teamsData);
+      sport.value = '{{ sport }}';
+      event_type.value = 'sports'
     }
-
-    const email = document.getElementById(`email${side}`).value; // Email is optional
-
-    // Create a new row in the corresponding table
-    const tableBody = document.getElementById(`entriesTableBody${side}`);
-    const newRow = tableBody.insertRow();
-    const actionCell = newRow.insertCell(0);
-    const nameCell = newRow.insertCell(1);
-    const emailCell = newRow.insertCell(2);
-    const phoneCell = newRow.insertCell(3);
-
-    // Create delete icon
-    const deleteIcon = document.createElement('span');
-    deleteIcon.innerHTML = '<i class="fas fa-trash"></i>'; // Trash icon
-    deleteIcon.classList.add('delete-icon');
-    deleteIcon.onclick = function() { tableBody.deleteRow(newRow.rowIndex - 1); }; // Remove entry on click
-
-    // Center the icon within the action cell
-    actionCell.style.textAlign = 'center'; // Center align text in the action cell
-    actionCell.style.verticalAlign = 'middle'; // Center vertically in the cell
-
-    // Assign values to the new row
-    actionCell.appendChild(deleteIcon); // Add delete icon to the action cell
-    nameCell.textContent = name;
-    emailCell.textContent = email;
-    phoneCell.textContent = phone;
-
-    // Clear the input fields after adding
-    document.getElementById(`name${side}`).value = '';
-    document.getElementById(`email${side}`).value = '';
-    document.getElementById(`phone${side}`).value = '';
-}
-
-function redirectToDateTime() {
-    // Redirect to date_time.html
-    window.location.href = "{% url 'date-time' %}";
-}
-</script>
-
+    
+    // Ensure this function is called before the form is submitted
+    document.querySelector('form').onsubmit = updateTeamsDataInput;
+  </script>
 {% endblock %}

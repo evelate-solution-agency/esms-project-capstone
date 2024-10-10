@@ -1,0 +1,129 @@
+{% extends layout_path %}
+
+{% block title %}Date Time{% endblock title %}
+
+{% block content %}
+<h4 class="text-center my-10">Event Details</h4>
+
+<div class="container">
+    <form id="eventForm" method="POST"> <!-- Specify your POST URL -->
+        {% csrf_token %} <!-- Add CSRF token for security -->
+        
+        <div class="row justify-content-center">
+
+            <!-- Title -->
+            <div class="col-md-8 mb-4">
+                <label class="form-label" style="font-size: 18px;">Event Title:</label>
+                <input type="text" id="locationInput" name="event_title" class="form-control" placeholder="Enter event title"  required>
+            </div>
+
+            <div class="col-md-0 mb-4">
+            </div>
+            
+
+            <!-- Time Label and Inputs -->
+            <div class="col-md-4 mb-4">
+                <label class="form-label" style="font-size: 18px;">Time:</label>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-4">
+                        <label class="form-label" for="timeIn">Start Time:</label>
+                        <input type="time" id="timeIn" name="start_time" class="form-control" style="width: 150px;" required>
+                        <label class="form-label mt-1" id="displayTimeIn"></label> <!-- Display Selected Start Time -->
+                    </div>
+                    <div>
+                        <label class="form-label" for="timeOut">End Time:</label>
+                        <input type="time" id="timeOut" name="end_time" class="form-control" style="width: 150px;" required>
+                        <label class="form-label mt-1" id="displayTimeOut"></label> <!-- Display Selected End Time -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Label and Inputs -->
+            <div class="col-md-4 mb-4">
+                <label class="form-label" style="font-size: 18px;">Date:</label>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-4">
+                        <label class="form-label" for="startDate">Start Date:</label>
+                        <input type="date" id="startDate" name="start_date" class="form-control" style="width: 150px;" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="endDate">End Date:</label>
+                        <input type="date" id="endDate" name="end_date" class="form-control" style="width: 150px;" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Label and Input -->
+            <div class="col-md-8 mb-10">
+                <label class="form-label" style="font-size: 18px;">Location:</label>
+                <input type="text" id="locationInput" name="location" class="form-control" placeholder="Enter location keywords"  required>
+            </div>
+
+            <!-- Capacity -->
+            <div class="col-md-8 mb-10">
+                <label class="form-label" style="font-size: 18px;">Capacity:</label>
+                <input type="number" id="capacity" name="capacity" class="form-control" placeholder="Enter capacity"  required>
+            </div>
+
+            <!-- Notes Label and Input -->
+            <div class="col-md-8 mb-10">
+                <label class="form-label" style="font-size: 18px;">Description:</label>
+                <textarea id="notesInput" name="description" class="form-control" rows="4" placeholder="Type your description here..." style="width: 100%;"></textarea>
+            </div>
+
+            <!-- Hidden Inputs for Event Type, Sport, and Teams Data -->
+            <input type="hidden" name="event_type" value="{{ event_type }}">
+            <input type="hidden" name="sport" value="{{ sport }}">
+            <input type="hidden" name="teams_data" value="{{ teams_data }}">
+
+            <!-- Send Button aligned to the right -->
+            <div class="col-md-8 mb-4 d-flex justify-content-end">
+                <button type="submit" class="btn btn-success" style="width: 80px;">Create</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+// Convert 24-hour time to 12-hour AM/PM format
+function formatTimeTo12Hour(time) {
+    const [hours, minutes] = time.split(':');
+    let period = 'AM';
+    let hour = parseInt(hours, 10);
+
+    if (hour >= 12) {
+        period = 'PM';
+        if (hour > 12) {
+            hour -= 12;
+        }
+    } else if (hour === 0) {
+        hour = 12;
+    }
+
+    return `${hour}:${minutes} ${period}`;
+}
+
+// Function to update the displayed Start Time
+document.getElementById('timeIn').addEventListener('change', function() {
+    const timeInValue = document.getElementById('timeIn').value;
+    const displayTimeIn = document.getElementById('displayTimeIn');
+    if (timeInValue) {
+        displayTimeIn.textContent = 'Start Time: ' + formatTimeTo12Hour(timeInValue);
+    } else {
+        displayTimeIn.textContent = '';
+    }
+});
+
+// Function to update the displayed End Time
+document.getElementById('timeOut').addEventListener('change', function() {
+    const timeOutValue = document.getElementById('timeOut').value;
+    const displayTimeOut = document.getElementById('displayTimeOut');
+    if (timeOutValue) {
+        displayTimeOut.textContent = 'End Time: ' + formatTimeTo12Hour(timeOutValue);
+    } else {
+        displayTimeOut.textContent = '';
+    }
+});
+</script>
+
+{% endblock content %}

@@ -39,7 +39,7 @@ TEMPLATE_CONFIG = {
 THEME_VARIABLES = {
     "creator_name": "Elevate Solutions Agency",
     "creator_url": "#",
-    "template_name": "Vuexy",
+    "template_name": "Sched-IT",
     "template_suffix": "Django Admin Template",
     "template_version": "2.0.0",
     "template_free": False,
