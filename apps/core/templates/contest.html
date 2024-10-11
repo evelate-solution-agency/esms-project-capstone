@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <!-- Date Start and Date End (each label beside their respective input) -->
+                <!-- Date Start and Date End -->
                 <div class="form-group row mb-3">
                     <label for="dateStart" class="col-sm-3 col-form-label">Date Start:</label>
                     <div class="col-sm-4">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <!-- Time Start and Time End (each label beside their respective input) -->
+                <!-- Time Start and Time End -->
                 <div class="form-group row mb-3">
                     <label for="timeStart" class="col-sm-3 col-form-label">Time Start:</label>
                     <div class="col-sm-4">
@@ -97,12 +97,15 @@
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12 text-end">
-            <button class="btn btn-primary" id="nextButton">Next</button>
-        </div>
+    <div class="row mt-4 align-items-center">
+      <!-- Upload Photo button and Next button aligned horizontally -->
+      <div class="col-md-12 text-end">
+          <input type="file" id="photoInput" style="display: none;" accept="image/*" />
+          <button class="btn btn-secondary me-2" id="uploadPhotoButton">Upload Photo</button>
+          <button class="btn btn-primary" id="nextButton">Next</button>
+      </div>
     </div>
-</div>
+  </div>
 
 <script>
 // JavaScript to handle adding participants to the table
@@ -133,6 +136,22 @@ document.getElementById('addParticipant').addEventListener('click', function() {
         document.getElementById('middleInitial').value = '';
     } else {
         alert("Please fill in both Last Name and First Name.");
+    }
+});
+
+// JavaScript to handle photo upload
+document.getElementById('uploadPhotoButton').addEventListener('click', function() {
+    // Trigger file input click when button is clicked
+    document.getElementById('photoInput').click();
+});
+
+document.getElementById('photoInput').addEventListener('change', function() {
+    if (this.files && this.files.length > 0) {
+        // Change the upload button to green and update the text to "Uploaded Photo"
+        const uploadButton = document.getElementById('uploadPhotoButton');
+        uploadButton.classList.remove('btn-secondary');
+        uploadButton.classList.add('btn-success');
+        uploadButton.textContent = 'Uploaded Photo';
     }
 });
 

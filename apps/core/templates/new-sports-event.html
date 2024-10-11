@@ -110,9 +110,20 @@
           </div>
         </div>
       </div>
+
       <input type="hidden" id="sport" name="sport" />
       <input type="hidden" id="event_type" name="event_type" />
       <input type="hidden" id="teamsDataInput" name="teams_data" />
+
+      <!-- Upload photo button moved to the top -->
+      <div class="text-center mt-2">
+        <label class="btn btn-secondary" id="uploadButton">
+          Upload Photo
+          <input type="file" name="photo" accept="image/*" hidden onchange="handlePhotoUpload(this)" />
+        </label>
+      </div>
+
+      <!-- Submit button moved to the bottom -->
       <div class="text-center mt-4">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
@@ -152,7 +163,7 @@
         players: []
       },
     };
-    
+
     function addEntry(side) {
       // Ensure the 'side' is valid and matches expected IDs
       const teamId = `team${side}`;
@@ -160,77 +171,71 @@
       const nameId = `name${side}`;
       const phoneId = `phone${side}`;
       const emailId = `email${side}`;
-    
+
       // Get values from the input fields
       const teamName = document.getElementById(teamId) ? document.getElementById(teamId).value.trim() : '';
       const coachName = document.getElementById(coachId) ? document.getElementById(coachId).value.trim() : '';
       const name = document.getElementById(nameId) ? document.getElementById(nameId).value.trim() : '';
       const phone = document.getElementById(phoneId) ? document.getElementById(phoneId).value.trim() : '';
       const email = document.getElementById(emailId) ? document.getElementById(emailId).value : ''; // Email is optional
-    
+
       // Check if name and phone are empty
       if (!name || !phone || !email) {
-        alert('Please fill in the Name , Email and Phone fields.');
+        alert('Please fill in the Name, Email and Phone fields.');
         return; // Exit the function if fields are empty
       }
-    
+
       // Create a player object
       const player = {
         name: name,
         email: email,
         phone: phone
       };
-    
+
       // Add player to the corresponding team
-      console.log(player);
-      console.log(side);
-      teamsData[`team_${side.toLowerCase()}`].players.push(player);
-      teamsData[`team_${side.toLowerCase()}`].name = teamName;
-      teamsData[`team_${side.toLowerCase()}`].coach = coachName;
-    
-      // Create a new row in the corresponding table
-      const tableBody = document.getElementById(`entriesTableBody${side}`);
+      if (side === 'Left') {
+        teamsData.team_left.players.push(player);
+      } else {
+        teamsData.team_right.players.push(player);
+      }
+
+      // Update the entries table (simplified for now)
+      const tableBodyId = `entriesTableBody${side}`;
+      const tableBody = document.getElementById(tableBodyId);
+
+      // Create a new row with the player data
       const newRow = tableBody.insertRow();
-      const actionCell = newRow.insertCell(0);
-      const nameCell = newRow.insertCell(1);
-      const emailCell = newRow.insertCell(2);
-      const phoneCell = newRow.insertCell(3);
-    
-      // Create delete icon
-      const deleteIcon = document.createElement('span');
-      deleteIcon.innerHTML = '<i class="fas fa-trash"></i>'; // Trash icon
-      deleteIcon.classList.add('delete-icon');
-      deleteIcon.onclick = function () {
-        tableBody.deleteRow(newRow.rowIndex - 1); // Remove entry on click
-        teamsData[`team_${side.toLowerCase()}`].players.splice(newRow.rowIndex - 1, 1); // Remove player from the array
-      };
-    
-      // Center the icon within the action cell
-      actionCell.style.textAlign = 'center'; // Center align text in the action cell
-      actionCell.style.verticalAlign = 'middle'; // Center vertically in the cell
-    
-      // Assign values to the new row
-      actionCell.appendChild(deleteIcon); // Add delete icon to the action cell
-      nameCell.textContent = name;
-      emailCell.textContent = email;
-      phoneCell.textContent = phone;
-    
-      // Clear the input fields after adding
+      newRow.innerHTML = `
+        <td><i class="fas fa-trash delete-icon"></i></td>
+        <td>${player.name}</td>
+        <td>${player.email}</td>
+        <td>${player.phone}</td>
+      `;
+
+      // Clear the input fields after adding the player
       document.getElementById(nameId).value = '';
       document.getElementById(emailId).value = '';
       document.getElementById(phoneId).value = '';
     }
-    
+
     function updateTeamsDataInput() {
       const teamsDataInput = document.getElementById('teamsDataInput');
       const sport = document.getElementById('sport');
       const event_type = document.getElementById('event_type');
       teamsDataInput.value = JSON.stringify(teamsData);
       sport.value = '{{ sport }}';
-      event_type.value = 'sports'
+      event_type.value = 'sports';
     }
-    
-    // Ensure this function is called before the form is submitted
+
     document.querySelector('form').onsubmit = updateTeamsDataInput;
+
+    // Handle photo upload button behavior
+    function handlePhotoUpload(input) {
+      const uploadButton = document.getElementById('uploadButton');
+      if (input.files && input.files.length > 0) {
+        uploadButton.classList.replace('btn-secondary', 'btn-success');
+        uploadButton.innerHTML = 'Uploaded Photo <input type="file" name="photo" accept="image/*" hidden />';
+      }
+    }
   </script>
 {% endblock %}
