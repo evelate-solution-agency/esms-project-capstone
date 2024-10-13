@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import timedelta
+
 
 class Event(models.Model):
     EVENT_TYPES = [
@@ -22,13 +24,17 @@ class Event(models.Model):
     location = models.CharField(max_length=200)
     capacity = models.IntegerField()
     event_type = models.CharField(max_length=10, choices=EVENT_TYPES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Scheduled')
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_events')
     participants = models.ManyToManyField(User, related_name='events_participating')
     metadata = models.JSONField(default=dict, blank=True, null=True)
 
     def __str__(self):
         return self.title
+    
+    def get_duration(self):
+        duration = self.end_datetime - self.start_datetime
+        return duration
     
 class Sport(models.Model):
     

@@ -1,209 +1,155 @@
 {% extends layout_path %}
 
+{% load static %}
 {% load i18n %}
+{% load duration_filters %}
 
-{% block title %}Events{% endblock title %}
+
+{% block title %}
+  Cards Advance- UI elements
+{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/apex-charts/apex-charts.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}" />
+{% endblock %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
+  <script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
+{% endblock %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/cards-advance.css' %}" />
+{% endblock %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/cards-advance.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-
-<div class="container mt-5">
-    <h4 class="text-center mb-4">Events List</h4>
-
-    <!-- Filters Dropdown and Search Bar -->
-    <div class="row justify-content-start mb-4">
-        <div class="col-md-3">
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    All Events
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                    <li><a class="dropdown-item" href="#" onclick="filterEvents('all', 'All Events')">All Events</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterEvents('upcoming', 'Upcoming Events')">Upcoming Events</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterEvents('past', 'Past Events')">Past Events</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <input type="text" id="eventSearch" class="form-control" placeholder="Search events...">
-        </div>
+  <!-- Filters Dropdown and Search Bar -->
+  <div class="row justify-content-start mb-4">
+    <div class="col-md-3">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">All Events</button>
+        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+          <li>
+            <a class="dropdown-item" href="#" onclick="filterEvents('all', 'All Events')">All Events</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="filterEvents('upcoming', 'Upcoming Events')">Upcoming Events</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="filterEvents('past', 'Past Events')">Past Events</a>
+          </li>
+        </ul>
+      </div>
     </div>
-
-    <div class="row" id="eventContainer">
-        <!-- Event Card 1 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Basketball Tournament" data-date="2024-10-15">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Basketball Tournament</h5>
-                    <p class="card-text"><strong>Date:</strong> October 15, 2024</p>
-                    <p class="card-text"><strong>Location:</strong> Main Stadium</p>
-                    <p class="card-text">Join us for an exciting basketball tournament. Teams from different regions will compete!</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 2 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Charity 5K Run" data-date="2023-09-30">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Charity 5K Run</h5>
-                    <p class="card-text"><strong>Date:</strong> September 30, 2023</p>
-                    <p class="card-text"><strong>Location:</strong> Central Park</p>
-                    <p class="card-text">Participate in our 5K charity run to raise funds for a local cause. All ages welcome!</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 3 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Annual Music Festival" data-date="2024-12-20">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Annual Music Festival</h5>
-                    <p class="card-text"><strong>Date:</strong> December 20, 2024</p>
-                    <p class="card-text"><strong>Location:</strong> City Amphitheater</p>
-                    <p class="card-text">Enjoy live performances from top artists at the annual music festival. Food and drinks will be available.</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 4 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Food & Wine Festival" data-date="2025-01-10">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Food & Wine Festival</h5>
-                    <p class="card-text"><strong>Date:</strong> January 10, 2025</p>
-                    <p class="card-text"><strong>Location:</strong> Riverside Plaza</p>
-                    <p class="card-text">Savor delicious food and wine from top vendors. Don’t miss out on gourmet food and entertainment.</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 5 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Tech Expo 2025" data-date="2023-06-14">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Tech Expo 2025</h5>
-                    <p class="card-text"><strong>Date:</strong> June 14, 2023</p>
-                    <p class="card-text"><strong>Location:</strong> Convention Center</p>
-                    <p class="card-text">Explore the latest in technology innovations at the annual Tech Expo. Workshops, keynotes, and more.</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 6 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Yoga & Wellness Retreat" data-date="2025-03-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Yoga & Wellness Retreat</h5>
-                    <p class="card-text"><strong>Date:</strong> March 12, 2025</p>
-                    <p class="card-text"><strong>Location:</strong> Beachside Resort</p>
-                    <p class="card-text">Relax, rejuvenate, and renew at our yoga and wellness retreat. Open for all levels of experience.</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 7 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Photography Workshop" data-date="2024-02-18">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Photography Workshop</h5>
-                    <p class="card-text"><strong>Date:</strong> February 18, 2024</p>
-                    <p class="card-text"><strong>Location:</strong> Downtown Studio</p>
-                    <p class="card-text">Learn from professional photographers in this hands-on workshop. Bring your camera and get ready to capture amazing shots!</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 8 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Local Art Exhibition" data-date="2025-04-10">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Local Art Exhibition</h5>
-                    <p class="card-text"><strong>Date:</strong> April 10, 2025</p>
-                    <p class="card-text"><strong>Location:</strong> Community Gallery</p>
-                    <p class="card-text">Discover the talent of local artists at our annual exhibition. Art pieces available for purchase.</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Event Card 9 -->
-        <div class="col-md-4 mb-4 event-card" data-name="Summer Music Camp" data-date="2023-08-05">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Summer Music Camp</h5>
-                    <p class="card-text"><strong>Date:</strong> August 5, 2023</p>
-                    <p class="card-text"><strong>Location:</strong> Music Academy</p>
-                    <p class="card-text">Join us for a fun-filled week of music and creativity. Open to all ages and skill levels!</p>
-                    <a href="{% url 'event_details' %}" class="btn btn-primary">View Event</a>
-                </div>
-            </div>
-        </div>
-
+    <div class="col-md-6">
+      <input type="text" id="eventSearch" class="form-control" placeholder="Search events..." />
     </div>
+  </div>
+
+  <div class="row">
+    <!-- Upcoming Webinar -->
+    {% for event in events %}
+      <div class="col-md-6 col-xxl-4 mb-6 event-card" data-name="{{ event.title }}" data-date="{{ event.start_datetime|date:'Y-m-d' }}">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="bg-label-primary rounded text-center mb-4 pt-4">
+              <img class="img-fluid" src="{% static 'img/illustrations/girl-with-laptop.png' %}" alt="Card girl image" width="140" />
+            </div>
+            <h5 class="mb-2">{{event.title}}</h5>
+            <p class="small">{{event.description}}</p>
+            <div class="row mb-4 g-3">
+              <div class="col-6">
+                <div class="d-flex">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-calendar-event ti-28px"></i></span>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 text-nowrap">{{ event.start_datetime|date:'d M y' }}</h6>
+                    <small>Date</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-clock ti-28px"></i></span>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 text-nowrap">{{ event.get_duration|format_duration }}</h6>
+                    <small>Duration</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="{% url 'event_details' event.event_id %}" class="btn btn-primary w-100">View the event</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    <!-- / Upcoming Webinar -->
 
     <div id="notFoundMessage" class="text-center mt-4" style="display: none;">
-        <p>No events found matching your search.</p>
+      <p>No events found matching your search.</p>
     </div>
+  </div>
 
-</div>
-
-<style>
+  <style>
     .card {
-        position: relative;
-        transition: box-shadow 0.3s ease;
-
+      position: relative;
+      transition: box-shadow 0.3s ease;
     }
     .card:hover {
-        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.4);
+      box-shadow: 0 8px 16px rgba(0, 123, 255, 0.4);
     }
-</style>
+  </style>
 
-<script>
+  <script>
     // Function to filter events based on the dropdown selection
     function filterEvents(filterType, buttonText) {
-        document.getElementById('filterDropdown').innerHTML = buttonText;
-
-        const eventCards = document.querySelectorAll('.event-card');
-        eventCards.forEach(card => {
-            const eventDate = new Date(card.getAttribute('data-date'));
-            const now = new Date();
-
-            if (filterType === 'upcoming' && eventDate < now) {
-                card.style.display = 'none';
-            } else if (filterType === 'past' && eventDate >= now) {
-                card.style.display = 'none';
-            } else {
-                card.style.display = 'block';
-            }
-        });
-        document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
+      document.getElementById('filterDropdown').innerHTML = buttonText;
+    
+      const eventCards = document.querySelectorAll('.event-card');
+      eventCards.forEach(card => {
+        const eventDate = new Date(card.getAttribute('data-date'));
+        const now = new Date();
+    
+        if (filterType === 'upcoming' && eventDate < now) {
+          card.style.display = 'none';
+        } else if (filterType === 'past' && eventDate >= now) {
+          card.style.display = 'none';
+        } else {
+          card.style.display = 'block';
+        }
+      });
+      document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
     }
-
+    
     // Function to search for events based on user input
     document.getElementById('eventSearch').addEventListener('input', function () {
-        const searchTerm = this.value.toLowerCase();
-        const eventCards = document.querySelectorAll('.event-card');
-        let found = false;
-
-        eventCards.forEach(card => {
-            const eventName = card.getAttribute('data-name').toLowerCase();
-            if (eventName.includes(searchTerm)) {
-                card.style.display = 'block';
-                found = true;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        document.getElementById('notFoundMessage').style.display = found ? 'none' : 'block'; // Show or hide not found message
+      const searchTerm = this.value.toLowerCase();
+      const eventCards = document.querySelectorAll('.event-card');
+      let found = false;
+    
+      eventCards.forEach(card => {
+        const eventName = card.getAttribute('data-name').toLowerCase();
+        if (eventName.includes(searchTerm)) {
+          card.style.display = 'block';
+          found = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    
+      document.getElementById('notFoundMessage').style.display = found ? 'none' : 'block'; // Show or hide not found message
     });
-</script>
-
-{% endblock content %}
+  </script>
+{% endblock %}

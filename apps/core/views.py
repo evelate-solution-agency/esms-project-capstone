@@ -2,11 +2,13 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.urls import reverse
 from datetime import datetime
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
 from .models import Event
-from django.utils import timezone
+
 
 
 class CoreView(TemplateView):
@@ -24,7 +26,7 @@ class NewSportsEventView(CoreView):
         event_type = request.GET.get("event_type")
 
         if teams_data:
-            # Redirect to the 'new_event_datetime' view with the parameters
+               # Redirect to the 'new_event_datetime' view with the parameters
             redirect_url = reverse('new_event_datetime')
             redirect_url_with_params = f"{redirect_url}?sport={sport}&event_type={event_type}&teams_data={teams_data}"
             return redirect(redirect_url_with_params)
@@ -89,7 +91,7 @@ class NewEventDateTimeView(CoreView):
             location=location,
             capacity=capacity,  # Set a default capacity or retrieve it from the form
             event_type=event_type.capitalize(),
-            status='scheduled',  # Default status
+            status='Scheduled',  # Default status
             organizer=request.user,  # Assuming the user is logged in
             metadata=metadata,
         )
@@ -105,3 +107,44 @@ class NewEventDateTimeView(CoreView):
         context['event_type'] = kwargs.get('event_type', None)
         
         return context
+    
+    
+class EventListView(CoreView):
+    def get(self, request, *args, **kwargs):
+
+        
+        return super().get(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        # Get the base context data from CoreView
+        context = super().get_context_data(**kwargs)
+
+        # Fetch all events and add them to the context
+        context['events'] = Event.objects.all().order_by('start_datetime') 
+
+        return context
+    
+    
+class EventDetailsView(CoreView):
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        # Get the base context data from TemplateView
+        context = super().get_context_data(**kwargs)
+
+        # Fetch the specific event using event_id from kwargs
+        event_id = self.kwargs.get('event_id')
+        event = get_object_or_404(Event, pk=event_id)
+        participants = event.participants.all()
+
+        # Add the event to the context
+        context['event'] = event
+        context['participants'] = participants
+        context['user'] = self.request.user
+        
+        return context
+    
+    
+    

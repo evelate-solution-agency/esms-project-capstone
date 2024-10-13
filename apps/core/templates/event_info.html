@@ -1,9 +1,106 @@
-{% extends layout_path %}
+ {% extends layout_path %}
 
 {% load i18n %}
 
-{% block title %}Event Details{% endblock title %}
+{% block title %}Events{% endblock title %}
 
 {% block content %}
-<h4 class="text-center">Event Details</h4>
-{% endblock %}
+
+<div class="container mt-5">
+    <h4 class="text-center mb-4">Events List</h4>
+
+    <!-- Filters Dropdown and Search Bar -->
+    <div class="row justify-content-start mb-4">
+        <div class="col-md-3">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    All Events
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <li><a class="dropdown-item" href="#" onclick="filterEvents('all', 'All Events')">All Events</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="filterEvents('upcoming', 'Upcoming Events')">Upcoming Events</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="filterEvents('past', 'Past Events')">Past Events</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <input type="text" id="eventSearch" class="form-control" placeholder="Search events...">
+        </div>
+    </div>
+
+    <div class="row" id="eventContainer">
+        {% for event in events %}
+            <div class="col-md-4 mb-4 event-card" data-name="{{ event.title }}" data-date="{{ event.start_datetime|date:'Y-m-d' }}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text"><strong>Date:</strong> {{ event.start_datetime|date:'F j, Y' }}</p>
+                        <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
+                        <p class="card-text">{{ event.description }}</p>
+                        <a href="{% url 'event_details' event.event_id %}" class="btn btn-primary">View Event</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="col-12">No events found.</p>
+        {% endfor %}
+    </div>
+
+    <div id="notFoundMessage" class="text-center mt-4" style="display: none;">
+        <p>No events found matching your search.</p>
+    </div>
+
+</div>
+
+<style>
+    .card {
+        position: relative;
+        transition: box-shadow 0.3s ease;
+    }
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.4);
+    }
+</style>
+
+<script>
+    // Function to filter events based on the dropdown selection
+    function filterEvents(filterType, buttonText) {
+        document.getElementById('filterDropdown').innerHTML = buttonText;
+
+        const eventCards = document.querySelectorAll('.event-card');
+        eventCards.forEach(card => {
+            const eventDate = new Date(card.getAttribute('data-date'));
+            const now = new Date();
+
+            if (filterType === 'upcoming' && eventDate < now) {
+                card.style.display = 'none';
+            } else if (filterType === 'past' && eventDate >= now) {
+                card.style.display = 'none';
+            } else {
+                card.style.display = 'block';
+            }
+        });
+        document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
+    }
+
+    // Function to search for events based on user input
+    document.getElementById('eventSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const eventCards = document.querySelectorAll('.event-card');
+        let found = false;
+
+        eventCards.forEach(card => {
+            const eventName = card.getAttribute('data-name').toLowerCase();
+            if (eventName.includes(searchTerm)) {
+                card.style.display = 'block';
+                found = true;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('notFoundMessage').style.display = found ? 'none' : 'block'; // Show or hide not found message
+    });
+</script>
+
+{% endblock content %} 
