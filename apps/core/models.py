@@ -14,6 +14,7 @@ class Event(models.Model):
         ('Scheduled', 'Scheduled'),
         ('Ongoing', 'Ongoing'),
         ('Completed', 'Completed'),
+        ('Canceled', 'Canceled')
     ]
 
     event_id = models.AutoField(primary_key=True)
@@ -31,13 +32,13 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def get_duration(self):
         duration = self.end_datetime - self.start_datetime
         return duration
-    
+
 class Sport(models.Model):
-    
+
     name = models.CharField(max_length=100, unique=True)  # Name of the sport
     description = models.TextField(blank=True, null=True)  # Optional description of the sport
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the sport was created

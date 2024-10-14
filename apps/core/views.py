@@ -4,6 +4,8 @@ from django.urls import reverse
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
 
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
@@ -30,7 +32,7 @@ class NewSportsEventView(CoreView):
             redirect_url = reverse('new_event_datetime')
             redirect_url_with_params = f"{redirect_url}?sport={sport}&event_type={event_type}&teams_data={teams_data}"
             return redirect(redirect_url_with_params)
-        
+
         return super().get(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         # Get the base context data from CoreView
@@ -68,15 +70,15 @@ class NewEventDateTimeView(CoreView):
         end_date = request.POST.get('end_date')
         location = request.POST.get('location')
         description = request.POST.get('description')
-        event_type = request.POST.get('event_type')  
-        capacity = request.POST.get('capacity')  
-        sport = request.POST.get('sport')            
+        event_type = request.POST.get('event_type')
+        capacity = request.POST.get('capacity')
+        sport = request.POST.get('sport')
         teams_data = request.POST.get('teams_data')
-        
+
         # Combine date and time into datetime objects
         start_datetime = timezone.make_aware(datetime.combine(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(start_time, '%H:%M').time()))
         end_datetime = timezone.make_aware(datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(end_time, '%H:%M').time()))
-        
+
         metadata = {
         'sport': sport,
         'teams_data': teams_data,
@@ -97,7 +99,7 @@ class NewEventDateTimeView(CoreView):
         )
         event.save()
 
-        return redirect('dashboard')  
+        return redirect('dashboard')
 
     def get_context_data(self, **kwargs):
         # Get the base context data from CoreView
@@ -105,31 +107,31 @@ class NewEventDateTimeView(CoreView):
         context['sport'] = kwargs.get('sport', None)
         context['teams_data'] = kwargs.get('teams_data', None)
         context['event_type'] = kwargs.get('event_type', None)
-        
+
         return context
-    
-    
+
+
 class EventListView(CoreView):
     def get(self, request, *args, **kwargs):
 
-        
+
         return super().get(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         # Get the base context data from CoreView
         context = super().get_context_data(**kwargs)
 
         # Fetch all events and add them to the context
-        context['events'] = Event.objects.all().order_by('start_datetime') 
+        context['events'] = Event.objects.all().order_by('start_datetime')
 
         return context
-    
-    
+
+
 class EventDetailsView(CoreView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         # Get the base context data from TemplateView
         context = super().get_context_data(**kwargs)
@@ -143,8 +145,19 @@ class EventDetailsView(CoreView):
         context['event'] = event
         context['participants'] = participants
         context['user'] = self.request.user
-        
+
         return context
-    
-    
-    
+
+
+class EventDeleteView(CoreView):
+    def post(self, request, event_id, *args, **kwargs):
+        event = get_object_or_404(Event, pk=event_id)
+
+        # Check if the logged-in user is the organizer of the event
+        if event.organizer == request.user:
+            event.delete()
+            messages.success(request, 'Event successfully canceled.')
+        else:
+            messages.error(request, 'You are not authorized to cancel this event.')
+
+        return redirect('event_list')  # Redirect to the event list after deletion
