@@ -1,0 +1,51 @@
+{% extends layout_path %}
+
+{% load i18n %}
+
+{% block title %}Schedule Meeting{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4 class="text-center">Schedule New Meeting</h4>
+
+    <form method="post" action="{% url 'schedule' %}" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="meeting-title">Meeting Title:</label>
+            <input type="text" class="form-control" id="meeting-title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="meeting-date">Date:</label>
+            <input type="date" class="form-control" id="meeting-date" name="date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="meeting-time">Time:</label>
+            <input type="time" class="form-control" id="meeting-time" name="time" required>
+        </div>
+
+        <div class="form-group">
+            <label for="meeting-duration">Duration (in minutes):</label>
+            <input type="number" class="form-control" id="meeting-duration" name="duration" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="meeting-link">Google Meet Link:</label>
+            <input type="url" class="form-control" id="meeting-link" name="meet_link" placeholder="https://meet.google.com/..." required>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary">Schedule Meeting</button>
+        </div>
+    </form>
+
+    {% if messages %}
+        <div class="mt-4">
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
