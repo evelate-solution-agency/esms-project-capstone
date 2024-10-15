@@ -44,8 +44,11 @@
             <div class="d-flex align-items-center gap-5">
               <!-- Only show Cancel, Delete, and Edit buttons if the user is the organizer -->
               {% if event.organizer.id == user.id %}
-              <!-- Cancel button (warning color) -->
-              <a href="{% url 'event_details' event.event_id %}" class="btn btn-warning waves-effect waves-light">Cancel</a>
+               <!-- Cancel Event Button -->
+               <form method="POST" action="{% url 'cancel_event' event.event_id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning waves-effect waves-light">Cancel</button>
+              </form>
 
               <!-- Delete button with confirmation -->
               <form method="POST" action="{% url 'event_delete' event.event_id %}" onsubmit="return confirm('Are you sure you want to delete this event?');">
