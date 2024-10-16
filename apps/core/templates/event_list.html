@@ -4,7 +4,6 @@
 {% load i18n %}
 {% load duration_filters %}
 
-
 {% block title %}
   Cards Advance- UI elements
 {% endblock %}
@@ -64,8 +63,18 @@
             <div class="bg-label-primary rounded text-center mb-4 pt-4">
               <img class="img-fluid" src="{% static 'img/illustrations/girl-with-laptop.png' %}" alt="Card girl image" width="140" />
             </div>
-            <h5 class="mb-2">{{event.title}}</h5>
-            <p class="small">{{event.description}}</p>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="mb-0">{{ event.title }}</h5>
+              <span class="badge
+                {% if event.status == 'Canceled' %}
+                  bg-danger
+                {% elif event.status == 'Ongoing' %}
+                  bg-success
+                {% endif %}">
+                {{ event.status }}
+              </span>
+            </div>
+            <p class="small">{{ event.description }}</p>
             <div class="row mb-4 g-3">
               <div class="col-6">
                 <div class="d-flex">
@@ -116,12 +125,12 @@
     // Function to filter events based on the dropdown selection
     function filterEvents(filterType, buttonText) {
       document.getElementById('filterDropdown').innerHTML = buttonText;
-    
+
       const eventCards = document.querySelectorAll('.event-card');
       eventCards.forEach(card => {
         const eventDate = new Date(card.getAttribute('data-date'));
         const now = new Date();
-    
+
         if (filterType === 'upcoming' && eventDate < now) {
           card.style.display = 'none';
         } else if (filterType === 'past' && eventDate >= now) {
@@ -132,13 +141,13 @@
       });
       document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
     }
-    
+
     // Function to search for events based on user input
     document.getElementById('eventSearch').addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const eventCards = document.querySelectorAll('.event-card');
       let found = false;
-    
+
       eventCards.forEach(card => {
         const eventName = card.getAttribute('data-name').toLowerCase();
         if (eventName.includes(searchTerm)) {
@@ -148,7 +157,7 @@
           card.style.display = 'none';
         }
       });
-    
+
       document.getElementById('notFoundMessage').style.display = found ? 'none' : 'block'; // Show or hide not found message
     });
   </script>
