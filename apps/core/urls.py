@@ -9,7 +9,8 @@ from .views import (
     EventDetailsView,
     EventDeleteView,
     EventEditView,
-    NewMeetingView
+    NewMeetingView,
+    MeeetingListView
 )
 
 urlpatterns = [
@@ -73,7 +74,7 @@ urlpatterns = [
     # Meetings Page
     path(
         "meetings/",
-        login_required(CoreView.as_view(template_name="meetings.html")),
+        login_required(MeeetingListView.as_view(template_name="meetings.html")),
         name="meetings",
     ),
     # Event Deletion

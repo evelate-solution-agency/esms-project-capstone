@@ -17,50 +17,62 @@
     {% endif %}
 
     <!-- Display the Create New Meeting Button -->
-    <div class="d-flex justify-content-between mt-4">
-      <h4 class="text-left">Meetings</h4>
+    <div class="d-flex justify-content-between my-5">
       <a class="btn btn-success d-flex gap-2" href="{% url 'schedule' %}"><i class="fas fa-plus"></i> New Meeting</a>
     </div>
 
-    <!-- Display the List of Upcoming Meetings -->
-    <div class="mt-5">
-      <table class="table table-striped mt-3">
+    <!-- Borderless Table -->
+<div class="card">
+    <h5 class="card-header"> Meetings</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-borderless">
         <thead>
           <tr>
-            <th>Meeting Title</th>
-            <th>Date & Time</th>
-            <th>Google Meet Link</th>
+            <th>Title</th>
+            <th>Organizer</th>
+            <th>Participants</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {% for meeting in meetings %}
-            <tr>
-              <td>{{ meeting.title }}</td>
-              <td>{{ meeting.start_time|date:'F j, Y, g:i A' }}</td>
-              <td>
-                <a href="{{ meeting.meet_link }}" target="_blank" class="btn btn-primary">Join with Google Meet</a>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="3" class="text-center">No upcoming meetings</td>
-            </tr>
+            {% for meeting in meetings %}
+          <tr>
+            <td><i class="ti ti-brand-zoom ti-md text-primary me-4"></i> <span class="fw-medium">{{meeting.title}}</span></td>
+            <td>{{meeting.organizer}}</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                {% for participant in meeting.participants.all %}
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="{{participant.email}}">
+                  <img src="{% static 'img/avatars/5.png' %}" alt="Avatar" class="rounded-circle">
+                </li>
+                {% endfor %}
+              </ul>
+            </td>
+            <td>
+                {% if meeting.status == 'Upcoming' %}
+                    <span class="badge bg-label-warning me-1">{{meeting.status}}</span>
+                {% elif meeting.status == 'Canceled' %}
+                    <span class="badge bg-label-danger me-1">{{meeting.status}}</span>
+                {% elif meeting.status == 'Ongoing' %}
+                    <span class="badge bg-label-success me-1">{{meeting.status}}</span>
+                {% elif meeting.status == 'Completed' %}
+                    <span class="badge bg-label-secondary me-1">{{meeting.status}}</span>
+                {% endif %}
+            </td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-pencil me-1"></i> Join</a>
+                </div>
+              </div>
+            </td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
-
-  <!-- Inline CSS to remove hover effect -->
-  <style>
-    .no-hover {
-      text-decoration: none;
-      color: #fff; /* Keep the text white */
-      background-color: #28a745; /* Match the original green button color */
-    }
-    .no-hover:hover {
-      background-color: #28a745; /* No color change on hover */
-      color: #fff; /* No text color change */
-    }
-  </style>
+  <!--/ Borderless Table -->
 {% endblock %}

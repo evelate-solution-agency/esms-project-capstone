@@ -101,7 +101,7 @@ class EventListView(CoreView):
                 if event.start_datetime <= timezone.now() < event.end_datetime:
                     event.status = 'Ongoing'
                 elif event.start_datetime < timezone.now():
-                    event.status = 'Finished'
+                    event.status = 'Completed'
                 event.save()
         context['events'] = events
         return context
@@ -180,7 +180,7 @@ class MeeetingListView(CoreView):
                 if meeting.start_datetime <= timezone.now() < meeting.end_datetime:
                     meeting.status = 'Ongoing'
                 elif meeting.start_datetime < timezone.now():
-                    meeting.status = 'Finished'
+                    meeting.status = 'Completed'
                 meeting.save()
         meetings = Event.objects.filter(event_type='Meeting').order_by('start_datetime')
         context['meetings'] = meetings
