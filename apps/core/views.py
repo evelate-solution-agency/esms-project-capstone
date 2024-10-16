@@ -5,9 +5,13 @@ from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.models import User
+
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
 from .models import Event
+
+import json
 
 class CoreView(TemplateView):
     def get_context_data(self, **kwargs):
@@ -69,7 +73,7 @@ class NewEventDateTimeView(CoreView):
             location=location,
             capacity=capacity,
             event_type=event_type.capitalize(),
-            status='Scheduled',
+            status='Upcoming',
             organizer=request.user,
             metadata=metadata,
         )
@@ -162,21 +166,83 @@ class EventEditView(CoreView):
         else:
             context = self.get_context_data(event=event, form=form)
             return self.render_to_response(context)
-
-class ScheduleView(CoreView):
+        
+class MeeetingListView(CoreView):
     def get(self, request, *args, **kwargs):
-        form = MeetingForm()  # Make sure to create this form in forms.py
-        context = self.get_context_data(form=form)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        meetings = Event.objects.filter(event_type='Meeting').order_by('start_datetime')
+        for meeting in meetings:
+            if meeting.status != 'Canceled':
+                if meeting.start_datetime <= timezone.now() < meeting.end_datetime:
+                    meeting.status = 'Ongoing'
+                elif meeting.start_datetime < timezone.now():
+                    meeting.status = 'Finished'
+                meeting.save()
+        meetings = Event.objects.filter(event_type='Meeting').order_by('start_datetime')
+        context['meetings'] = meetings
+        return context
+
+class NewMeetingView(CoreView):
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-        form = MeetingForm(request.POST)
-        if form.is_valid():
-            # Handle saving the meeting logic here
-            meeting = form.save(commit=False)
-            meeting.organizer = request.user  # Assuming you're assigning the user as the organizer
-            meeting.save()
-            messages.success(request, 'Meeting scheduled successfully.')
-            return redirect('meetings')  # Redirect to the meetings page or any other page
-        context = self.get_context_data(form=form)
-        return self.render_to_response(context)
+        # Extract data directly from the POST request
+        title = request.POST.get('meeting_title')
+        start_date = request.POST.get('date_start')
+        end_date = request.POST.get('date_end')
+        start_time = request.POST.get('time_start')
+        end_time = request.POST.get('time_end')
+        capacity = request.POST.get('capacity')
+        location = request.POST.get('location')
+        description = request.POST.get('description')
+        google_meet_link = request.POST.get('google_meet_link')
+        participants_data = request.POST.get('participants')  # Retrieve JSON list as string
+
+        
+        start_datetime = timezone.make_aware(datetime.combine(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(start_time, '%H:%M').time()))
+        end_datetime = timezone.make_aware(datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(end_time, '%H:%M').time()))
+        
+        # Parse participants JSON data
+        try:
+            participants_list = json.loads(participants_data)
+            participant_emails = [item['value'] for item in participants_list]
+
+            # Fetch users that exist in the database
+            participant_users = User.objects.filter(email__in=participant_emails)
+
+            # Check for emails that do not exist in the database
+            nonexistent_emails = set(participant_emails) - set(participant_users.values_list('email', flat=True))
+
+            # If there are nonexistent emails, deny the operation
+            if nonexistent_emails:
+               pass
+
+        except json.JSONDecodeError:
+            messages.error(request, 'Error parsing participants data.')
+
+        # Save the new meeting/event instance
+        event = Event.objects.create(
+            title=title,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+            location=location,
+            capacity=capacity,
+            event_type='Meeting',  # Example, modify as necessary
+            organizer=request.user,
+            metadata={'google_meet_link': google_meet_link},
+            description=description
+        )
+        
+        # Add participants to the event
+        event.participants.set(participant_users)
+        
+        # Save and confirm
+        event.save()
+        messages.success(request, 'Meeting scheduled successfully.')
+        return redirect('meetings')

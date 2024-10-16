@@ -2,61 +2,65 @@
 
 {% load i18n %}
 
-{% block title %}Meetings{% endblock title %}
+{% block title %}
+  Meetings
+{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h4 class="text-center">Meetings</h4>
+  <div class="container mt-4">
+    {% if messages %}
+      <div class="mt-4">
+        {% for message in messages %}
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     <!-- Display the Create New Meeting Button -->
-    <div class="d-flex justify-content-center mt-4">
-        <a class="btn btn-success" href="{% url 'schedule' %}">
-            <i class="fas fa-plus"></i> Schedule New Meeting
-        </a>
+    <div class="d-flex justify-content-between mt-4">
+      <h4 class="text-left">Meetings</h4>
+      <a class="btn btn-success d-flex gap-2" href="{% url 'schedule' %}"><i class="fas fa-plus"></i> New Meeting</a>
     </div>
 
     <!-- Display the List of Upcoming Meetings -->
     <div class="mt-5">
-        <h5 class="text-center">Upcoming Meetings</h5>
-        <table class="table table-striped mt-3">
-            <thead>
-                <tr>
-                    <th>Meeting Title</th>
-                    <th>Date & Time</th>
-                    <th>Google Meet Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for meeting in meetings %}
-                <tr>
-                    <td>{{ meeting.title }}</td>
-                    <td>{{ meeting.start_time|date:"F j, Y, g:i A" }}</td>
-                    <td>
-                        <a href="{{ meeting.meet_link }}" target="_blank" class="btn btn-primary">
-                            Join with Google Meet
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="text-center">No upcoming meetings</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th>Meeting Title</th>
+            <th>Date & Time</th>
+            <th>Google Meet Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for meeting in meetings %}
+            <tr>
+              <td>{{ meeting.title }}</td>
+              <td>{{ meeting.start_time|date:'F j, Y, g:i A' }}</td>
+              <td>
+                <a href="{{ meeting.meet_link }}" target="_blank" class="btn btn-primary">Join with Google Meet</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="3" class="text-center">No upcoming meetings</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-</div>
+  </div>
 
-<!-- Inline CSS to remove hover effect -->
-<style>
+  <!-- Inline CSS to remove hover effect -->
+  <style>
     .no-hover {
-        text-decoration: none;
-        color: #fff; /* Keep the text white */
-        background-color: #28a745; /* Match the original green button color */
+      text-decoration: none;
+      color: #fff; /* Keep the text white */
+      background-color: #28a745; /* Match the original green button color */
     }
     .no-hover:hover {
-        background-color: #28a745; /* No color change on hover */
-        color: #fff; /* No text color change */
+      background-color: #28a745; /* No color change on hover */
+      color: #fff; /* No text color change */
     }
-</style>
+  </style>
 {% endblock %}

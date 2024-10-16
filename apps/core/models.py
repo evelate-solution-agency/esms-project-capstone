@@ -11,10 +11,9 @@ class Event(models.Model):
     ]
 
     STATUS_CHOICES = [
-        ('Scheduled', 'Scheduled'),
+        ('Upcoming', 'Upcoming'),
         ('Ongoing', 'Ongoing'),
         ('Completed', 'Completed'),
-        ('Active', 'Active'),
         ('Canceled', 'Canceled')
     ]
 
@@ -26,7 +25,7 @@ class Event(models.Model):
     location = models.CharField(max_length=200)  # Location of the event
     capacity = models.IntegerField()  # Maximum number of participants
     event_type = models.CharField(max_length=10, choices=EVENT_TYPES)  # Type of the event
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Scheduled')  # Current status of the event
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Upcoming')  # Current status of the event
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_events')  # Organizer of the event
     participants = models.ManyToManyField(User, related_name='events_participating')  # Participants in the event
     metadata = models.JSONField(default=dict, blank=True, null=True)  # Additional data about the event

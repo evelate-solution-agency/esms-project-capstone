@@ -2,50 +2,93 @@
 
 {% load i18n %}
 
-{% block title %}Schedule Meeting{% endblock title %}
+{% block title %}
+  Schedule Meeting
+{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/tagify/tagify.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/typeahead-js/typeahead.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/tagify/tagify.js' %}"></script>
+<script src="{% static 'vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
+<script src="{% static 'vendor/libs/typeahead-js/typeahead.js' %}"></script>
+<script src="{% static 'vendor/libs/bloodhound/bloodhound.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/forms-selects.js' %}"></script>
+<script src="{% static 'js/forms-tagify.js' %}"></script>
+<script src="{% static 'js/forms-typeahead.js' %}"></script>
+{% endblock page_js %}
 
 {% block content %}
-<div class="container mt-4">
-    <h4 class="text-center">Schedule New Meeting</h4>
-
-    <form method="post" action="{% url 'schedule' %}" class="mt-4">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="meeting-title">Meeting Title:</label>
-            <input type="text" class="form-control" id="meeting-title" name="title" required>
+  <div class="row mt-4">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Schedule New Meeting</h5> <small class="text-muted float-end"></small>
         </div>
-
-        <div class="form-group">
-            <label for="meeting-date">Date:</label>
-            <input type="date" class="form-control" id="meeting-date" name="date" required>
+        <div class="card-body">
+          <form method="post" action="{% url 'schedule' %}" class="mt-4">
+            {% csrf_token %}
+            <div class="row">
+              <div class="form-group col-12 mb-5">
+                <label for="meeting-title">Meeting Title:</label>
+                <input type="text" class="form-control" id="meeting-title" name="meeting_title" required />
+              </div>
+              <div class="form-group col-6 mb-5">
+                <label for="meeting-date-start">Date Start:</label>
+                <input type="date" class="form-control" id="meeting-date-start" name="date_start" required />
+              </div>
+              <div class="form-group col-6 mb-5">
+                <label for="meeting-date-end">Date End:</label>
+                <input type="date" class="form-control" id="meeting-date-end" name="date_end" required />
+              </div>
+              <div class="form-group col-6 mb-5">
+                <label for="meeting-time-start">Time Start:</label>
+                <input type="time" class="form-control" id="meeting-time-start" name="time_start" required />
+              </div>
+              <div class="form-group col-6 mb-5">
+                <label for="meeting-time-end">Time End:</label>
+                <input type="time" class="form-control" id="meeting-time-end" name="time_end" required />
+              </div>
+              <div class="form-group col-6 mb-5">
+                <label for="meeting-capacity">Capacity:</label>
+                <input type="number" class="form-control" id="meeting-capacity" name="capacity" min="1" required />
+              </div>
+              <div class="col-md-6 mb-6">
+                <label for="meeting-location" class="form-label">Location</label>
+                <input id="meeting-location" class="form-control typeahead-bloodhound" type="text" name="location" autocomplete="off" placeholder="Enter meeting location" />
+              </div>
+              <div class="form-group col-12 mb-5">
+                <label for="meeting-link">Google Meet Link:</label>
+                <input type="url" class="form-control" id="meeting-link" name="google_meet_link" placeholder="https://meet.google.com/..." required />
+              </div>
+              <div class="col-md-6 mb-6">
+                <label for="TagifyEmailList" class="form-label d-block">Participants</label>
+                <input id="TagifyEmailList" class="tagify-email-list" name="participants">
+                <button type="button" class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span class="tf-icons ti ti-plus"></span> </button>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="bootstrap-maxlength-example2">Description</label>
+                <textarea id="bootstrap-maxlength-example2" class="form-control bootstrap-maxlength-example" name="description" rows="3" maxlength="255" spellcheck="false" style="height: 130px;"></textarea>
+              </div>
+              <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary">Create Meeting</button>
+              </div>
+            </div>
+          </form>
         </div>
-
-        <div class="form-group">
-            <label for="meeting-time">Time:</label>
-            <input type="time" class="form-control" id="meeting-time" name="time" required>
-        </div>
-
-        <div class="form-group">
-            <label for="meeting-duration">Duration (in minutes):</label>
-            <input type="number" class="form-control" id="meeting-duration" name="duration" min="1" required>
-        </div>
-
-        <div class="form-group">
-            <label for="meeting-link">Google Meet Link:</label>
-            <input type="url" class="form-control" id="meeting-link" name="meet_link" placeholder="https://meet.google.com/..." required>
-        </div>
-
-        <div class="d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-primary">Schedule Meeting</button>
-        </div>
-    </form>
-
-    {% if messages %}
-        <div class="mt-4">
-            {% for message in messages %}
-                <div class="alert alert-success">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
-</div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

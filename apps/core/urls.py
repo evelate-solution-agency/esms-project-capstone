@@ -8,7 +8,8 @@ from .views import (
     EventListView,
     EventDetailsView,
     EventDeleteView,
-    EventEditView
+    EventEditView,
+    NewMeetingView
 )
 
 urlpatterns = [
@@ -89,8 +90,8 @@ urlpatterns = [
     ),
     # Schedule Page
     path(
-        "schedule/",
-        login_required(CoreView.as_view(template_name="schedule_meeting.html")),
+        "meeting/schedule",
+        login_required(NewMeetingView.as_view(template_name="schedule_meeting.html")),
         name="schedule",
     ),
     # Event Editing

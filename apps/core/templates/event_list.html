@@ -67,7 +67,9 @@
               <h5 class="mb-0">{{ event.title }}</h5>
               <span class="badge
                 {% if event.status == 'Canceled' %}
-                  bg-danger
+                bg-danger
+                {% elif event.status == 'Upcoming' %}
+                  bg-warning
                 {% elif event.status == 'Ongoing' %}
                   bg-success
                 {% endif %}">
