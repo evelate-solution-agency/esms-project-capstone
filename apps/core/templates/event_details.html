@@ -55,6 +55,8 @@
 
               <!-- Edit button -->
               <button type="button" class="btn btn-secondary waves-effect waves-light">Edit</button>
+              {% else %}
+              <button type="button" class="btn btn-success waves-effect waves-light">Join</button>
               {% endif %}
             </div>
           </div>
@@ -83,6 +85,12 @@
                       <div class="d-flex align-items-center">
                         <div class="avatar avatar me-4">
                           <img src="{% static 'img/avatars/6.png' %}" alt="Avatar" class="rounded-circle" />
+                        </div>
+                        <div>
+                          <div>
+                            <h6 class="mb-0 text-truncate">{{participant}}</h6>
+                            <small class="text-truncate text-body">{{participant.email}}</small>
+                          </div>
                         </div>
                       </div>
                     </div>
