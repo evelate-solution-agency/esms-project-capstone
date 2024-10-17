@@ -13,9 +13,16 @@ class SportsRegistrationForm(forms.Form):
     team_b = PlayerForm(prefix='team_b')
 
 class EventDateTimeForm(forms.Form):
+    title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'Enter event title'}), label='Event Title')
     start_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), label='Start Time')
     end_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), label='End Time')
     start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='Start Date')
     end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='End Date')
     location = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Enter location keywords'}), label='Location')
     description = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Type your description here...'}), label='Description')
+
+    class Media:
+        css = {
+            'all': ('css/event_form.css',)
+        }
+        js = ('js/event_form.js',)
