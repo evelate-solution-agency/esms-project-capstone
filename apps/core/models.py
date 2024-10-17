@@ -19,7 +19,7 @@ class Event(models.Model):
 
     event_id = models.AutoField(primary_key=True)  # Unique identifier for the event
     title = models.CharField(max_length=200)  # Title of the event
-    description = models.TextField()  # Description of the event
+    description = models.TextField(default='')  # Description of the event
     start_datetime = models.DateTimeField()  # Start date and time of the event
     end_datetime = models.DateTimeField()  # End date and time of the event
     location = models.CharField(max_length=200)  # Location of the event
