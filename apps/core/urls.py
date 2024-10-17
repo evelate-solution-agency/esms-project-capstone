@@ -10,7 +10,8 @@ from .views import (
     EventDeleteView,
     EventEditView,
     NewMeetingView,
-    MeeetingListView
+    MeeetingListView,
+    ContestEventView,
 )
 
 urlpatterns = [
@@ -98,7 +99,7 @@ urlpatterns = [
     # Event Editing
     path(
         "event/<int:event_id>/edit/",
-        login_required(EventEditView.as_view(template_name="edit_event.html")),
+        login_required(EventEditView.as_view()),
         name='event_edit'
     ),
 ]

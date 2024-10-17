@@ -166,12 +166,12 @@ class EventEditView(CoreView):
         else:
             context = self.get_context_data(event=event, form=form)
             return self.render_to_response(context)
-        
+
 class MeeetingListView(CoreView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
         return self.render_to_response(context)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         meetings = Event.objects.filter(event_type='Meeting').order_by('start_datetime')
@@ -204,10 +204,10 @@ class NewMeetingView(CoreView):
         google_meet_link = request.POST.get('google_meet_link')
         participants_data = request.POST.get('participants')  # Retrieve JSON list as string
 
-        
+
         start_datetime = timezone.make_aware(datetime.combine(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(start_time, '%H:%M').time()))
         end_datetime = timezone.make_aware(datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(end_time, '%H:%M').time()))
-        
+
         # Parse participants JSON data
         try:
             participants_list = json.loads(participants_data)
@@ -238,11 +238,69 @@ class NewMeetingView(CoreView):
             metadata={'google_meet_link': google_meet_link},
             description=description
         )
-        
+
         # Add participants to the event
         event.participants.set(participant_users)
-        
+
         # Save and confirm
         event.save()
         messages.success(request, 'Meeting scheduled successfully.')
         return redirect('meetings')
+
+
+class NewSportsEventView(CoreView):
+    def get(self, request, *args, **kwargs):
+        sport = request.GET.get("sport")
+        teams_data = request.GET.get("teams_data")
+        event_type = request.GET.get("event_type")
+
+        if teams_data:
+            redirect_url = reverse('new_event_datetime')
+            redirect_url_with_params = f"{redirect_url}?sport={sport}&event_type={event_type}&teams_data={teams_data}"
+            return redirect(redirect_url_with_params)
+
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = SportsRegistrationForm()
+        sport = self.request.GET.get("sport")
+        context['sport'] = sport
+        context['form'] = form
+        return context
+
+class ContestEventView(CoreView):
+    def get(self, request):
+        contest = request.GET.get("contest")
+        event_type = request.GET.get("event_type")
+        context = self.get_context_data(contest=contest, teams_data=teams_data, event_type=event_type)
+        return self.render_to_response(context)
+
+    def post(self, request):
+        event_title = request.POST.get('contestName')
+        start_time = request.POST.get('timeStart')
+        end_time = request.POST.get('timeEnd')
+        start_date = request.POST.get('dateStart')
+        end_date = request.POST.get('dateEnd')
+        location = request.POST.get('location')
+        description = request.POST.get('description')
+
+        start_datetime = timezone.make_aware(datetime.combine(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(start_time, '%H:%M').time()))
+        end_datetime = timezone.make_aware(datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(end_time, '%H:%M').time()))
+
+        event = Event(
+            title=event_title,
+            description=description,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+            location=location,
+            capacity=capacity,
+            event_type='Contest',
+            status='Upcoming',
+            organizer=request.user,
+            metadata=metadata,
+        )
+        event.save()
+        messages.success(request, 'Event scheduled successfully!')
+
+        return redirect('event_list')  # Redirect to the list of events after scheduling

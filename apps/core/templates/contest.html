@@ -16,17 +16,17 @@
                 <div class="form-group row mb-3">
                     <label for="contestName" class="col-sm-3 col-form-label">Name:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="contestName" placeholder="Enter contest name">
+                        <input type="text" class="form-control" name="event_title" id="contestName" placeholder="Enter contest name">
                     </div>
                 </div>
 
                 <!-- Date Start and Date End -->
                 <div class="form-group row mb-3">
-                    <label for="dateStart" class="col-sm-3 col-form-label">Date Start:</label>
+                    <label for="dateStart" class="col-sm-3 col-form-label" name="start_date">Date Start:</label>
                     <div class="col-sm-4">
                         <input type="date" class="form-control" id="dateStart">
                     </div>
-                    <label for="dateEnd" class="col-sm-2 col-form-label text-right">Date End:</label>
+                    <label for="dateEnd" class="col-sm-2 col-form-label text-right" name="end_date">Date End:</label>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" id="dateEnd">
                     </div>
@@ -34,11 +34,11 @@
 
                 <!-- Time Start and Time End -->
                 <div class="form-group row mb-3">
-                    <label for="timeStart" class="col-sm-3 col-form-label">Time Start:</label>
+                    <label for="timeStart" class="col-sm-3 col-form-label" name="start_time">Time Start:</label>
                     <div class="col-sm-4">
                         <input type="time" class="form-control" id="timeStart">
                     </div>
-                    <label for="timeEnd" class="col-sm-2 col-form-label text-right">Time End:</label>
+                    <label for="timeEnd" class="col-sm-2 col-form-label text-right" name="end_time">Time End:</label>
                     <div class="col-sm-3">
                         <input type="time" class="form-control" id="timeEnd">
                     </div>
@@ -46,7 +46,7 @@
 
                 <!-- Location Input -->
                 <div class="form-group row mb-3">
-                    <label for="location" class="col-sm-3 col-form-label">Location:</label>
+                    <label for="location" class="col-sm-3 col-form-label" name="location">Location:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="location" placeholder="Enter location">
                     </div>
@@ -54,7 +54,7 @@
 
                 <!-- Hosted by Input -->
                 <div class="form-group row mb-3">
-                    <label for="hostedBy" class="col-sm-3 col-form-label">Hosted by:</label>
+                    <label for="hostedBy" class="col-sm-3 col-form-label" name="organizer">Hosted by:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="hostedBy" placeholder="Enter host's name">
                     </div>
@@ -62,7 +62,7 @@
 
                 <!-- Description Input -->
                 <div class="form-group row mb-4">
-                    <label for="description" class="col-sm-3 col-form-label">Description:</label>
+                    <label for="description" class="col-sm-3 col-form-label" name="description">Description:</label>
                     <div class="col-sm-9">
                         <textarea class="form-control" id="description" rows="4" placeholder="Enter description"></textarea>
                     </div>
@@ -102,7 +102,7 @@
       <div class="col-md-12 text-end">
           <input type="file" id="photoInput" style="display: none;" accept="image/*" />
           <button class="btn btn-secondary me-2" id="uploadPhotoButton">Upload Photo</button>
-          <button class="btn btn-primary" id="nextButton">Next</button>
+          <button type="submit" class="btn btn-primary" id="nextButton">Next</button>
       </div>
     </div>
   </div>
