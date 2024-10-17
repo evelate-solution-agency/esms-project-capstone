@@ -106,6 +106,7 @@ class EventListView(CoreView):
         context['events'] = events
         return context
 
+
 class EventDetailsView(CoreView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -123,13 +124,20 @@ class EventDetailsView(CoreView):
     def post(self, request, *args, **kwargs):
         event_id = self.kwargs.get('event_id')
         event = get_object_or_404(Event, pk=event_id)
+
         if event.organizer == request.user:
-            event.status = 'Canceled'
+            # Update event details from form data
+            event.description = request.POST.get('description')
+            event.start_datetime = request.POST.get('start_datetime')
+            event.end_datetime = request.POST.get('end_datetime')
+            event.location = request.POST.get('location')
             event.save()
-            messages.success(request, 'Event successfully canceled.')
+            messages.success(request, 'Event successfully updated.')
         else:
-            messages.error(request, 'You are not authorized to cancel this event.')
-        return redirect('event_list')
+            messages.error(request, 'You are not authorized to edit this event.')
+
+        return redirect('event_details', event_id=event_id)
+
 
 class EventDeleteView(CoreView):
     def post(self, request, event_id, *args, **kwargs):
@@ -143,28 +151,33 @@ class EventDeleteView(CoreView):
 
 class EventEditView(CoreView):
     def get(self, request, event_id, *args, **kwargs):
+        # Fetch the event and check if the current user is the organizer
         event = get_object_or_404(Event, pk=event_id)
         if event.organizer != request.user:
             messages.error(request, 'You are not authorized to edit this event.')
             return redirect('event_list')
 
+        # Initialize form with the event instance for editing
         form = EventDateTimeForm(instance=event)
-        context = self.get_context_data(event=event, form=form)
+        context = self.get_context_data(event=event, form=form, is_edit=True)
         return self.render_to_response(context)
 
     def post(self, request, event_id, *args, **kwargs):
+        # Fetch the event and check if the current user is the organizer
         event = get_object_or_404(Event, pk=event_id)
         if event.organizer != request.user:
             messages.error(request, 'You are not authorized to edit this event.')
             return redirect('event_list')
 
+        # Populate the form with submitted data for validation
         form = EventDateTimeForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             messages.success(request, 'Event successfully updated.')
             return redirect('event_details', event_id=event.id)
         else:
-            context = self.get_context_data(event=event, form=form)
+            # Re-render form with error messages
+            context = self.get_context_data(event=event, form=form, is_edit=True)
             return self.render_to_response(context)
 
 class MeeetingListView(CoreView):
@@ -247,27 +260,6 @@ class NewMeetingView(CoreView):
         messages.success(request, 'Meeting scheduled successfully.')
         return redirect('meetings')
 
-
-class NewSportsEventView(CoreView):
-    def get(self, request, *args, **kwargs):
-        sport = request.GET.get("sport")
-        teams_data = request.GET.get("teams_data")
-        event_type = request.GET.get("event_type")
-
-        if teams_data:
-            redirect_url = reverse('new_event_datetime')
-            redirect_url_with_params = f"{redirect_url}?sport={sport}&event_type={event_type}&teams_data={teams_data}"
-            return redirect(redirect_url_with_params)
-
-        return super().get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = SportsRegistrationForm()
-        sport = self.request.GET.get("sport")
-        context['sport'] = sport
-        context['form'] = form
-        return context
 
 class ContestEventView(CoreView):
     def get(self, request):
