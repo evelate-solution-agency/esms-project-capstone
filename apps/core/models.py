@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta
 
-
 class Event(models.Model):
     EVENT_TYPES = [
         ('Sports', 'Sports'),
@@ -14,7 +13,7 @@ class Event(models.Model):
         ('Upcoming', 'Upcoming'),
         ('Ongoing', 'Ongoing'),
         ('Completed', 'Completed'),
-        ('Canceled', 'Canceled')
+        ('Canceled', 'Canceled'),
     ]
 
     event_id = models.AutoField(primary_key=True)  # Unique identifier for the event
@@ -34,15 +33,12 @@ class Event(models.Model):
         return self.title  # String representation of the event
 
     def get_duration(self):
-        """
-        Calculate the duration of the event.
-        """
+        """Calculate the duration of the event."""
         duration = self.end_datetime - self.start_datetime
         return duration
 
     def cancel_event(self, user):
-        """
-        Cancels the event if the user is the organizer.
+        """Cancels the event if the user is the organizer.
 
         Args:
             user (User): The user attempting to cancel the event.

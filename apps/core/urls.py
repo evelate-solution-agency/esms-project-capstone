@@ -10,8 +10,9 @@ from .views import (
     EventDeleteView,
     EventEditView,
     NewMeetingView,
-    MeeetingListView,
+    MeetingListView,
     ContestEventView,
+    EventEditStatusView,
 )
 
 urlpatterns = [
@@ -88,7 +89,7 @@ urlpatterns = [
     # Meetings Page
     path(
         "meetings/",
-        login_required(MeeetingListView.as_view(template_name="meetings.html")),
+        login_required(MeetingListView.as_view(template_name="meetings.html")),
         name="meetings",
     ),
 
@@ -102,7 +103,7 @@ urlpatterns = [
     # Event Cancellation
     path(
         "event/<int:event_id>/cancel/",
-        login_required(EventDetailsView.as_view()),
+        login_required(EventEditView.as_view()),  # Assuming this view handles cancellation logic
         name='cancel_event'
     ),
 
@@ -114,9 +115,6 @@ urlpatterns = [
     ),
 
     # Event Editing
-    path(
-        "event/<int:event_id>/edit/",
-        login_required(EventEditView.as_view()),
-        name='edit_event'
-    ),
+      path('event/<int:event_id>/update_status/', EventEditStatusView.as_view(), name='update_event_status'),
+
 ]
