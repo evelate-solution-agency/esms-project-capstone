@@ -55,7 +55,7 @@
   </div>
 
   <div class="row">
-    <!-- Upcoming Webinar -->
+    <!-- Event Cards -->
     {% for event in events %}
       <div class="col-md-6 col-xxl-4 mb-6 event-card" data-name="{{ event.title }}" data-date="{{ event.start_datetime|date:'Y-m-d' }}">
         <div class="card h-100">
@@ -69,8 +69,10 @@
                 {% if event.status == 'Canceled' %}
                 bg-danger
                 {% elif event.status == 'Upcoming' %}
-                  bg-warning
+                  bg-info
                 {% elif event.status == 'Ongoing' %}
+                  bg-info
+                {% elif event.status == 'Completed' %}
                   bg-success
                 {% endif %}">
                 {{ event.status }}
@@ -106,7 +108,7 @@
         </div>
       </div>
     {% endfor %}
-    <!-- / Upcoming Webinar -->
+    <!-- / Event Cards -->
 
     <div id="notFoundMessage" class="text-center mt-4" style="display: none;">
       <p>No events found matching your search.</p>
