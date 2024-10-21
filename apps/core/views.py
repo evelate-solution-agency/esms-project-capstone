@@ -1,18 +1,77 @@
 from django.views.generic import TemplateView
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime, time
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.models import User
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
-from .models import Event
+from .models import Event, Sport
 import json
 
 class CoreView(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        return context
+    
+class DashboardView(CoreView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sports'] = Sport.objects.all()
+        return context
+    
+class CalendarView(CoreView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        events = Event.objects.all()
+        formatted_events = []
+        
+        for event in events:
+            # Determine if the event is an all-day event
+            start_date = None
+            end_date = None
+            url = ''
+            
+            print(event.metadata)
+            if 'google_meet_link' in event.metadata:
+                url = event.metadata['google_meet_link']
+            else:
+                url = ''
+            
+            is_all_day = (
+                event.start_datetime.time() == time(0, 0, 0) and
+                event.end_datetime.time() == time(0, 0, 0) and
+                event.start_datetime.date() == event.end_datetime.date()
+            )
+            
+            if is_all_day:
+                start_date = "new Date({}, {}, {})".format(event.start_datetime.year, event.start_datetime.month - 1, event.start_datetime.day)
+                end_date = "new Date({}, {}, {})".format(event.end_datetime.year, event.end_datetime.month - 1, event.end_datetime.day)
+            else:
+                start_date = "new Date({}, {}, {}, {}, {}, {})".format(
+                    event.start_datetime.year, event.start_datetime.month - 1, event.start_datetime.day,
+                    event.start_datetime.hour, event.start_datetime.minute, event.start_datetime.second
+                )
+                end_date = "new Date({}, {}, {}, {}, {}, {})".format(
+                    event.end_datetime.year, event.end_datetime.month - 1, event.end_datetime.day,
+                    event.end_datetime.hour, event.end_datetime.minute, event.end_datetime.second
+                )
+            
+            formatted_events.append({
+                'id': event.event_id,
+                'url': url,
+                'title': event.title,
+                'start': start_date,
+                'end': end_date,
+                'allDay': is_all_day,
+                'extendedProps': {
+                    'calendar': event.event_type
+                }
+            })
+
+        context['events'] = json.dumps(formatted_events)
         return context
 
 class NewSportsEventView(CoreView):
@@ -216,8 +275,9 @@ class NewMeetingView(CoreView):
             nonexistent_emails = set(participant_emails) - set(participant_users.values_list('email', flat=True))
 
             if nonexistent_emails:
-                messages.error(request, f"The following emails do not exist: {', '.join(nonexistent_emails)}")
-                return redirect('schedule')
+                pass
+                # messages.error(request, f"The following emails do not exist: {', '.join(nonexistent_emails)}")
+                # return redirect('schedule')
 
         except json.JSONDecodeError:
             messages.error(request, 'Error parsing participants data.')

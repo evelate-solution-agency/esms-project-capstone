@@ -13,13 +13,16 @@ from .views import (
     MeetingListView,
     ContestEventView,
     EventEditStatusView,
+    NewSportsEventView,
+    DashboardView,
+    CalendarView
 )
 
 urlpatterns = [
     # Dashboard
     path(
         "dashboard/",
-        login_required(CoreView.as_view(template_name="dashboard.html")),
+        login_required(DashboardView.as_view(template_name="dashboard.html")),
         name="dashboard",
     ),
 
@@ -47,7 +50,7 @@ urlpatterns = [
     # Calendar
     path(
         "calendar/",
-        login_required(CoreView.as_view(template_name="calendar.html")),
+        login_required(CalendarView.as_view(template_name="calendar.html")),
         name="calendar",
     ),
 

@@ -40,7 +40,7 @@ THEME_VARIABLES = {
     "creator_name": "Elevate Solutions Agency",
     "creator_url": "#",
     "template_name": "Sched-IT",
-    "template_suffix": "Django Admin Template",
+    "template_suffix": "Event Scheduling and Management System",
     "template_version": "2.0.0",
     "template_free": False,
     "template_description": "Vuexy is a modern, clean and fully responsive admin template built with Bootstrap 5, Django, HTML, CSS, jQuery, and JavaScript. It has a huge collection of reusable UI components and integrated with the latest jQuery plugins. It can be used for all types of web applications like custom admin panel, project management system, admin dashboard, Backend application or CRM.",

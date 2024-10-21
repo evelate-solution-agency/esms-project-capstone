@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block title %}
-  Page 1 - Starter Kit
+ Dashboard
 {% endblock %}
 {% block vendor_css %}
   {{ block.super }}
@@ -38,15 +38,13 @@
               <!-- Add margin end for spacing -->
               <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Select a sport</button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                  <a class="dropdown-item sport-option" href="#" data-sport="Basketball">Basketball</a>
-                </li>
-                <li>
-                  <a class="dropdown-item sport-option" href="#" data-sport="Volleyball">Volleyball</a>
-                </li>
-                <li>
-                  <a class="dropdown-item sport-option" href="#" data-sport="Badminton">Badminton</a>
-                </li>
+                {% if sports|length > 0 %}
+                  {% for sport in sports %}
+                    <li>
+                      <a class="dropdown-item sport-option" href="#" data-sport="{{sport.name}}">{{ sport.name }}</a>
+                    </li>
+                  {% endfor %}
+                {% endif %}
               </ul>
             </div>
             <button type="button" class="btn btn-primary" id="createScheduleButton" style="padding: 10px; font-size: 14px;">Create schedule</button> <!-- Create Schedule Button -->
@@ -58,7 +56,7 @@
 
   <h5 class="pb-1 mb-6">Dashboard</h5>
   <div class="row g-6" id="sortable-4">
-    <div class="col-md-6 col-xl-4 " data-bs-toggle="modal" data-bs-target="#sportsModal" style="cursor: pointer;">
+    <div class="col-md-6 col-xl-4" data-bs-toggle="modal" data-bs-target="#sportsModal" style="cursor: pointer;">
       <div class="card bg-primary text-white">
         <div class="card-header cursor-move text-white">
           <span class="ti ti-play-basketball ti-lg fs-1"></span>
