@@ -2,76 +2,118 @@
 
 {% load i18n %}
 
-{% block title %}Page 1 - Starter Kit{% endblock title %}
+{% block title %}
+  Page 1 - Starter Kit
+{% endblock %}
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/spinkit/spinkit.css' %}" />
+{% endblock %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/block-ui/block-ui.js' %}"></script>
+  <script src="{% static 'vendor/libs/sortablejs/sortable.js' %}"></script>
+{% endblock %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/cards-actions.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-
-<h4 class="py-4 mb-6 text-center">Dashboard</h4>
-
-<!-- Centered Vertical Buttons with increased margin-top -->
-<div class="text-center mb-4 mt-12">  <!-- Adjusted margin-top here -->
-    <button type="button" class="btn btn-primary w-50 mb-2"
-            style="padding: 15px; font-size: 16px;"
-            data-bs-toggle="modal"
-            data-bs-target="#sportsModal">SPORTS</button>
-
-    <!-- Link to contest page -->
-    <a href="{% url 'contest' %}" class="btn btn-secondary w-50 mb-2"
-            style="padding: 15px; font-size: 16px;">CONTEST</a>
-
-    <!-- Link to meetings page -->
-    <a href="{% url 'meetings' %}" class="btn btn-success w-50"
-            style="padding: 15px; font-size: 16px;">MEETINGS</a> <!-- Routed to 'meetings' URL -->
-</div>
-
-<!-- Modal for Sports button -->
-<div class="modal fade" id="sportsModal" tabindex="-1" aria-labelledby="sportsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"> <!-- Center the modal vertically -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="sportsModalLabel">Sports</h5>
-            </div>
-            <div class="modal-body text-center"> <!-- Center the content in the modal -->
-                <div class="d-flex justify-content-center align-items-center"> <!-- Flex container -->
-                    <div class="dropdown me-2"> <!-- Add margin end for spacing -->
-                        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Select a sport
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item sport-option" href="#" data-sport="Basketball">Basketball</a></li>
-                            <li><a class="dropdown-item sport-option" href="#" data-sport="Volleyball">Volleyball</a></li>
-                            <li><a class="dropdown-item sport-option" href="#" data-sport="Badminton">Badminton</a></li>
-                        </ul>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="createScheduleButton" style="padding: 10px; font-size: 14px;">Create schedule</button> <!-- Create Schedule Button -->
-                </div>
-            </div>
+  <!-- Modal for Sports button -->
+  <div class="modal fade" id="sportsModal" tabindex="-1" aria-labelledby="sportsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <!-- Center the modal vertically -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="sportsModalLabel">Sports</h5>
         </div>
+        <div class="modal-body text-center">
+          <!-- Center the content in the modal -->
+          <div class="d-flex justify-content-center align-items-center">
+            <!-- Flex container -->
+            <div class="dropdown me-2">
+              <!-- Add margin end for spacing -->
+              <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Select a sport</button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <a class="dropdown-item sport-option" href="#" data-sport="Basketball">Basketball</a>
+                </li>
+                <li>
+                  <a class="dropdown-item sport-option" href="#" data-sport="Volleyball">Volleyball</a>
+                </li>
+                <li>
+                  <a class="dropdown-item sport-option" href="#" data-sport="Badminton">Badminton</a>
+                </li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-primary" id="createScheduleButton" style="padding: 10px; font-size: 14px;">Create schedule</button> <!-- Create Schedule Button -->
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- JavaScript to handle button click and navigate -->
-<script>
+  <h5 class="pb-1 mb-6">Dashboard</h5>
+  <div class="row g-6" id="sortable-4">
+    <div class="col-md-6 col-xl-4 " data-bs-toggle="modal" data-bs-target="#sportsModal" style="cursor: pointer;">
+      <div class="card bg-primary text-white">
+        <div class="card-header cursor-move text-white">
+          <span class="ti ti-play-basketball ti-lg fs-1"></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-white">Sport</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up.</p>
+        </div>
+      </div>
+    </div>
+    <a href="{% url 'contest' %}" class="col-md-6 col-xl-4">
+      <div class="card bg-secondary text-white">
+        <div class="card-header cursor-move text-white">
+          <span class="ti ti-award fs-1"></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-white">Contest</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up.</p>
+        </div>
+      </div>
+    </a>
+    <a href="{% url 'meetings' %}" class="col-md-6 col-xl-4">
+      <div class="card bg-success text-white">
+        <div class="card-header cursor-move text-white">
+          <span class="ti ti-brand-zoom fs-1"></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-white">Meeting</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- JavaScript to handle button click and navigate -->
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let selectedSport = null;
-
-        // Set the selected sport when a dropdown item is clicked
-        document.querySelectorAll('.sport-option').forEach(item => {
-            item.addEventListener('click', function () {
-                selectedSport = this.getAttribute('data-sport');
-                document.getElementById('dropdownMenuButton').innerText = selectedSport;
-            });
+      let selectedSport = null;
+    
+      // Set the selected sport when a dropdown item is clicked
+      document.querySelectorAll('.sport-option').forEach(item => {
+        item.addEventListener('click', function () {
+          selectedSport = this.getAttribute('data-sport');
+          document.getElementById('dropdownMenuButton').innerText = selectedSport;
         });
-
-        // Navigate to the new sports event page with the selected sport as a query parameter
-        document.getElementById('createScheduleButton').addEventListener('click', function () {
-            if (selectedSport) {
-                window.location.href = `{% url 'new_sports_event' %}?sport=` + encodeURIComponent(selectedSport);
-            } else {
-                alert("Please select a sport first.");
-            }
-        });
+      });
+    
+      // Navigate to the new sports event page with the selected sport as a query parameter
+      document.getElementById('createScheduleButton').addEventListener('click', function () {
+        if (selectedSport) {
+          window.location.href = `{% url 'new_sports_event' %}?sport=` + encodeURIComponent(selectedSport);
+        } else {
+          alert('Please select a sport first.');
+        }
+      });
     });
-</script>
-
+  </script>
 {% endblock %}
