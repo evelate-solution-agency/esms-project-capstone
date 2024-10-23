@@ -208,18 +208,24 @@ class EventJoinView(CoreView):
 
         # Check if the user is already a participant
         if request.user in participants:
-            messages.error(request, 'You have already joined this event.')
-            return redirect('event_details', event_id=event_id)
-
-        # Check if there is room for more participants
-        if len(participants) < event.capacity:
-            participants.append(request.user)  # Add the current user to the participants list
+            # Remove the user from the participants list
+            participants.remove(request.user)
             event.participants.set(participants)  # Update the participants in the database
-            messages.success(request, 'You have successfully joined the event.')
+            messages.success(request, 'You have successfully left the event.')
         else:
-            messages.error(request, 'The event has reached its maximum capacity.')
+            # Check if there is room for more participants
+            if len(participants) < event.capacity:
+                # Add the current user to the participants list
+                participants.append(request.user)
+                event.participants.set(participants)  # Update the participants in the database
+                messages.success(request, 'You have successfully joined the event.')
+            else:
+                # If capacity is full, display a prompt message
+                messages.error(request, f'Sorry, the event "{event.title}" has reached its maximum capacity of {event.capacity} participants.')
 
+        event.save()  # Save the changes to the event
         return redirect('event_details', event_id=event_id)
+
 
 
 
