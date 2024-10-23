@@ -100,7 +100,7 @@
 
               <button type="button" class="btn btn-secondary waves-effect waves-light" onclick="toggleEditSave(this)">Edit</button>
               {% else %}
-              <button type="button" class="btn btn-success waves-effect waves-light">Join</button>
+                <a href="{% url 'event_join' event.event_id %}" type="button" class="btn btn-success waves-effect waves-light">Join</a>
               {% endif %}
             </div>
           </div>

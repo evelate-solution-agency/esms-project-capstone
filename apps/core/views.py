@@ -199,7 +199,21 @@ class EventDeleteView(CoreView):
             messages.success(request, 'Event successfully deleted.')
         else:
             messages.error(request, 'You are not authorized to delete this event.')
-        return redirect('event_list')
+        return redirect('event_details', event_id=event_id)
+    
+class EventJoinView(CoreView):
+    def get(self, request, event_id, *args, **kwargs):
+        event = get_object_or_404(Event, pk=event_id)
+        participants = event.participants.all() if event.participants.all() else []
+
+        if event.capacity >= len(participants):
+            event.participants.set([self.request.user].append(participants))
+            event.save()
+            messages.success(request, 'You have successfully joined the event.')
+        else:
+            messages.error(request, 'Already reached the maximum capacity for this event.')
+        return redirect('event_details', event_id=event_id)
+
 
 class EventEditView(CoreView):
     def get(self, request, event_id, *args, **kwargs):

@@ -15,7 +15,8 @@ from .views import (
     EventEditStatusView,
     NewSportsEventView,
     DashboardView,
-    CalendarView
+    CalendarView, 
+    EventJoinView
 )
 
 urlpatterns = [
@@ -102,7 +103,12 @@ urlpatterns = [
         login_required(EventDeleteView.as_view()),
         name='event_delete'
     ),
-
+    # Event Join
+    path(
+        "event/<int:event_id>/join/",
+        login_required(EventJoinView.as_view()),
+        name='event_join'
+    ),
     # Event Cancellation
     path(
         "event/<int:event_id>/cancel/",
