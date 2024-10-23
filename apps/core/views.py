@@ -14,38 +14,38 @@ class CoreView(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
-    
+
 class DashboardView(CoreView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sports'] = Sport.objects.all()
         return context
-    
+
 class CalendarView(CoreView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         events = Event.objects.all()
         formatted_events = []
-        
+
         for event in events:
             # Determine if the event is an all-day event
             start_date = None
             end_date = None
             url = ''
-            
+
             print(event.metadata)
             if 'google_meet_link' in event.metadata:
                 url = event.metadata['google_meet_link']
             else:
                 url = ''
-            
+
             is_all_day = (
                 event.start_datetime.time() == time(0, 0, 0) and
                 event.end_datetime.time() == time(0, 0, 0) and
                 event.start_datetime.date() == event.end_datetime.date()
             )
-            
+
             if is_all_day:
                 start_date = "new Date({}, {}, {})".format(event.start_datetime.year, event.start_datetime.month - 1, event.start_datetime.day)
                 end_date = "new Date({}, {}, {})".format(event.end_datetime.year, event.end_datetime.month - 1, event.end_datetime.day)
@@ -58,7 +58,7 @@ class CalendarView(CoreView):
                     event.end_datetime.year, event.end_datetime.month - 1, event.end_datetime.day,
                     event.end_datetime.hour, event.end_datetime.minute, event.end_datetime.second
                 )
-            
+
             formatted_events.append({
                 'id': event.event_id,
                 'url': url,
@@ -200,19 +200,27 @@ class EventDeleteView(CoreView):
         else:
             messages.error(request, 'You are not authorized to delete this event.')
         return redirect('event_details', event_id=event_id)
-    
+
 class EventJoinView(CoreView):
     def get(self, request, event_id, *args, **kwargs):
         event = get_object_or_404(Event, pk=event_id)
-        participants = event.participants.all() if event.participants.all() else []
+        participants = list(event.participants.all())  # Convert QuerySet to list
 
-        if event.capacity >= len(participants):
-            event.participants.set([self.request.user].append(participants))
-            event.save()
+        # Check if the user is already a participant
+        if request.user in participants:
+            messages.error(request, 'You have already joined this event.')
+            return redirect('event_details', event_id=event_id)
+
+        # Check if there is room for more participants
+        if len(participants) < event.capacity:
+            participants.append(request.user)  # Add the current user to the participants list
+            event.participants.set(participants)  # Update the participants in the database
             messages.success(request, 'You have successfully joined the event.')
         else:
-            messages.error(request, 'Already reached the maximum capacity for this event.')
+            messages.error(request, 'The event has reached its maximum capacity.')
+
         return redirect('event_details', event_id=event_id)
+
 
 
 class EventEditView(CoreView):
