@@ -64,7 +64,7 @@
           <!-- Message display section -->
           <div class="mb-4">
             {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
+              <div class="alert alert-{{ message.tags }} ">
                 {{ message }}
               </div>
             {% endfor %}
@@ -110,10 +110,10 @@
 
               <button type="button" class="btn btn-secondary waves-effect waves-light" onclick="toggleEditSave(this)">Edit</button>
               {% else %}
-              {% if not user in participants  %}
-                <a href="{% url 'event_join' event.event_id %}" type="button" class="btn btn-success waves-effect waves-light">Join</a>
-                {% else  %}
-                <a href="{% url 'event_join' event.event_id %}" type="button" class="btn btn-info waves-effect waves-light">Joined</a>
+                {% if not user in participants and event.status != 'Canceled' and event.status != 'Completed' %}
+                  <a href="{% url 'event_join' event.event_id %}" type="button" class="btn btn-success waves-effect waves-light">Join</a>
+                {% elif user in participants %}
+                  <a href="{% url 'event_join' event.event_id %}" type="button" class="btn btn-info waves-effect waves-light">Joined</a>
                 {% endif %}
               {% endif %}
             </div>
