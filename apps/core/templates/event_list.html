@@ -31,6 +31,8 @@
 {% endblock %}
 
 {% block content %}
+
+  {% include 'includes/messages.html' %}
   <!-- Filters Dropdown and Search Bar -->
   <div class="row justify-content-start mb-4">
     <div class="col-md-3">
@@ -61,7 +63,11 @@
         <div class="card h-100">
           <div class="card-body">
             <div class="bg-label-primary rounded text-center mb-4 pt-4">
-              <img class="img-fluid" src="{% static 'img/illustrations/girl-with-laptop.png' %}" alt="Card girl image" width="140" />
+              {% if not event.image %}
+                <img class="img-fluid" src="{% static 'img/illustrations/girl-with-laptop.png' %}" alt="Card girl image" width="140" height="140" style="height: 160px;" />
+              {% else %}
+                <img class="img-fluid" src="{{ event.image.url }}" alt="Event image" width="140" height="140" style="height: 160px;" />
+              {% endif %}
             </div>
             <div class="d-flex justify-content-between align-items-center mb-2">
               <h5 class="mb-0">{{ event.title }}</h5>

@@ -194,3 +194,7 @@ EMAIL_HOST_PASSWORD = ""
 
 LOGIN_URL = "/auth/login"
 LOGOUT_REDIRECT_URL = "/auth/login"
+
+# media
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

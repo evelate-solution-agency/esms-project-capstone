@@ -5,6 +5,7 @@ from datetime import datetime, time
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.models import User
+
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
 from .models import Event, Sport
@@ -113,6 +114,7 @@ class NewEventDateTimeView(CoreView):
         capacity = request.POST.get('capacity')
         sport = request.POST.get('sport')
         teams_data = request.POST.get('teams_data')
+        event_image = request.FILES.get('event_image')
 
         start_datetime = timezone.make_aware(datetime.combine(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(start_time, '%H:%M').time()))
         end_datetime = timezone.make_aware(datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(end_time, '%H:%M').time()))
@@ -130,6 +132,7 @@ class NewEventDateTimeView(CoreView):
             status='Upcoming',
             organizer=request.user,
             metadata=metadata,
+            image=event_image,
         )
         event.save()
         messages.success(request, 'Event scheduled successfully!')
@@ -192,14 +195,14 @@ class EventDetailsView(CoreView):
         return redirect('event_details', event_id=event_id)
 
 class EventDeleteView(CoreView):
-    def post(self, request, event_id, *args, **kwargs):
+    def get(self, request, event_id, *args, **kwargs):
         event = get_object_or_404(Event, pk=event_id)
         if event.organizer == request.user:
             event.delete()
             messages.success(request, 'Event successfully deleted.')
         else:
             messages.error(request, 'You are not authorized to delete this event.')
-        return redirect('event_details', event_id=event_id)
+        return redirect('event_list')
 
 class EventJoinView(CoreView):
     def get(self, request, event_id, *args, **kwargs):

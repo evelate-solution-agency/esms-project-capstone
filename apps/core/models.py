@@ -28,6 +28,7 @@ class Event(models.Model):
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_events')  # Organizer of the event
     participants = models.ManyToManyField(User, related_name='events_participating')  # Participants in the event
     metadata = models.JSONField(default=dict, blank=True, null=True)  # Additional data about the event
+    image = models.ImageField(upload_to='event_images/', blank=True, null=True)  # Image for the event
 
     def __str__(self):
         return self.title  # String representation of the event
