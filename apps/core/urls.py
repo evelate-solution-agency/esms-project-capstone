@@ -13,10 +13,11 @@ from .views import (
     MeetingListView,
     ContestEventView,
     EventEditStatusView,
-    NewSportsEventView,
     DashboardView,
-    CalendarView, 
-    EventJoinView
+    CalendarView,
+    EventJoinView,
+    MeetingDeleteView,  # Ensure MeetingDeleteView is imported here
+    ChooseRubricsView,
 )
 
 urlpatterns = [
@@ -79,7 +80,7 @@ urlpatterns = [
     # Choose Rubrics Page
     path(
         "choose_rubrics/",
-        login_required(CoreView.as_view(template_name="choose_rubrics.html")),
+        login_required(ChooseRubricsView.as_view(template_name="choose_rubrics.html")),
         name="choose_rubrics",
     ),
 
@@ -103,12 +104,14 @@ urlpatterns = [
         login_required(EventDeleteView.as_view()),
         name='event_delete'
     ),
+
     # Event Join
     path(
         "event/<int:event_id>/join/",
         login_required(EventJoinView.as_view()),
         name='event_join'
     ),
+
     # Event Cancellation
     path(
         "event/<int:event_id>/cancel/",
@@ -123,7 +126,13 @@ urlpatterns = [
         name="schedule",
     ),
 
-    # Event Editing
-      path('event/<int:event_id>/update_status/', EventEditStatusView.as_view(), name='update_event_status'),
+    # Event Status Update
+    path(
+        'event/<int:event_id>/update_status/',
+        login_required(EventEditStatusView.as_view()),
+        name='update_event_status'
+    ),
 
+    # Meeting Deletion
+    path('meetings/delete/<int:meeting_id>/', MeetingDeleteView.as_view(), name='meeting_delete'),
 ]

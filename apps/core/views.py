@@ -278,6 +278,21 @@ class MeetingListView(CoreView):
         context['meetings'] = meetings
         return context
 
+class MeetingDeleteView(CoreView):
+    def get(self, request, meeting_id, *args, **kwargs):
+        # Get the meeting based on ID and confirm it's of type 'Meeting'
+        meeting = get_object_or_404(Event, pk=meeting_id, event_type='Meeting')
+
+        # Check if the user is the organizer of the meeting
+        if meeting.organizer == request.user:
+            meeting.delete()  # Delete the meeting
+            messages.success(request, 'Meeting successfully deleted.')
+        else:
+            messages.error(request, 'You are not authorized to delete this meeting.')
+
+        # Redirect back to the meetings list
+        return redirect('meetings')
+
 class NewMeetingView(CoreView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
@@ -383,3 +398,9 @@ class EventEditStatusView(CoreView):
             messages.error(request, 'Invalid status.')
 
         return redirect('event_details', event_id=event.event_id)
+
+class ChooseRubricsView(CoreView):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context['user'] = self.request.user
+        return context
