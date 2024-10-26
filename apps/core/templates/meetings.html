@@ -78,11 +78,11 @@
                       <a class="dropdown-item" href="javascript:void(0);">
                         <i class="ti ti-pencil me-1"></i> Join
                       </a>
-                      {% if request.user == meeting.organizer %}
-                        <a class="dropdown-item" href="{% url 'meeting_delete' meeting.event_id %}"
-                           onclick="return confirm('Are you sure you want to delete this meeting?');">
-                          <i class="ti ti-trash me-1"></i> Delete
-                        </a>
+                      {% if request.user == meeting.organizer and meeting.status in 'Canceled' or meeting.status == 'Completed' %}
+<a class="dropdown-item" href="{% url 'meeting_delete' meeting.event_id %}"
+   onclick="return confirm('Are you sure you want to delete this meeting?');">
+  <i class="ti ti-trash me-1"></i> Delete
+</a>
                       {% endif %}
                     </div>
                   </div>

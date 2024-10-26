@@ -16,8 +16,9 @@ from .views import (
     DashboardView,
     CalendarView,
     EventJoinView,
-    MeetingDeleteView,  # Ensure MeetingDeleteView is imported here
+    MeetingDeleteView,
     ChooseRubricsView,
+    EventJoinView,
 )
 
 urlpatterns = [
@@ -135,4 +136,6 @@ urlpatterns = [
 
     # Meeting Deletion
     path('meetings/delete/<int:meeting_id>/', MeetingDeleteView.as_view(), name='meeting_delete'),
+
+    path('meeting/<int:event_id>/join/', EventJoinView.as_view(), name='meeting_join'),
 ]
