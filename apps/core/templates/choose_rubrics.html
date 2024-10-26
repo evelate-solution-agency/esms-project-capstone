@@ -11,8 +11,11 @@
         <div class="mx-auto text-center">
             <h4>Choose Rubrics</h4>
         </div>
-        <!-- Create Rubrics Button -->
-        <a href="{% url 'create_rubric' %}" class="btn btn-success" style="width: 120px;">
+        <!-- Create Rubrics Button with Conditional Admin Check -->
+        <a href="{% url 'create_rubric' %}"
+           class="btn {% if user.is_staff or user.is_superuser %}btn-success{% else %}btn-secondary disabled{% endif %}"
+           style="width: 120px;"
+           {% if not user.is_staff and not user.is_superuser %}aria-disabled="true" tabindex="-1"{% endif %}>
             <i class="fas fa-plus"></i> Create Rubrics
         </a>
     </div>
@@ -118,6 +121,7 @@
         </div>
     </div>
 
+    <!-- Additional Rubric Cards -->
     <!-- Arts Rubrics Card -->
     <div class="card mt-5 rubric-container">
         <div class="card-body text-center" onclick="selectRubric('Arts', this)">
@@ -144,7 +148,7 @@
                     <tr>
                         <td>Composition</td>
                         <td>20%</td>
-                        <td>Balance, contrast, and the effective use of space in the artwork.</td>
+                        <td>Balance, contrast, and effective use of space in the artwork.</td>
                     </tr>
                     <tr>
                         <td>Overall Impact</td>
@@ -211,7 +215,8 @@
 
     <!-- Submit Button -->
     <div class="container text-center mt-5">
-        <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
+        <!-- Submit button initially disabled -->
+        <button type="submit" id="submitButton" class="btn btn-primary" disabled>Submit</button>
     </div>
 </form>
 
@@ -234,6 +239,9 @@
       button.innerText = 'Selected';  // Set the clicked button to "Selected"
       button.classList.remove('btn-outline-primary'); // Remove outline class
       button.classList.add('btn-success'); // Change button styling to indicate selection
+
+      // Enable the submit button now that a rubric is selected
+      document.getElementById("submitButton").disabled = false;
   }
 
   // Function to handle form submission
