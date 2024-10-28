@@ -32,11 +32,14 @@
 
 {% block page_js %}
 {{ block.super }}
+<script src="{% static 'js/app-calendar.js' %}"></script>
 
 <script>
 
 let date = new Date();
 const eventsData = JSON.parse('{{ events|escapejs }}');
+
+
 
 window.events = [];
 eventsData.forEach(event => {
@@ -48,7 +51,10 @@ eventsData.forEach(event => {
     end: eval(event.end),
     allDay: event.allDay,
     extendedProps: {
-      calendar: event.extendedProps.calendar
+      calendar: event.extendedProps.calendar,
+      description: event.extendedProps.description,
+      location: event.extendedProps.location,
+
     }
   },);
 });
@@ -56,7 +62,6 @@ eventsData.forEach(event => {
 console.log(window.events)
 
 </script>
-<script src="{% static 'js/app-calendar.js' %}"></script>
 
 {% endblock page_js %}
 
@@ -88,11 +93,11 @@ console.log(window.events)
             <input class="form-check-input input-filter" type="checkbox" id="select-sports" data-value="sports" checked>
             <label class="form-check-label" for="select-sports">Sports</label>
           </div>
-          <div class="form-check mb-5 ms-2">
+          <div class="form-check  form-check mb-5 ms-2">
             <input class="form-check-input input-filter" type="checkbox" id="select-meeting" data-value="meeting" checked>
             <label class="form-check-label" for="select-meeting">Meeting</label>
           </div>
-          <div class="form-check form-check-warning mb-5 ms-2">
+          <div class="form-check  form-check-warning mb-5 ms-2">
             <input class="form-check-input input-filter" type="checkbox" id="select-contest" data-value="contest" checked>
             <label class="form-check-label" for="select-contest">Contest</label>
           </div>
@@ -145,21 +150,6 @@ console.log(window.events)
               </div>
             </div>
             <div class="mb-5">
-              <label class="form-label" for="eventURL">Event URL</label>
-              <input type="url" class="form-control" id="eventURL" name="eventURL" placeholder="https://www.google.com" />
-            </div>
-            <div class="mb-4 select2-primary">
-              <label class="form-label" for="eventGuests">Add Guests</label>
-              <select class="select2 select-event-guests form-select" id="eventGuests" name="eventGuests" multiple>
-                <option data-avatar="1.png" value="Jane Foster">Jane Foster</option>
-                <option data-avatar="3.png" value="Donna Frank">Donna Frank</option>
-                <option data-avatar="5.png" value="Gabrielle Robertson">Gabrielle Robertson</option>
-                <option data-avatar="7.png" value="Lori Spears">Lori Spears</option>
-                <option data-avatar="9.png" value="Sandy Vega">Sandy Vega</option>
-                <option data-avatar="11.png" value="Cheryl May">Cheryl May</option>
-              </select>
-            </div>
-            <div class="mb-5">
               <label class="form-label" for="eventLocation">Location</label>
               <input type="text" class="form-control" id="eventLocation" name="eventLocation" placeholder="Enter Location" />
             </div>
@@ -169,8 +159,8 @@ console.log(window.events)
             </div>
             <div class="d-flex justify-content-sm-between justify-content-start mt-6 gap-2">
               <div class="d-flex">
-                <button type="submit" id="addEventBtn" class="btn btn-primary btn-add-event me-4">Add</button>
-                <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
+                <button type="submit" id="addEventBtn" class="btn btn-primary btn-add-event me-4 d-none">Add</button>
+                <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Hide</button>
               </div>
               <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
             </div>

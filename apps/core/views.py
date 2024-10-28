@@ -75,7 +75,9 @@ class CalendarView(CoreView):
                 'end': end_date,
                 'allDay': is_all_day,
                 'extendedProps': {
-                    'calendar': event.event_type
+                    'calendar': event.event_type,
+                    'description': event.description,
+                    'location': event.location
                 }
             })
 

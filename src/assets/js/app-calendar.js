@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
       appOverlay = document.querySelector('.app-overlay'),
       calendarsColor = {
         All: 'success',
-        Contest: 'primary',
+        Contest: 'warning',
         Sports: 'danger',
-        Meeting: 'warning',
+        Meeting: 'primary',
       },
       offcanvasTitle = document.querySelector('.offcanvas-title'),
       btnToggleSidebar = document.querySelector('.btn-toggle-sidebar'),
@@ -155,12 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
       bsAddEventSidebar.show();
       // For update event set offcanvas title text: Update Event
       if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Update Event';
+        offcanvasTitle.innerHTML = 'Event Details';
       }
-      btnSubmit.innerHTML = 'Update';
-      btnSubmit.classList.add('btn-update-event');
-      btnSubmit.classList.remove('btn-add-event');
-      btnDeleteEvent.classList.remove('d-none');
 
       eventTitle.value = eventToUpdate.title;
       start.setDate(eventToUpdate.start, true, 'Y-m-d');
@@ -522,18 +518,7 @@ document.addEventListener('DOMContentLoaded', function () {
       resetValues();
     });
 
-    // Hide left sidebar if the right sidebar is open
-    btnToggleSidebar.addEventListener('click', e => {
-      if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Add Event';
-      }
-      btnSubmit.innerHTML = 'Add';
-      btnSubmit.classList.remove('btn-update-event');
-      btnSubmit.classList.add('btn-add-event');
-      btnDeleteEvent.classList.add('d-none');
-      appCalendarSidebar.classList.remove('show');
-      appOverlay.classList.remove('show');
-    });
+
 
     // Calender filter functionality
     // ------------------------------------------------
