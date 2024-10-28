@@ -22,13 +22,14 @@
 </div>
 
 <!-- Hidden input to track selected rubric type -->
-<form id="rubricsForm" onsubmit="handleSubmit(event)">
+<div id="rubricsForm">
     <input type="hidden" name="selected_rubric" id="selected_rubric" value="">
 
+    {% for rubric in rubrics %}
     <!-- Dance Rubrics Card -->
     <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Dance', this)">
-            <h5 class="card-title">Dance Rubrics</h5>
+        <div class="card-body text-center" onclick="selectRubric('Dance', this, {{rubric.id}})">
+            <h5 class="card-title">{{rubric.name}} Rubrics</h5>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -38,191 +39,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for criterion in rubric.criterion.all %}
                     <tr>
-                        <td>Technique</td>
-                        <td>30%</td>
-                        <td>Demonstrates proper technique and execution of movements.</td>
+                        <td>{{ criterion.name }}</td>
+                        <td>{{ criterion.percentage }}</td>
+                        <td>{{ criterion.description }}</td> <!-- Assuming Criterion model has a 'description' field -->
                     </tr>
-                    <tr>
-                        <td>Expression</td>
-                        <td>25%</td>
-                        <td>Conveys emotions and character through performance.</td>
-                    </tr>
-                    <tr>
-                        <td>Choreography</td>
-                        <td>20%</td>
-                        <td>Originality and creativity in choreography.</td>
-                    </tr>
-                    <tr>
-                        <td>Timing</td>
-                        <td>15%</td>
-                        <td>Maintains rhythm and synchronization with music.</td>
-                    </tr>
-                    <tr>
-                        <td>Costume and Presentation</td>
-                        <td>10%</td>
-                        <td>Appropriateness of costume and overall stage presence.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="text-right"><strong>Total:</strong></td>
-                        <td><strong>100%</strong></td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
             <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
         </div>
     </div>
 
-    <!-- Singing Rubrics Card -->
-    <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Singing', this)">
-            <h5 class="card-title">Singing Rubrics</h5>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Rubric</th>
-                        <th>Weight</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Vocal Technique</td>
-                        <td>30%</td>
-                        <td>Control of pitch, tone, and breathing.</td>
-                    </tr>
-                    <tr>
-                        <td>Expression</td>
-                        <td>25%</td>
-                        <td>Ability to convey emotion and connect with the audience.</td>
-                    </tr>
-                    <tr>
-                        <td>Musicality</td>
-                        <td>20%</td>
-                        <td>Understanding of rhythm and melody.</td>
-                    </tr>
-                    <tr>
-                        <td>Stage Presence</td>
-                        <td>15%</td>
-                        <td>Confidence and charisma while performing.</td>
-                    </tr>
-                    <tr>
-                        <td>Originality</td>
-                        <td>10%</td>
-                        <td>Creativity in interpretation of the song.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="text-right"><strong>Total:</strong></td>
-                        <td><strong>100%</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
-        </div>
-    </div>
+    {% endfor %}
 
-    <!-- Additional Rubric Cards -->
-    <!-- Arts Rubrics Card -->
-    <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Arts', this)">
-            <h5 class="card-title">Arts Rubrics</h5>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Rubric</th>
-                        <th>Weight</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Creativity</td>
-                        <td>40%</td>
-                        <td>Originality and innovation in artistic expression.</td>
-                    </tr>
-                    <tr>
-                        <td>Technical Skill</td>
-                        <td>30%</td>
-                        <td>Level of craftsmanship and execution of the artwork.</td>
-                    </tr>
-                    <tr>
-                        <td>Composition</td>
-                        <td>20%</td>
-                        <td>Balance, contrast, and effective use of space in the artwork.</td>
-                    </tr>
-                    <tr>
-                        <td>Overall Impact</td>
-                        <td>10%</td>
-                        <td>Emotional and visual impact of the artwork.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="text-right"><strong>Total:</strong></td>
-                        <td><strong>100%</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
-        </div>
-    </div>
-
-    <!-- Battle of the Band Rubrics Card -->
-    <div class="card mt-5 rubric-container">
-        <div class="card-body text-center" onclick="selectRubric('Battle of the Band', this)">
-            <h5 class="card-title">Battle of the Band Rubrics</h5>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Rubric</th>
-                        <th>Weight</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Musicality</td>
-                        <td>30%</td>
-                        <td>Harmony, rhythm, and overall musical arrangement.</td>
-                    </tr>
-                    <tr>
-                        <td>Stage Presence</td>
-                        <td>25%</td>
-                        <td>Confidence, charisma, and interaction with the audience.</td>
-                    </tr>
-                    <tr>
-                        <td>Originality</td>
-                        <td>20%</td>
-                        <td>Uniqueness and creativity in performance style.</td>
-                    </tr>
-                    <tr>
-                        <td>Technical Skill</td>
-                        <td>15%</td>
-                        <td>Precision and execution of musical instruments.</td>
-                    </tr>
-                    <tr>
-                        <td>Group Dynamics</td>
-                        <td>10%</td>
-                        <td>Coordination and synchronization among band members.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="text-right"><strong>Total:</strong></td>
-                        <td><strong>100%</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-outline-primary select-btn mt-3">Select</button>
-        </div>
-    </div>
 
     <!-- Submit Button -->
-    <div class="container text-center mt-5">
+    <form class="container mt-5" method="GET" action="{% url 'new_contest' %}">
         <!-- Submit button initially disabled -->
-        <button type="submit" id="submitButton" class="btn btn-primary" disabled>Submit</button>
-    </div>
-</form>
+        <input type="hidden" id="rubric_id" name="rubric_id" />
+        <button type="submit" id="submitButton" class="btn btn-primary" disabled>Next</button>
+    </form>
+</div>
 
 <script>
   // Function to select a rubric template
-  function selectRubric(rubricType, card) {
+  function selectRubric(rubricType, card, rubric_id) {
       // Set the selected rubric type in the hidden input
       document.getElementById("selected_rubric").value = rubricType;
 
@@ -242,19 +85,7 @@
 
       // Enable the submit button now that a rubric is selected
       document.getElementById("submitButton").disabled = false;
-  }
-
-  // Function to handle form submission
-  function handleSubmit(event) {
-      event.preventDefault();  // Prevent default form submission
-      const selectedRubric = document.getElementById("selected_rubric").value;
-
-      if (selectedRubric) {
-          // Redirect to the dashboard with the selected rubric
-          window.location.href = "{% url 'dashboard' %}?rubric=" + selectedRubric;
-      } else {
-          alert("Please select a rubric before submitting."); // Alert user if no rubric selected
-      }
+      document.getElementById("rubric_id").value = rubric_id;
   }
 </script>
 

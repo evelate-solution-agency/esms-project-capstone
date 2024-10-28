@@ -19,6 +19,9 @@ from .views import (
     MeetingDeleteView,
     ChooseRubricsView,
     EventJoinView,
+    SelectRubricView,
+    CreateRubricsView,
+    NewContestEventView
 )
 
 urlpatterns = [
@@ -73,22 +76,22 @@ urlpatterns = [
 
     # Contest Page
     path(
-        "contest/",
-        login_required(CoreView.as_view(template_name="contest.html")),
-        name="contest",
+        "new-evenet/contest/",
+        login_required(NewContestEventView.as_view(template_name="new_contest.html")),
+        name="new_contest",
     ),
 
     # Choose Rubrics Page
     path(
         "choose_rubrics/",
-        login_required(ChooseRubricsView.as_view(template_name="choose_rubrics.html")),
+        login_required(SelectRubricView.as_view(template_name="choose_rubrics.html")),
         name="choose_rubrics",
     ),
 
     # Create Rubric Page
     path(
         "create_rubric/",
-        login_required(CoreView.as_view(template_name="create_rubric.html")),
+        login_required(CreateRubricsView.as_view(template_name="create_rubric.html")),
         name="create_rubric",
     ),
 

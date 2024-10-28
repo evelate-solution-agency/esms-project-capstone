@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
-from .models import Event, Sport
+from .models import Event, Sport, Rubric, Criterion
 import json
 
 class CoreView(TemplateView):
@@ -21,6 +21,13 @@ class DashboardView(CoreView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sports'] = Sport.objects.all()
+        return context
+    
+class SelectRubricView(CoreView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rubrics'] = Rubric.objects.all()
         return context
 
 class CalendarView(CoreView):
@@ -403,4 +410,93 @@ class ChooseRubricsView(CoreView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['user'] = self.request.user
+        return context
+
+class CreateRubricsView(CoreView):
+    def get(self, request, *args, **kwargs):
+        rubric_name = request.GET.get("rubric_name")
+        rubric_data_json = request.GET.get("rubric_data")
+        rubric_data = json.loads(rubric_data_json) if rubric_data_json else []
+
+        if rubric_data:
+            # Unpack the tuple returned by get_or_create()
+            new_rubric, created = Rubric.objects.get_or_create(name=rubric_name)
+
+            # Add each criterion to the rubric
+            for criterion in rubric_data:
+                new_criterion = Criterion.objects.create(
+                    name=criterion['name'],
+                    percentage=f"{criterion['percentage']}%",
+                    description=criterion['description']
+                )
+                new_rubric.criterion.add(new_criterion)  # Add criterion to the rubric
+
+            # Redirect after saving
+            redirect_url = reverse('new_contest')
+            redirect_url_with_params = f"{redirect_url}?rubric_id={new_rubric.id}"
+            return redirect(redirect_url_with_params)
+        
+        return super().get(request, *args, **kwargs)
+        
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context['user'] = self.request.user
+        return context
+
+class NewContestEventView(CoreView):
+    def post(self, request, *args, **kwargs):
+        # Retrieve basic event details from the form
+        event_title = request.POST.get('event_name')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        location = request.POST.get('location')
+        description = request.POST.get('description')
+        capacity = request.POST.get('capacity')
+        hosted_by = request.POST.get('hosted_by')
+        event_image = request.FILES.get('event_image')
+        contestants_data = request.POST.getlist('contestants')  # Assuming contestants are passed as a list of dictionaries
+        rubric_id =  request.GET.get('rubric_id', None)
+        print(rubric_id)
+        rubric = get_object_or_404(Rubric, pk=rubric_id)
+
+        # Parse datetime fields
+        start_datetime = timezone.make_aware(
+            datetime.combine(datetime.strptime(start_date, '%Y-%m-%d'), 
+                             datetime.strptime(start_time, '%H:%M').time())
+        )
+        end_datetime = timezone.make_aware(
+            datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), 
+                             datetime.strptime(end_time, '%H:%M').time())
+        )
+
+        # Metadata to include extra details about the event
+        metadata = {'hosted_by': hosted_by, 'contestants': contestants_data}
+        
+
+        # Create and save the event object
+        event = Event.objects.create(
+            title=event_title,
+            description=description,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+            location=location,
+            capacity=capacity,
+            event_type='Contest',
+            status='Upcoming',
+            organizer=request.user,
+            metadata=metadata,
+            image=event_image,
+            rubric=rubric
+        )
+        
+        messages.success(request, 'Event scheduled successfully!')
+        return redirect('event_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sport'] = kwargs.get('sport', None)
+        context['teams_data'] = kwargs.get('teams_data', None)
+        context['event_type'] = kwargs.get('event_type', None)
         return context

@@ -1,0 +1,190 @@
+{% extends layout_path %}
+
+{% load i18n %}
+
+{% block title %}
+  Contest
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <form method="POST" class="card" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body mt-10">
+          <div class="row">
+            <!-- Contest Event Form -->
+            <div class="col-md-12 d-flex mb-4 justify-content-between">
+              <h4 class="text-left fw-bold">New Contest Event</h4>
+              <div class="button-wrapper">
+                <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
+                  <span class="d-none d-sm-block">Upload image</span>
+                  <i class="ti ti-upload d-block d-sm-none"></i>
+                  <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="event_image" />
+                </label>
+                <button type="submit" class="btn btn-success me-3 mb-4">Create</button>
+              </div>
+            </div>
+            <div class="user-profile-header-banner mb-10">
+              <img id="preview-image" src="{% static 'img/pages/profile-banner.png' %}" alt="Banner image" class="rounded-top img-fluid preview-image" style="width: 100%; height: auto; max-height: 500px; object-fit: cover;" />
+            </div>
+            <div class="col-md-6">
+              <div>
+                <!-- Name Input -->
+                <div class="form-group row mb-3">
+                  <label for="contestName" class="col-sm-3 col-form-label">Name:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="event_name" id="contestName" placeholder="Enter contest name" />
+                  </div>
+                </div>
+
+                <!-- Date Start and Date End -->
+                <div class="form-group row mb-3">
+                  <label for="dateStart" class="col-sm-3 col-form-label">Date Start:</label>
+                  <div class="col-sm-4">
+                    <input type="date" class="form-control" name="start_date" id="dateStart" />
+                  </div>
+                  <label for="dateEnd" class="col-sm-2 col-form-label text-right">Date End:</label>
+                  <div class="col-sm-3">
+                    <input type="date" class="form-control" name="end_date" id="dateEnd" />
+                  </div>
+                </div>
+
+                <!-- Time Start and Time End -->
+                <div class="form-group row mb-3">
+                  <label for="timeStart" class="col-sm-3 col-form-label">Time Start:</label>
+                  <div class="col-sm-4">
+                    <input type="time" class="form-control" name="start_time" id="timeStart" />
+                  </div>
+                  <label for="timeEnd" class="col-sm-2 col-form-label text-right">Time End:</label>
+                  <div class="col-sm-3">
+                    <input type="time" class="form-control" name="end_time" id="timeEnd" />
+                  </div>
+                </div>
+
+                <!-- Location Input -->
+                <div class="form-group row mb-3">
+                  <label for="location" class="col-sm-3 col-form-label">Location:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="location" id="location" placeholder="Enter location" />
+                  </div>
+                </div>
+
+                <!-- Hosted by Input -->
+                <div class="form-group row mb-3">
+                  <label for="hostedBy" class="col-sm-3 col-form-label">Hosted by:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="hosted_by" id="hostedBy" placeholder="Enter host's name" />
+                  </div>
+                </div>
+
+                <!-- Capacity -->
+                <div class="form-group row mb-4">
+                  <label  class="col-sm-3 col-form-label">Capacity:</label>
+                  <div class="col-sm-9">
+                    <input type="number" id="capacity" name="capacity" class="form-control" placeholder="Enter capacity" required />
+                  </div>
+                </div>
+
+                <!-- Description Input -->
+                <div class="form-group row mb-4">
+                  <label for="description" class="col-sm-3 col-form-label">Description:</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" name="description" id="description" rows="4" placeholder="Enter description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Participant Input Fields -->
+            <div class="col-md-6">
+              <h5>Contestants</h5>
+              <div class="input-group mb-3">
+                <input type="text" id="lastName" class="form-control me-2" placeholder="Last Name" style="border-radius: 5px;" />
+                <input type="text" id="firstName" class="form-control me-2" placeholder="First Name" style="border-radius: 5px;" />
+                <input type="text" id="middleInitial" class="form-control me-2" placeholder="M.I." style="border-radius: 5px;" />
+                <button type="button" class="btn btn-primary" id="addParticipant">Add</button>
+              </div>
+
+              <!-- Participants Table -->
+              <h5>Name</h5>
+              <table class="table table-bordered" id="participantsTable">
+                <thead>
+                  <tr>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>M.I.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- New participants will be added here -->
+                </tbody>
+              </table>
+              <!-- Hidden input to store contestants' data as JSON -->
+              <input type="hidden" name="contestants" id="contestantsInput" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Store contestants data
+      const contestants = [];
+    
+      // Handle adding participants to the table
+      document.getElementById('addParticipant').addEventListener('click', function () {
+        const lastName = document.getElementById('lastName').value.trim();
+        const firstName = document.getElementById('firstName').value.trim();
+        const middleInitial = document.getElementById('middleInitial').value.trim();
+    
+        // Ensure last name and first name are filled before adding
+        if (lastName && firstName) {
+          // Add contestant to contestants array
+          contestants.push({ lastName, firstName, middleInitial });
+          updateContestantsTable();
+    
+          // Clear input fields after adding the participant
+          document.getElementById('lastName').value = '';
+          document.getElementById('firstName').value = '';
+          document.getElementById('middleInitial').value = '';
+        } else {
+          alert('Please fill in both Last Name and First Name.');
+        }
+      });
+    
+      // Update the contestants table and the hidden input field
+      function updateContestantsTable() {
+        const tableBody = document.getElementById('participantsTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+        contestants.forEach(contestant => {
+          const newRow = tableBody.insertRow();
+          newRow.insertCell(0).textContent = contestant.lastName;
+          newRow.insertCell(1).textContent = contestant.firstName;
+          newRow.insertCell(2).textContent = contestant.middleInitial;
+        });
+        // Update hidden input with JSON data
+        document.getElementById('contestantsInput').value = JSON.stringify(contestants);
+      }
+    });
+  </script>
+
+  <script>
+    document.getElementById('upload').addEventListener('change', function (event) {
+      var input = event.target;
+    
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+    
+        reader.onload = function (e) {
+          document.getElementById('preview-image').src = e.target.result;
+        };
+    
+        reader.readAsDataURL(input.files[0]);
+      }
+    });
+  </script>
+{% endblock %}

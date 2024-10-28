@@ -2,6 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta
 
+class Criterion(models.Model):
+    name = models.CharField(max_length=100) 
+    percentage = models.TextField(blank=True, null=True, default='0')
+    description = models.TextField(default='')  # Description of the event
+ 
+    def __str__(self):
+        return self.name 
+    
+class Rubric(models.Model):
+    name = models.CharField(max_length=100, unique=True) 
+    criterion = models.ManyToManyField(Criterion, related_name="rubric")
+
+    def __str__(self):
+        return self.name
+
 class Event(models.Model):
     EVENT_TYPES = [
         ('Sports', 'Sports'),
@@ -29,7 +44,8 @@ class Event(models.Model):
     participants = models.ManyToManyField(User, related_name='events_participating')  # Participants in the event
     metadata = models.JSONField(default=dict, blank=True, null=True)  # Additional data about the event
     image = models.ImageField(upload_to='event_images/', blank=True, null=True)  # Image for the event
-
+    rubric = models.ForeignKey(Rubric, on_delete=models.CASCADE, related_name='rubric_event', blank=True, null=True)
+    
     def __str__(self):
         return self.title  # String representation of the event
 
@@ -55,10 +71,11 @@ class Event(models.Model):
 
 
 class Sport(models.Model):
-    name = models.CharField(max_length=100, unique=True)  # Name of the sport
-    description = models.TextField(blank=True, null=True)  # Optional description of the sport
-    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the sport was created
-    updated_at = models.DateTimeField(auto_now=True)  # Timestamp for when the sport was last updated
+    name = models.CharField(max_length=100, unique=True) 
+    description = models.TextField(blank=True, null=True) 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
-        return self.name  # String representation of the sport
+        return self.name 
+    
