@@ -50,9 +50,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # internal apps
     "apps.core",
     "apps.authentication",
-    "apps.pages"
+    "apps.pages",
+    "api",
+    
+    # 3rd party apps
+    "rest_framework",
+    'rest_framework.authtoken',
+    'drf_spectacular',
+
 ]
 
 MIDDLEWARE = [
@@ -198,3 +206,21 @@ LOGOUT_REDIRECT_URL = "/auth/login"
 # media
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# SWAGGER
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Event Scheduling and Management System API',
+    'DESCRIPTION': 'Manage sports, contest, and meeting events.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': True,
+}
