@@ -231,4 +231,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:19006",  # React Native dev server
     # Add other origins as needed
 ]
+
 CORS_ALLOW_ALL_ORIGINS = True
+
+ALLOWED_HOSTS = ['192.168.99.106', 'localhost', '127.0.0.1']
