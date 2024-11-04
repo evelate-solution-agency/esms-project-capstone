@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
     'drf_spectacular',
+    'corsheaders',
 
 ]
 
@@ -73,6 +74,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -224,3 +226,9 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': True,
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:19006",  # React Native dev server
+    # Add other origins as needed
+]
+CORS_ALLOW_ALL_ORIGINS = True
