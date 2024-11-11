@@ -23,6 +23,7 @@
 
 {% block content %}
   <!-- Modal for Sports button -->
+   {% if user.staff_status %}
   <div class="modal fade" id="sportsModal" tabindex="-1" aria-labelledby="sportsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <!-- Center the modal vertically -->
@@ -90,6 +91,46 @@
       </div>
     </a>
   </div>
+  {% else %}
+
+  <h5 class="pb-1 mb-6">Dashboard</h5>
+  <div class="row g-6" id="sortable-4">
+    <div class="col-md-6 col-xl-4" data-bs-toggle="modal" data-bs-target="#sportsModal" style="cursor: pointer;">
+      <a href="{% url 'event_list' %}?event_type=Sports" class="card bg-primary text-white">
+        <div class="card-header cursor-move text-white">
+          <span class="ti ti-play-basketball ti-lg fs-1"></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-white">Sport</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up.</p>
+        </div>
+      </a>
+    </div>
+    <a href="{% url 'event_list' %}?event_type=Contest" class="col-md-6 col-xl-4">
+      <div class="card bg-secondary text-white">
+        <div class="card-header cursor-move text-white">
+          <span class="ti ti-award fs-1"></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-white">Contest</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up.</p>
+        </div>
+      </div>
+    </a>
+    <a href="{% url 'event_list' %}?event_type=Meeting" class="col-md-6 col-xl-4">
+      <div class="card bg-success text-white">
+        <div class="card-header cursor-move text-white">
+          <span class="ti ti-brand-zoom fs-1"></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-white">Meeting</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  {% endif %}
 
   <!-- JavaScript to handle button click and navigate -->
   <script>

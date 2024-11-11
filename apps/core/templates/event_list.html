@@ -36,7 +36,7 @@
 
   <!-- Filters Dropdown and Search Bar -->
   <div class="row justify-content-start mb-4">
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">All Events</button>
         <ul class="dropdown-menu" aria-labelledby="filterDropdown">
@@ -52,6 +52,22 @@
         </ul>
       </div>
     </div>
+    <div class="col-md-2">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown2" data-bs-toggle="dropdown" aria-expanded="false">Event Type</button>
+        <ul class="dropdown-menu" aria-labelledby="filterDropdown2">
+          <li>
+            <a class="dropdown-item" href="#" onclick="filterEvents2('Sports', 'Sports')">Sports</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="filterEvents2('Contest', 'Contest')">Contest</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="filterEvents2('Meeting', 'Meeting')">Meetings</a>
+          </li>
+        </ul>
+      </div>
+    </div>
     <div class="col-md-6">
       <input type="text" id="eventSearch" class="form-control" placeholder="Search events..." />
     </div>
@@ -60,7 +76,7 @@
   <div class="row">
     <!-- Event Cards -->
     {% for event in events %}
-      <div class="col-md-6 col-xxl-4 mb-6 event-card" data-name="{{ event.title }}" data-date="{{ event.start_datetime|date:'Y-m-d' }}">
+      <div class="col-md-6 col-xxl-4 mb-6 event-card" data-name="{{ event.title }}" data-date="{{ event.start_datetime|date:'Y-m-d' }}" data-event-type="{{ event.event_type }}">
         <div class="card h-100">
           <div class="card-body d-flex flex-column">
             <div class="bg-label-primary rounded text-center mb-4 pt-4">
@@ -87,6 +103,7 @@
             </div>
 
             <!-- Truncated description -->
+            <p class="small text-truncate-2 mb-3">{{ event.event_type }} Event</p>
             <p class="small text-truncate-2 mb-3">{{ event.description }}</p>
 
             <div class="row mb-4 g-3 mt-auto">
@@ -177,6 +194,25 @@
       document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
     }
 
+    function filterEvents2(filterType, buttonText) {
+      document.getElementById('filterDropdown2').innerHTML = buttonText;
+
+      const eventCards = document.querySelectorAll('.event-card');
+      eventCards.forEach(card => {
+        const event_type = card.getAttribute('data-event-type');
+        
+        console.log(filterType)
+        console.log(event_type)
+
+        if (filterType === event_type) {
+          card.style.display = 'block';
+        }else {
+          card.style.display = 'none';
+        }
+      });
+      document.getElementById('notFoundMessage').style.display = 'none'; // Hide the not found message
+    }
+
     // Function to search for events based on user input
     document.getElementById('eventSearch').addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
@@ -195,5 +231,53 @@
 
       document.getElementById('notFoundMessage').style.display = found ? 'none' : 'block'; // Show or hide not found message
     });
+
+
+    
+
+
+
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+      // Get the value of the event_type parameter from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventTypeFromUrl = urlParams.get('event_type'); // e.g., 'Contest', 'Sports', 'Meeting'
+    
+      // Run the filterEvents2 function if we have a valid event type from the URL
+      if (eventTypeFromUrl) {
+        filterEvents2(eventTypeFromUrl, eventTypeFromUrl); // Filter based on the URL parameter
+      }
+    });
+    
+    function filterEvents2(filterType, buttonText) {
+      // Update the button text with the selected filter type
+      document.getElementById('filterDropdown2').innerHTML = buttonText;
+    
+      // Get all event cards
+      const eventCards = document.querySelectorAll('.event-card');
+    
+      // Loop through each event card and apply filtering logic
+      eventCards.forEach(card => {
+        // Get the event type from the card's data attribute
+        const event_type = card.getAttribute('data-event-type');
+    
+        // Show or hide events based on the selected event type (from the URL)
+        if (event_type === filterType) {
+          card.style.display = 'block'; // Show matching event
+        } else {
+          card.style.display = 'none'; // Hide non-matching event
+        }
+      });
+    
+      // Hide the not found message if events are visible
+      const visibleCards = document.querySelectorAll('.event-card[style="display: block;"]');
+      const notFoundMessage = document.getElementById('notFoundMessage');
+      if (visibleCards.length === 0) {
+        notFoundMessage.style.display = 'block'; // Show the not found message if no events match
+      } else {
+        notFoundMessage.style.display = 'none'; // Hide the not found message if events match
+      }
+    }
+    
   </script>
 {% endblock %}
