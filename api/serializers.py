@@ -15,5 +15,5 @@ class UserSignupSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['title', 'description', 'start_datetime', 'end_datetime', 'location', 'capacity', 'event_type', 'status',
+        fields = ['event_id','title', 'description', 'start_datetime', 'end_datetime', 'location', 'capacity', 'event_type', 'status',
                   'organizer', 'participants', 'metadata', 'image', 'rubric']
