@@ -37,7 +37,7 @@ TEMPLATE_CONFIG = {
 # Theme Variables
 # ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
-    "creator_name": "Elevate Solutions Agency",
+    "creator_name": "Jude Benedict",
     "creator_url": "#",
     "template_name": "Sched-IT",
     "template_suffix": "Event Scheduling and Management System",

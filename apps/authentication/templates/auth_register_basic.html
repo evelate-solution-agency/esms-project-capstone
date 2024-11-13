@@ -48,6 +48,18 @@
           <h4 class="mb-1">Adventure starts here 🚀</h4>
           <p class="mb-6">Make your app management easy and fun!</p>
 
+          {% if messages %}
+      <div class="mt-4">
+        {% for message in messages %}
+          {% if message.tags == 'error' %}
+            <div class="alert alert-danger">{{ message }}</div>
+          {% elif message.tags == 'success' %}
+            <div class="alert alert-success">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
           <form id="formAuthentication" class="mb-6" action="#" method="POST">
             {% csrf_token %}
             <div class="mb-6">

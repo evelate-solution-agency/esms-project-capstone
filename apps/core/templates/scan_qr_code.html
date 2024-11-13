@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event QR Code Scanner</title>
+</head>
+<body>
+    <h1>Scan Event QR Code</h1>
+    <form action="{% url 'scan_qr_code' event.event_id %}" method="post">
+        {% csrf_token %}
+        <label for="qr_code">Scan QR Code:</label>
+        <input type="text" id="qr_code" name="qr_code" autofocus required>
+        <button type="submit">Check QR</button>
+    </form>
+
+    {% if event %}
+        <h2>Event Details:</h2>
+        <p><strong>Title:</strong> {{ event.title }}</p>
+        <p><strong>Date:</strong> {{ event.start_datetime }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+    {% endif %}
+    {% if success %}
+        <p style="color: green;">{{ success }}</p>
+    {% elif error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>

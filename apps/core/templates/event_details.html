@@ -107,6 +107,7 @@
               {% endif %}
 
               <button type="button" class="btn btn-secondary waves-effect waves-light" onclick="toggleEditSave(this)">Edit</button>
+              <a href="{% url 'scan_qr_code' event.event_id %}" class="btn btn-primary waves-effect waves-light">Check QR</a>
               {% else %}
                 {% if not user in participants and event.status != 'Canceled' and event.status != 'Completed' %}
                   <a href="{% url 'event_join' event.event_id %}" type="button" class="btn btn-success waves-effect waves-light">Join</a>

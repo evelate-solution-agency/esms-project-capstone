@@ -21,7 +21,9 @@ from .views import (
     EventJoinView,
     SelectRubricView,
     CreateRubricsView,
-    NewContestEventView
+    NewContestEventView,
+    check_event_by_barcode, 
+    scan_qr_code
 )
 
 urlpatterns = [
@@ -141,4 +143,8 @@ urlpatterns = [
     path('meetings/delete/<int:meeting_id>/', MeetingDeleteView.as_view(), name='meeting_delete'),
 
     path('meeting/<int:event_id>/join/', EventJoinView.as_view(), name='meeting_join'),
+    path('admin/events/check_barcode/<str:barcode>/',  check_event_by_barcode, name='check_event_by_barcode'),
+
+    path('scan_qr_code/<int:event_id>/', scan_qr_code, name='scan_qr_code'),
+
 ]

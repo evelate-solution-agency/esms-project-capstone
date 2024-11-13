@@ -49,7 +49,7 @@ class LoginView(AuthView):
         if request.method == "POST":
             username = request.POST.get("email-username")
             password = request.POST.get("password")
-
+        
             if not (username and password):
                 messages.error(request, "Please enter your username and password.")
                 return redirect("login")

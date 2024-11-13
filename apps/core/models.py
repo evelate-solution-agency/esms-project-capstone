@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta
+from django.core.files.base import ContentFile
+import barcode, uuid
+from barcode.writer import ImageWriter
+from io import BytesIO
+import qrcode
 
 class Criterion(models.Model):
     name = models.CharField(max_length=100) 
@@ -45,7 +50,24 @@ class Event(models.Model):
     metadata = models.JSONField(default=dict, blank=True, null=True)  # Additional data about the event
     image = models.ImageField(upload_to='event_images/', blank=True, null=True)  # Image for the event
     rubric = models.ForeignKey(Rubric, on_delete=models.CASCADE, related_name='rubric_event', blank=True, null=True)
-    
+    qr_code_image = models.ImageField(upload_to='event_qrcodes/', blank=True, null=True)
+
+    def generate_qr_code(self):
+        """Generate a QR code image for the event."""
+        # Use event_id or any unique data as QR code data
+        print(self.event_id)
+        qr_data = f"{self.event_id}-{self.title}-{self.start_datetime}"  
+        # Generate the QR code
+        qr = qrcode.make(qr_data)
+
+        # Save the QR code image to a BytesIO buffer
+        buffer = BytesIO()
+        qr.save(buffer, format='PNG')
+        buffer.seek(0)
+
+        # Save the QR code image to the model's field with a unique filename
+        self.qr_code_image.save(f'qr_code_{qr_data}.png', ContentFile(buffer.read()), save=False)
+        
     def __str__(self):
         return self.title  # String representation of the event
 
@@ -68,6 +90,11 @@ class Event(models.Model):
             self.save()  # Save the change to the database
             return True  # Cancellation was successful
         return False  # User is not the organizer, cancellation failed
+    
+    def save(self, *args, **kwargs):
+        """Override save method to automatically generate barcode."""
+        self.generate_qr_code()  # Generate the barcode after the save
+        super().save(*args, **kwargs) 
 
 
 class Sport(models.Model):

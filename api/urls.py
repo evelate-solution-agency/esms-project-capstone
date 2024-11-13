@@ -10,7 +10,7 @@ router.register(r'events', EventViewSet)
 urlpatterns = [
     path('get-token/', ObtainAuthTokenView.as_view(), name='api_get_token'),
     path('register/', AccountRegistrationView.as_view(), name='api_register'),
-    path('login/', AccountLoginView.as_view(), name='login'),
+    path('login/', AccountLoginView.as_view(), name='drf_login'),
         
     # router
     path('', include(router.urls)),

@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.utils.html import format_html
+from django.templatetags.static import static  # Import static tag for media
+
 from .models import Sport, Event, Criterion, Rubric
 
 class SportAdmin(admin.ModelAdmin):
@@ -7,11 +10,36 @@ class SportAdmin(admin.ModelAdmin):
     ordering = ('name',) 
     
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('event_id', 'title', 'start_datetime', 'end_datetime', 'location', 'capacity', 'event_type', 'status', 'organizer')
+    list_display = (
+        'event_id', 'title', 'start_datetime', 'end_datetime', 'location', 
+        'capacity', 'event_type', 'status', 'organizer', 'qr_code_image_display'
+    )
     search_fields = ('title', 'description', 'location', 'event_type')
     list_filter = ('event_type', 'status', 'organizer')
     ordering = ('start_datetime',)
-    
+
+    def qr_code_image_display(self, obj):
+        if obj.qr_code_image:
+            return format_html('<img src="{}" width="50" height="50" />', obj.qr_code_image.url)
+        return "No QR Code"
+
+    qr_code_image_display.short_description = 'QR Code'  # Column header in admin list
+
+    # Optionally, add a button or a method to handle QR code scanning
+    def qr_code_scanner(self, obj):
+        return format_html(
+            '<button class="qr-code-scan-btn" data-event-id="{}">Scan QR Code</button>',
+            obj.event_id
+        )
+
+    qr_code_scanner.short_description = 'QR Code Scanner'
+
+    class Media:
+        js = (
+            'https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js', 
+            static('vendor/js/barcode_scanner.js')  # Use the static function for local static files
+        )
+
 class CriterionAdmin(admin.ModelAdmin):
     list_display = ('name', 'percentage')  # Display these fields in the list view
     search_fields = ('name',)  # Add a search bar for 'name'

@@ -23,7 +23,7 @@
 
 {% block content %}
   <!-- Modal for Sports button -->
-   {% if user.staff_status %}
+   {% if user.is_superuser  %}
   <div class="modal fade" id="sportsModal" tabindex="-1" aria-labelledby="sportsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <!-- Center the modal vertically -->
