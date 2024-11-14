@@ -10,7 +10,7 @@
   <h4 class="text-center my-4">New {{ sport|title }} Event</h4>
 
   <div class="container">
-    <form method="GET" onsubmit="updateTeamsDataInput()">
+    <form method="GET">
       <div class="row">
         <!-- Left Side: Team, Coach, Name, Email, Phone Inputs -->
         <div class="col-md-6">
@@ -186,8 +186,12 @@
 
       // Add player to the corresponding team
       if (side === 'Left') {
+        teamsData.team_left.name = teamName
+        teamsData.team_left.coach = coachName
         teamsData.team_left.players.push(player);
       } else {
+        teamsData.team_right.name = teamName
+        teamsData.team_right.coach = coachName
         teamsData.team_right.players.push(player);
       }
 
@@ -208,18 +212,19 @@
       document.getElementById(nameId).value = '';
       document.getElementById(emailId).value = '';
       document.getElementById(phoneId).value = '';
-    }
+      updateTeamsDataInput()
+  }
 
     function updateTeamsDataInput() {
       const teamsDataInput = document.getElementById('teamsDataInput');
       const sport = document.getElementById('sport');
       const event_type = document.getElementById('event_type');
       teamsDataInput.value = JSON.stringify(teamsData);
+      console.log(teamsDataInput.value)
       sport.value = '{{ sport }}';
       event_type.value = 'sports';
     }
 
-    document.querySelector('form').onsubmit = updateTeamsDataInput;
 
     // Handle photo upload button behavior
     function handlePhotoUpload(input) {

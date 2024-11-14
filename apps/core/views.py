@@ -12,7 +12,8 @@ from django.core.files.storage import default_storage
 
 from web_project import TemplateLayout
 from .forms import SportsRegistrationForm, EventDateTimeForm
-from .models import Event, Sport, Rubric, Criterion
+from apps.authentication.models import Profile
+from .models import Event, Sport, Rubric, Criterion, RFID
 import json
 
 class CoreView(TemplateView):
@@ -112,6 +113,26 @@ class NewEventDateTimeView(CoreView):
         sport = request.GET.get("sport")
         teams_data = request.GET.get("teams_data")
         event_type = request.GET.get("event_type")
+
+        data = json.loads(teams_data)
+        left_players = data['team_left']['players']
+        right_players = data['team_right']['players']
+        all_players = left_players + right_players
+        if not data['team_right']['players']:
+            messages.error(request, 'No teams data on team A!')
+            return redirect('dashboard')
+        
+        if not data['team_left']['players']:
+            messages.error(request, 'No teams data on team B!')
+            return redirect('dashboard')
+        
+        for player in all_players:
+            try:
+                profile = Profile.objects.get(email=player['email'])
+            except Profile.DoesNotExist:
+                messages.error(request, f'Player not found on system! Please make sure the player {player["email"]} register on the system.')
+                return redirect('dashboard')
+            
         context = self.get_context_data(sport=sport, teams_data=teams_data, event_type=event_type)
         return self.render_to_response(context)
 
@@ -133,6 +154,7 @@ class NewEventDateTimeView(CoreView):
         end_datetime = timezone.make_aware(datetime.combine(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(end_time, '%H:%M').time()))
 
         metadata = {'sport': sport, 'teams_data': teams_data}
+        
 
         event = Event(
             title=event_title,
@@ -148,6 +170,23 @@ class NewEventDateTimeView(CoreView):
             image=event_image,
         )
         event.save()
+
+        data = json.loads(teams_data)
+        left_players = data['team_left']['players']
+        right_players = data['team_right']['players']
+        all_players = left_players + right_players
+        for player in all_players:
+            try:
+                user = User.objects.get(email=player['email'])
+                rfid_new = RFID(
+                    event=event,
+                    participant=user
+                )
+                rfid_new.save()
+
+            except Profile.DoesNotExist:
+                messages.error(request, f'Player not found on system! Please make sure the player {player["email"]} register on the system.')
+                return redirect('dashboard')
         messages.success(request, 'Event scheduled successfully!')
         return redirect('event_list')
 
@@ -270,8 +309,6 @@ class EventJoinView(CoreView):
 
         event.save()  # Save the changes to the event
         return redirect('event_details', event_id=event_id)
-
-
 
 
 class EventEditView(CoreView):
@@ -544,6 +581,37 @@ def check_event_by_barcode(request, barcode):
     except Event.DoesNotExist:
         return JsonResponse({'exists': False})
     
+def scan_rfid_code(request, event_id):
+    if not event_id:
+        messages.error(request, 'No event ID provided!')
+        return redirect(reverse('event_list'))  # Redirect to an event list or any fallback page
+
+    try:
+        event = Event.objects.get(event_id=event_id)
+    except Event.DoesNotExist:
+        messages.error(request, 'Event not found!')
+        return redirect(reverse('event_list'))
+
+    error = None
+    success = None
+
+    if request.method == 'POST':
+        qr_code_data = request.POST.get('rfid_code')
+
+        if qr_code_data:
+            # Check if the scanned QR code data matches the event's QR code data
+            try:
+                rfid =  RFID.objects.get(rfid_number=qr_code_data)
+                success = "RFID is valid! Player found."
+            except Exception as e:
+                error = f"RFID Code does not match this event. {e}"                
+
+    return render(request, 'scan_rfid_code.html', {
+        'event': event,
+        'error': error,
+        'success': success
+    })
+
 def scan_qr_code(request, event_id):
     if not event_id:
         messages.error(request, 'No event ID provided!')
@@ -567,7 +635,7 @@ def scan_qr_code(request, event_id):
             if qr_code_data == event_qr_code:  # Adjust this comparison as needed
                 success = "QR Code is valid! Event found."
             else:
-                error = "QR Code does not match this event."
+                error = "QR Code does not match this event."                
 
     return render(request, 'scan_qr_code.html', {
         'event': event,

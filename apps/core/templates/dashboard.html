@@ -22,6 +22,7 @@
 {% endblock %}
 
 {% block content %}
+{% include 'includes/messages.html' %}
   <!-- Modal for Sports button -->
    {% if user.is_superuser  %}
   <div class="modal fade" id="sportsModal" tabindex="-1" aria-labelledby="sportsModalLabel" aria-hidden="true">

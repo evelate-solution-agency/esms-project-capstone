@@ -105,4 +105,12 @@ class Sport(models.Model):
 
     def __str__(self):
         return self.name 
+
+class RFID(models.Model):
+    participant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_RFID', null=True, blank=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='player_event', null=True, blank=True) 
+    rfid_number = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    is_available = models.BooleanField(default=True)
     
+    def __str__(self):
+        return f"{self.rfid_number}"

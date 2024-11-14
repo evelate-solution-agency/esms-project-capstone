@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.templatetags.static import static  # Import static tag for media
 
-from .models import Sport, Event, Criterion, Rubric
+from .models import Sport, Event, Criterion, Rubric, RFID
 
 class SportAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'created_at', 'updated_at')  
@@ -52,6 +52,23 @@ class RubricAdmin(admin.ModelAdmin):
     search_fields = ('name',)  # Add a search bar for 'name'
     ordering = ('name',)  # Order by 'name'
 
+class RFIDAdmin(admin.ModelAdmin):
+    # Display these fields in the list view
+    list_display = ('participant', 'event', 'rfid_number', 'is_available')
+    
+    # Add filters for participant, event, and availability
+    list_filter = ('is_available', 'event')
+    
+    # Search by participant username and RFID number
+    search_fields = ('participant__username', 'rfid_number')
+
+    # Enable editing of related fields inline if desired
+    autocomplete_fields = ['participant', 'event']
+    
+    # Optional: Customize ordering
+    ordering = ('participant', 'rfid_number')
+
+admin.site.register(RFID, RFIDAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Sport, SportAdmin)
 admin.site.register(Criterion, CriterionAdmin)

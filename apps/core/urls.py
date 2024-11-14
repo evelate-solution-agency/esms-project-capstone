@@ -23,7 +23,8 @@ from .views import (
     CreateRubricsView,
     NewContestEventView,
     check_event_by_barcode, 
-    scan_qr_code
+    scan_qr_code,
+    scan_rfid_code
 )
 
 urlpatterns = [
@@ -146,5 +147,6 @@ urlpatterns = [
     path('admin/events/check_barcode/<str:barcode>/',  check_event_by_barcode, name='check_event_by_barcode'),
 
     path('scan_qr_code/<int:event_id>/', scan_qr_code, name='scan_qr_code'),
+    path('scan_rfid_code/<int:event_id>/', scan_rfid_code, name='scan_rfid_code'),
 
 ]
