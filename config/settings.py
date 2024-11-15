@@ -35,7 +35,7 @@ DEBUG = os.environ.get("DEBUG", 'True').lower() in ['true', 'yes', '1']
 
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 # Current DJANGO_ENVIRONMENT
 ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
@@ -199,8 +199,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "judengszx1228@gmail.com"
-EMAIL_HOST_PASSWORD = "hobi rxkl fjui ticz"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 
 LOGIN_URL = "/auth/login"
 LOGOUT_REDIRECT_URL = "/auth/login"
@@ -233,3 +233,5 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+ALLOWED_HOSTS = ['*']
